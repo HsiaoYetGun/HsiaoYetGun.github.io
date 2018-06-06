@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: By-Talk | 如果没有人看着我</title>
+  <title>CS224n学习笔记 Lecture 2 Word Vector Representations word2vec | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="大风吹丑鬼，山海等烂泥">
 <meta name="keywords" content="人工智障，NLP，Bioinformatics">
-<meta property="og:type" content="website">
-<meta property="og:title" content="如果没有人看着我">
-<meta property="og:url" content="http://hsiaoyetgun.github.io/tags/By-Talk/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
+<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
 <meta property="og:description" content="大风吹丑鬼，山海等烂泥">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-05T18:12:25.835Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如果没有人看着我">
+<meta name="twitter:title" content="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
 <meta name="twitter:description" content="大风吹丑鬼，山海等烂泥">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
@@ -41,9 +42,9 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
-          isTag: true,
+          isTag: false,
           isCategory: false,
           open_in_new: false
       }
@@ -221,58 +222,238 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2018/02/01/Intro/" class="archive-article-date">
-      <time datetime="2018-01-31T17:27:09.000Z" itemprop="datePublished">02-01</time>
+    <div class="article-meta">
+      <a href="/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" class="article-date">
+      <time datetime="2018-06-05T18:12:25.000Z" itemprop="datePublished">2018-06-06</time>
 </a>
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/01/Intro/">Intro</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CS224n学习笔记 Lecture 2 Word Vector Representations word2vec
     </h1>
   
 
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/By-Talk/">By-Talk</a>
-    </div>
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/By-Talk/">By-Talk</a></li></ul>
-    </div>
-
-        </div>
+        
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>Buy Me a Coffee</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="Scan QR Code" />
+            </div>
+              <div class="pay_explain">Thanks</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="Alipay" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="Wechat" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>Open <span id="shang_pay_txt">Alipay</span> and Scan QR Code.</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"Alipay":"Wechat");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
   </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></p>
+        <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
+        <p><span>Date:</span>2018 : 06 : 06 - 02 : 12</p>
+        <p><span>Update:</span>2018 : 06 : 06 - 02 : 12</p>
+        <p>
+            <span>Hyperlink:</span><a class="post-url" href="/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" title="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">http://hsiaoyetgun.github.io/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/</a>
+            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="China (CC BY-NC-SA 3.0 CN)" target = "_blank">"Signature-non-commercial-sharing in the same way 3.0"</a> Please keep the original link and author.
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          CS224n学习笔记 Lecture 3 Advanced Word Vector Representations
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Archives</strong>
+    
+</div>
+<input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "Hidden";
+    var valueShow = "Show";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="Share to Weibo"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="Share to Wechat"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="Share to QQ"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="Share to Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="Share to Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="Share to linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="Share hyperlink"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
 
     
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: 'CS224n学习笔记 Lecture 2 Word Vector Representations word2vec',
+      owner: 'HsiaoYetGun',
+      repo: 'HsiaoYetGun.github.io',
+      oauth: {
+        client_id: '7a4d3f0229c8061aa33f',
+        client_secret: '6f12ffc30ae1391899a25203c79b322d92fcef07',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
 
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="Prev: CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/" title="Next: CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_self");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
@@ -358,17 +539,6 @@ MathJax.Hub.Queue(function() {
         };
     })
 </script>
-
-    <button class="hide-labels">TAG on-off</button>
-    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js">
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("button").click(function() {
-                $(".article-info").toggle(200);
-            });
-        });
-    </script>
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
