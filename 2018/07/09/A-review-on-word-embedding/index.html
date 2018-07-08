@@ -6,17 +6,24 @@
   <title>A review on word embedding | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
-<meta name="keywords" content="Review,Deep Learning,NLP,Word Embedding">
+<meta name="keywords" content="NLP,Word Embedding,Review,Deep Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A review on word embedding">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/07/09/A-review-on-word-embedding/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
 <meta property="og:description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-08T16:24:26.388Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068694891.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068715630.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068727395.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068763958.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068782855.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531071540664.jpg">
+<meta property="og:updated_time" content="2018-07-08T17:41:58.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A review on word embedding">
 <meta name="twitter:description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531068694891.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -271,6 +278,64 @@
         <p>这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。</p>
 <a id="more"></a>
 <p>因为明天得做一个组会的 presentation，就想着把我所了解的 embedding 方法给做一个整体性的介绍，希望能够对后续继续入生物序列词嵌入坑的师弟师妹们有所帮助。</p>
+<p>文章结构就分成 5 大块，分别为单词级别、句子 / 文档级别、子词级别、字符级别的 embedding 方法，以及最后的总结和展望。</p>
+<h1 id="Word-level-Embedding"><a href="#Word-level-Embedding" class="headerlink" title="Word-level Embedding"></a>Word-level Embedding</h1><p>单词级别的 embedding 方法之前就有几篇文章写过了，<a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/">CS224n Lecture 2</a>，<a href="https://hsiaoyetgun.github.io/2018/05/07/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-3-Advanced-Word-Vector-Representations/">CS224n Lecture 3</a>，<a href="https://hsiaoyetgun.github.io/2018/05/09/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20Research%20Highlight3%20Bag%20of%20Tricks%20for%20Efficient%20Text%20Classification/">CS224n Research Highlight 3</a>。</p>
+<p>在此再简单提一下单词级别的 embedding 方法的发展。</p>
+<h2 id="传统方式"><a href="#传统方式" class="headerlink" title="传统方式"></a>传统方式</h2><p>最初 NLP 领域是靠一个大词典 (例如WordNet) ，所使用的是上位词和同义词集的信息来表示词的意思。但是这种方法忽视了单词的语境，并且很难维护。</p>
+<p>NLP 领域还用 One-hot 编码方式来表示词的意思，但是这种方法的缺点也是显而易见的，即无法度量单词之间的相似度、数据稀疏、维度灾难。</p>
+<h2 id="稠密词向量"><a href="#稠密词向量" class="headerlink" title="稠密词向量"></a>稠密词向量</h2><p>然后 NLP 专家们想出了用稠密的向量来表示一个词的意思，这里需要特别提一下的是一句话 </p>
+<blockquote>
+<p>You shall know a word by the company it keeps. </p>
+</blockquote>
+<p>换句话说就是一个词的意思可以由其上下文来表示，这种观点是后续词嵌入模型的根基。</p>
+<p>最初模型走的路子大概可以分为两条：直接使用局部上下文信息的方法、基于共现矩阵的方法。</p>
+<p>前者的代表为 Word2Vec 算法，后者的代表为 GloVe 算法，具体的内容可以参照以上三篇。</p>
+<h2 id="动态方法-ELMo"><a href="#动态方法-ELMo" class="headerlink" title="动态方法 ELMo"></a>动态方法 ELMo</h2><p>今年在 NAACL18 上 <a href="http://allennlp.org/elmo" target="_blank" rel="noopener">ELMo</a> 横空出世了，ELMo 词向量的使用把各种 NLP 任务的 state-of-the-art 刷新了一下。</p>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><p>ELMo 的优势如下：</p>
+<ol>
+<li>能够学习到词汇用法的复杂性，比如语法、语义。</li>
+<li>能够学习不同上下文情况下的词汇多义性。</li>
+</ol>
+<p>与上述的几种方法不同的是，ELMo 所学得的词向量是动态的，在不同的上下文环境中将会得到不同的词向量表达。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>ELMo 的思路也是利用单词的上下文信息来表示中心词，与 Word2Vec 等方法简单的线性模型不同的是，ELMo 所用的为 biLSTM 模型，公式如下：</p>
+<p><img src="/picture/embedding/1531068694891.jpg" alt="1531068694891"></p>
+<p><img src="/picture/embedding/1531068715630.jpg" alt="1531068715630"></p>
+<p>进而最大化其似然函数可得目标函数为：<img src="/picture/embedding/1531068727395.jpg" alt="1531068727395"></p>
+<h3 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h3><p>ELMo 是双向语言模型 biLM 的多层表示的组合，对于某一个词语 $t_k$，一个 L 层的双向语言模型 biLM 能够由 2L+1 个向量表示。</p>
+<p><img src="/picture/embedding/1531068763958.jpg" alt="1531068763958"></p>
+<p>ELMo 将多层的 biLM 的输出 R 整合成一个向量，$ELMo_k = E(R_k;\theta_e)$。不同层的隐藏状态保留了不同层次的单词信息，一种比较简单的方法是直接拿最顶层的隐藏状态作为词向量，而最好的方法则是将 biLM 层所有层的输出加上一个正则化的 softmax 得到的权重向量。</p>
+<p><img src="/picture/embedding/1531068782855.jpg" alt="1531068782855"></p>
+<p>其中 $\gamma$ 是缩放因子，作用类似于 LN。</p>
+<p>论文里头没有给出模型图，因为时间关系，我就随便上网扒了一张 ELMo 的模型图，不过我发现这图是有错误的，姑且放上来凑个数。论文中对模型的描述为</p>
+<blockquote>
+<p>The ﬁnal model uses L = 2 biLSTM layers with 4096 units and 512 dimension projections and a residual connection from the ﬁrst to second layer.</p>
+</blockquote>
+<p>这里需要说明的是，ELMo 的输入为 char-n-gram embedding，来自 CNN + highway network。</p>
+<blockquote>
+<p>The context insensitive type representation uses 2048 character n-gram convolutional ﬁlters followed by two highway layers and a linear projection down to a 512 representation.</p>
+</blockquote>
+<p>作者发现 ELMo 模型如果能够进行适当的 dropout 或者加入 L2 范式的话，可以使得其最终权重保持在各层 biLM 层的权重均值附近。</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>ELMo 的使用方法也是比较有意思的，有以下两种：</p>
+<ol>
+<li>直接将 ELMo 词向量与普通词向量拼接。</li>
+<li>直接将 ELMo 词向量与隐藏变量拼接。</li>
+</ol>
+<h1 id="Sentence-Document-level-Embedding"><a href="#Sentence-Document-level-Embedding" class="headerlink" title="Sentence / Document-level Embedding"></a>Sentence / Document-level Embedding</h1><p>在句子和文档层面上，由于句子和文档与单词不同，出现的次数很少，并没有像单词一样预训练出词向量以供使用的必要，而是在特定的 NLP 任务中动态生成。</p>
+<p>句子和文档层面的 embedding 方法主要分为两类：无监督方法和有监督方法。</p>
+<h2 id="无监督方法"><a href="#无监督方法" class="headerlink" title="无监督方法"></a>无监督方法</h2><p>我在之前的 <a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20Research%20Highlight1%20A%20simple%20but%20tough-to-beat%20baseline%20for%20sentence%20embedding/">CS224n Research Highligh 1</a> 介绍了一种简单有效的无监督方法。时间关系，这里留一个坑 <a href="https://arxiv.org/abs/1506.06726" target="_blank" rel="noopener">Skip-thought vectors</a>，<a href="https://openreview.net/forum?id=rJvJXZb0W" target="_blank" rel="noopener">Quick-thoughts vectors</a>。</p>
+<h2 id="有监督方法"><a href="#有监督方法" class="headerlink" title="有监督方法"></a>有监督方法</h2><p>以往的有监督方法只是通过简单的 RNN、CNN 架构来实现，效果往往比无监督方式差，但是最近提出的 <a href="https://arxiv.org/abs/1705.02364" target="_blank" rel="noopener">InferSent</a> 则取得了非常好的效果，这篇文章是用来做自然语言推导 (NLI) 的，因为之后打算写一篇 NLI 方向的文章，所以这个模型打算放到那边再讲。</p>
+<p>InferSent 的模型结构很简单，如下图所示。其编码器由 BiLSTM + max pooling 构成。</p>
+<p><img src="/picture/embedding/1531071540664.jpg" alt="1531071540664"></p>
+<h1 id="Subword-level-Embedding"><a href="#Subword-level-Embedding" class="headerlink" title="Subword-level Embedding"></a>Subword-level Embedding</h1><p>因为一些单词出现</p>
+<h1 id="Char-level-Embedding"><a href="#Char-level-Embedding" class="headerlink" title="Char-level Embedding"></a>Char-level Embedding</h1><h1 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h1><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://mp.weixin.qq.com/s/df-k5kJcJXhSWbFMu2mtCA" target="_blank" rel="noopener">深度 | 当前最好的词句嵌入技术概览：从无监督学习转向监督、多任务学习</a></li>
+<li><a href="https://arxiv.org/abs/1802.05365" target="_blank" rel="noopener">ELMo</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/38254332" target="_blank" rel="noopener">ELMo 最好用的词向量《Deep Contextualized Word Representations》</a></li>
+<li><a href="https://arxiv.org/abs/1506.06726" target="_blank" rel="noopener">Skip-thought vectors</a></li>
+<li><a href="https://openreview.net/forum?id=rJvJXZb0W" target="_blank" rel="noopener">Quick-thoughts vectors</a></li>
+<li><a href="https://arxiv.org/abs/1705.02364" target="_blank" rel="noopener">InferSent</a></li>
+<li><a href="https://link.zhihu.com/?target=http%3A//120.52.73.80/arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a></li>
+</ol>
 
       
       
@@ -329,7 +394,7 @@
         <p><span>Title:</span><a href="/2018/07/09/A-review-on-word-embedding/">A review on word embedding</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 07 : 09 - 00 : 17</p>
-        <p><span>Update:</span>2018 : 07 : 09 - 00 : 24</p>
+        <p><span>Update:</span>2018 : 07 : 09 - 01 : 41</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/07/09/A-review-on-word-embedding/" title="A review on word embedding">http://hsiaoyetgun.github.io/2018/07/09/A-review-on-word-embedding/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/07/09/A-review-on-word-embedding/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -358,7 +423,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Word-level-Embedding"><span class="toc-number">1.</span> <span class="toc-text">Word-level Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#传统方式"><span class="toc-number">1.1.</span> <span class="toc-text">传统方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#稠密词向量"><span class="toc-number">1.2.</span> <span class="toc-text">稠密词向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态方法-ELMo"><span class="toc-number">1.3.</span> <span class="toc-text">动态方法 ELMo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优势"><span class="toc-number">1.3.1.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-number">1.3.2.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模型细节"><span class="toc-number">1.3.3.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用法"><span class="toc-number">1.3.4.</span> <span class="toc-text">用法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Sentence-Document-level-Embedding"><span class="toc-number">2.</span> <span class="toc-text">Sentence / Document-level Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#无监督方法"><span class="toc-number">2.1.</span> <span class="toc-text">无监督方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有监督方法"><span class="toc-number">2.2.</span> <span class="toc-text">有监督方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Subword-level-Embedding"><span class="toc-number">3.</span> <span class="toc-text">Subword-level Embedding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Char-level-Embedding"><span class="toc-number">4.</span> <span class="toc-text">Char-level Embedding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#展望"><span class="toc-number">5.</span> <span class="toc-text">展望</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">6.</span> <span class="toc-text">参考文献</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 

@@ -3,15 +3,15 @@
   <entry>
     <title><![CDATA[A review on word embedding]]></title>
     <url>%2F2018%2F07%2F09%2FA-review-on-word-embedding%2F</url>
-    <content type="text"><![CDATA[这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。 因为明天得做一个组会的 presentation，就想着把我所了解的 embedding 方法给做一个整体性的介绍，希望能够对后续继续入生物序列词嵌入坑的师弟师妹们有所帮助。]]></content>
+    <content type="text"><![CDATA[这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。 因为明天得做一个组会的 presentation，就想着把我所了解的 embedding 方法给做一个整体性的介绍，希望能够对后续继续入生物序列词嵌入坑的师弟师妹们有所帮助。 文章结构就分成 5 大块，分别为单词级别、句子 / 文档级别、子词级别、字符级别的 embedding 方法，以及最后的总结和展望。 Word-level Embedding单词级别的 embedding 方法之前就有几篇文章写过了，CS224n Lecture 2，CS224n Lecture 3，CS224n Research Highlight 3。 在此再简单提一下单词级别的 embedding 方法的发展。 传统方式最初 NLP 领域是靠一个大词典 (例如WordNet) ，所使用的是上位词和同义词集的信息来表示词的意思。但是这种方法忽视了单词的语境，并且很难维护。 NLP 领域还用 One-hot 编码方式来表示词的意思，但是这种方法的缺点也是显而易见的，即无法度量单词之间的相似度、数据稀疏、维度灾难。 稠密词向量然后 NLP 专家们想出了用稠密的向量来表示一个词的意思，这里需要特别提一下的是一句话 You shall know a word by the company it keeps. 换句话说就是一个词的意思可以由其上下文来表示，这种观点是后续词嵌入模型的根基。 最初模型走的路子大概可以分为两条：直接使用局部上下文信息的方法、基于共现矩阵的方法。 前者的代表为 Word2Vec 算法，后者的代表为 GloVe 算法，具体的内容可以参照以上三篇。 动态方法 ELMo今年在 NAACL18 上 ELMo 横空出世了，ELMo 词向量的使用把各种 NLP 任务的 state-of-the-art 刷新了一下。 优势ELMo 的优势如下： 能够学习到词汇用法的复杂性，比如语法、语义。 能够学习不同上下文情况下的词汇多义性。 与上述的几种方法不同的是，ELMo 所学得的词向量是动态的，在不同的上下文环境中将会得到不同的词向量表达。 定义ELMo 的思路也是利用单词的上下文信息来表示中心词，与 Word2Vec 等方法简单的线性模型不同的是，ELMo 所用的为 biLSTM 模型，公式如下： 进而最大化其似然函数可得目标函数为： 模型细节ELMo 是双向语言模型 biLM 的多层表示的组合，对于某一个词语 $t_k$，一个 L 层的双向语言模型 biLM 能够由 2L+1 个向量表示。 ELMo 将多层的 biLM 的输出 R 整合成一个向量，$ELMo_k = E(R_k;\theta_e)$。不同层的隐藏状态保留了不同层次的单词信息，一种比较简单的方法是直接拿最顶层的隐藏状态作为词向量，而最好的方法则是将 biLM 层所有层的输出加上一个正则化的 softmax 得到的权重向量。 其中 $\gamma$ 是缩放因子，作用类似于 LN。 论文里头没有给出模型图，因为时间关系，我就随便上网扒了一张 ELMo 的模型图，不过我发现这图是有错误的，姑且放上来凑个数。论文中对模型的描述为 The ﬁnal model uses L = 2 biLSTM layers with 4096 units and 512 dimension projections and a residual connection from the ﬁrst to second layer. 这里需要说明的是，ELMo 的输入为 char-n-gram embedding，来自 CNN + highway network。 The context insensitive type representation uses 2048 character n-gram convolutional ﬁlters followed by two highway layers and a linear projection down to a 512 representation. 作者发现 ELMo 模型如果能够进行适当的 dropout 或者加入 L2 范式的话，可以使得其最终权重保持在各层 biLM 层的权重均值附近。 用法ELMo 的使用方法也是比较有意思的，有以下两种： 直接将 ELMo 词向量与普通词向量拼接。 直接将 ELMo 词向量与隐藏变量拼接。 Sentence / Document-level Embedding在句子和文档层面上，由于句子和文档与单词不同，出现的次数很少，并没有像单词一样预训练出词向量以供使用的必要，而是在特定的 NLP 任务中动态生成。 句子和文档层面的 embedding 方法主要分为两类：无监督方法和有监督方法。 无监督方法我在之前的 CS224n Research Highligh 1 介绍了一种简单有效的无监督方法。时间关系，这里留一个坑 Skip-thought vectors，Quick-thoughts vectors。 有监督方法以往的有监督方法只是通过简单的 RNN、CNN 架构来实现，效果往往比无监督方式差，但是最近提出的 InferSent 则取得了非常好的效果，这篇文章是用来做自然语言推导 (NLI) 的，因为之后打算写一篇 NLI 方向的文章，所以这个模型打算放到那边再讲。 InferSent 的模型结构很简单，如下图所示。其编码器由 BiLSTM + max pooling 构成。 Subword-level Embedding因为一些单词出现 Char-level Embedding展望参考文献 深度 | 当前最好的词句嵌入技术概览：从无监督学习转向监督、多任务学习 ELMo ELMo 最好用的词向量《Deep Contextualized Word Representations》 Skip-thought vectors Quick-thoughts vectors InferSent Enriching Word Vectors with Subword Information]]></content>
       <categories>
         <category>Course</category>
       </categories>
       <tags>
-        <tag>Review</tag>
-        <tag>Deep Learning</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
+        <tag>Review</tag>
+        <tag>Deep Learning</tag>
       </tags>
   </entry>
   <entry>
@@ -25,14 +25,14 @@
   <entry>
     <title><![CDATA[CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification]]></title>
     <url>%2F2018%2F05%2F09%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20Research%20Highlight3%20Bag%20of%20Tricks%20for%20Efficient%20Text%20Classification%2F</url>
-    <content type="text"><![CDATA[本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。 本文提出了大名鼎鼎的 fastText 工具，训练速度很快，而且效果可以跟深度神经网络相当。 本文的作者是 Mikolov，即也是 Word2Vec 的作者，这篇文章在模型架构上跟 Word2Vec 很相似，因为之前已经有详细写过 Word2Vec ，在此就简单说一下他们的区别。 模型架构本篇文章的方法部分大概可以分为三块 (虽然按标题看只有两段)：fastText 模型架构、Hierarchical softmax、N-gram features。 fastText 模型架构 fastText 的模型架构部分跟 CBOW 很相似，这里直接说区别： 区别 CBOW fastText 输入 中心词的上下文 多个单词及 n-gram 特征 编码方式 One-hot Embedding 输出 中心词 文档类别 fastText 的核心思想：将整篇文档的词及 n-gram 向量叠加平均得到文档向量，然后用 hierarchical softmax 做分类。 Hierarchical softmax其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。 N-gram features这块其实是一种很常见的方法，我们知道预训练所得的词向量是固定的，这在于文本分类的任务中，将会丢失一些句子 \ 文档环境中的上下文信息。于是思路就很自然地想到了用 N-gram 的方法来捕获一些上下文信息。 这里需要提及的是本文中使用的 n-gram 是词级别的，举个例子： 关于句子 “Bag of Tricks for Efficient Text Classification”，假设 n 取 3，则整个句子就变为 (“Bag of”, “Bag of Tricks”, “of Tricks for”, “Tricks for Efficient”, …)。 结果 直接上图，效果不错。fastText 宣扬了一下奥卡姆剃刀的思想，“杀鸡焉用牛刀”。不过得注意一下，fastText 的输入是 embedding 后的词向量，本身就包含了单词的相似度、语义、语法信息，这是其除了 N-gram 外提升精度的另一个原因。 本文其实并没有太多好讲的地方，不过跟其同阶段提出的 Enriching Word Vectors with Subword Information 很值得学习，这篇文章我在 进行了介绍。 参考文献 Bag of Tricks for Efficient Text Classification CS224n研究热点3 高效文本分类的锦囊妙计 专栏 | fastText原理及实践]]></content>
+    <content type="text"><![CDATA[本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。 本文提出了大名鼎鼎的 fastText 工具，训练速度很快，而且效果可以跟深度神经网络相当。 本文的作者是 Mikolov，即也是 Word2Vec 的作者，这篇文章在模型架构上跟 Word2Vec 很相似，因为之前已经有详细写过 Word2Vec ，在此就简单说一下他们的区别。 模型架构本篇文章的方法部分大概可以分为三块 (虽然按标题看只有两段)：fastText 模型架构、Hierarchical softmax、N-gram features。 fastText 模型架构 fastText 的模型架构部分跟 CBOW 很相似，这里直接说区别： 区别 CBOW fastText 输入 中心词的上下文 多个单词及 n-gram 特征 编码方式 One-hot Embedding 输出 中心词 文档类别 fastText 的核心思想：将整篇文档的词及 n-gram 向量叠加平均得到文档向量，然后用 hierarchical softmax 做分类。 Hierarchical softmax其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。 N-gram features这块其实是一种很常见的方法，我们知道预训练所得的词向量是固定的，这在于文本分类的任务中，将会丢失一些句子 \ 文档环境中的上下文信息。于是思路就很自然地想到了用 N-gram 的方法来捕获一些上下文信息。 这里需要提及的是本文中使用的 n-gram 是词级别的，举个例子： 关于句子 “Bag of Tricks for Efficient Text Classification”，假设 n 取 3，则整个句子就变为 (“Bag of”, “Bag of Tricks”, “of Tricks for”, “Tricks for Efficient”, …)。 结果 直接上图，效果不错。fastText 宣扬了一下奥卡姆剃刀的思想，“杀鸡焉用牛刀”。不过得注意一下，fastText 的输入是 embedding 后的词向量，本身就包含了单词的相似度、语义、语法信息，这是其除了 N-gram 外提升精度的另一个原因。 本文其实并没有太多好讲的地方，不过跟其同阶段提出的 Enriching Word Vectors with Subword Information 很值得学习，这篇文章我在 A review on word embedding 进行了介绍。 参考文献 Bag of Tricks for Efficient Text Classification CS224n研究热点3 高效文本分类的锦囊妙计 专栏 | fastText原理及实践]]></content>
       <categories>
         <category>Course</category>
       </categories>
       <tags>
+        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
@@ -59,9 +59,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
@@ -72,9 +72,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
@@ -85,9 +85,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
