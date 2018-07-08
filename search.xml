@@ -1,108 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 6 Dependency Parsing</title>
-      <link href="/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-6-Dependency-Parsing/"/>
-      <url>/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-6-Dependency-Parsing/</url>
-      <content type="html"><![CDATA[]]></content>
-      
-      
-    </entry>
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</title>
-      <link href="/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-5-Backpropagation-and-Project-Advice/"/>
-      <url>/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-5-Backpropagation-and-Project-Advice/</url>
-      <content type="html"><![CDATA[]]></content>
-      
-      
-    </entry>
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</title>
-      <link href="/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-4-Word-Window-Classification-and-Neural-Network/"/>
-      <url>/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-4-Word-Window-Classification-and-Neural-Network/</url>
-      <content type="html"><![CDATA[]]></content>
-      
-      
-    </entry>
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</title>
-      <link href="/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-3-Advanced-Word-Vector-Representations/"/>
-      <url>/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-3-Advanced-Word-Vector-Representations/</url>
-      <content type="html"><![CDATA[]]></content>
-      
-      
-    </entry>
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</title>
-      <link href="/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/"/>
-      <url>/2018/06/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/</url>
-      <content type="html"><![CDATA[<p>之前的<a href="https://hsiaoyetgun.github.io/2018/05/03/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">第一课</a>里头提及了为什么 NLP 任务比较难，Deep Learning 在 NLP 领域中取得的成果也不如 CV 和 Speech 来得令人惊讶。</p><a id="more"></a><p>对于这个现象，有一种说法是：</p><blockquote><p>语言（词、句子、篇章等）属于人类认知过程中产生的高层认知抽象实体，而语音和图像属于较为底层的原始输入信号，所以后两者更适合做deep learning来学习特征。</p></blockquote><p>这里就涉及了深度学习中输入的问题，也是所有 NLP 任务中都无法绕过的问题，即<strong><code>在计算机里如何表示一个词？</code></strong></p><p>答案显而易见，就是本节课的主题<strong><code>词向量 (Word Vector)</code></strong>。为了方便理解，我补充了一些课程中没有讲到的内容。</p><h1 id="如何表示词的意思"><a href="#如何表示词的意思" class="headerlink" title="如何表示词的意思"></a>如何表示词的意思</h1><p>姑且先看看 Webster 词典中对于 <code>meaning</code> 的定义：</p><blockquote><ol><li>the idea that is represented by a word, phrase, etc.</li><li>the idea that a person wants to express by using words, signs, etc.</li><li>the idea that is expressed in a word of writing, art, etc.</li></ol></blockquote><p>而在语言学中，对于 <code>meaning</code>最常见的解释为：</p><blockquote><p>signifier ⟺ signified (idea or thing) = denotation</p></blockquote><h1 id="在计算机中我们该如何得到可用的词意"><a href="#在计算机中我们该如何得到可用的词意" class="headerlink" title="在计算机中我们该如何得到可用的词意"></a>在计算机中我们该如何得到可用的词意</h1><p>以上的定义由具体到抽象，在 NLP 领域中，主要是针对第一条 <code>word representation</code>进行研究。</p><p>最初 NLP 领域使用的是分类系统来对词的意思进行表示，比如 WordNet。我们可以通过查询单词的<a href="https://en.wikipedia.org/wiki/Hyponymy_and_hypernymy" target="_blank" rel="noopener">上位词</a>以及同义词集来得知这个词的意思。￼</p><p><img src="../picture/lec2/1531029768882.jpg" alt="1531029768882"></p><p>比如上图，我们查询 panda 的上位词，可以得到 procyonid (浣熊科)、carnivore (肉食动物) 等词。查询 good 的同义词，可以得到 full、 honorable、 beneficial、ripe 等词。</p><p>这就是一种离散的表示 (Discrete Representation)，然而这种表示方式存在很多的问题：</p><ol><li>词语有着独特的语境。以上面的同义词为例，在查询 good 的时候我们发现， ripe 和 honorable 都为其同义词，但是我们在描述一件事物为 good 的时候，如果使用其同义词 ripe 或者 honorable 来代替的话，很多时候都会显得很别扭。</li><li>语言的变化日新月异，每天都有大量的新词涌现出来，而使用这种表示方式的话，很难及时更新旧词的含义和对新词进行定义。维护一个类似 WordNet 这样的数据库是需要花费大量的人力的，代价非常高昂。并且，使用人力去维护词库的话，必不可免地会存在人的主观性的影响。</li><li>通过这种方式，我们能够得到的只是词的上下位词的信息，以及其同义词集信息，这种信息都只是一个二分类的结果，导致我们很难对于两个词之间的相似度给出一个准确的度量方式。</li></ol><p>在绝大多数的基于规则和基于统计的 NLP 工作中，都将单词视为一种原子符号来进行处理。</p><p>比较常见的做法就是用 one-hot 向量来表示一个词，这是一种 localist representation。</p><h1 id="从-symbolic-representations-到-distributed-representations"><a href="#从-symbolic-representations-到-distributed-representations" class="headerlink" title="从 symbolic representations 到 distributed representations"></a>从 symbolic representations 到 distributed representations</h1><p>One-hot 看着是一种简单粗暴又可行的表示方法，然而在实际使用中，像 one-hot 这种离散的 symbolic representations 是存在一些问题的：</p><ol><li>One-hot 向量是正交的，这种表示方法是无法得到不同单词间的相似度的。<img src="../picture/lec2/1531032299799.jpg" alt="1531032299799"></li><li>One-hot 向量存在着数据稀疏的问题。</li><li>因其表示的方式的问题，随着所用词表的扩增，One-hot 向量还会出现维度灾难。(Dimensionality: 20K (speech) – 50K (PTB) – 500K (big vocab) – 13M (Google 1T) </li></ol><p>因而，我们需要去探讨一种新的词向量的编码方式。</p><blockquote><p>You shall know a word by the company it keeps.        – J. R. Firth 1957: 11 </p></blockquote><p>这里就提出了一种思路，即我们可以<strong>通过一个单词的上下文信息中得到这个单词的意思。</strong></p><p><img src="../picture/lec2/1531032696955.jpg" alt="1531032696955"></p><p>这是现代统计自然语言处理最成功的思想之一，事实上这也是 Word2Vec 算法的根基。</p><p>在讲述 Word2Vec 算法之前，我们先讲一下较为原始的方法。首先我们需要通过大量的语料文本来构建一个共现矩阵 (Co-occurrence Matrix)。矩阵的构建方式有两种：document-based 和 windows based。</p><p>前者一般用于主题模型，由于统计的是全文的信息，所以这种矩阵很难描述单词的语法信息。后者需要指定一个统计的窗口大小，只在窗口的范围内统计单词的共现次数，这种方法可以保留一定的语法信息。</p><p>举个例子，假设语料由三句话组成：</p><ol><li>I like deep learning.</li><li>I like NLP.</li><li>I enjoy flying.</li></ol><p>那么如果我们把其窗口的大小设为1，并使用对称窗口的方法，则其共现矩阵如下：</p><table><thead><tr><th>counts</th><th>I</th><th>like</th><th>enjoy</th><th>deep</th><th>learning</th><th>NLP</th><th>flying</th><th>.</th></tr></thead><tbody><tr><td>I</td><td>0</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>like</td><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr><tr><td>enjoy</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>deep</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>learning</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><td>NLP</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><td>flying</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><td>.</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr></tbody></table><p>这样的话不同的词向量之间就不再是正交的了，可以一定程度上用来计算单词间的相似度。然而，这种方法还是没法摆脱数据稀疏和维度灾难的问题。</p><p>于是语言学家们就很常识性地想到了将共现矩阵进行降维，进而得到单词的稠密表示 (dense representation)。一个很常见的方法就是使用奇异值分解 (SVD)，然而 SVD 是一个计算复杂度高昂 (O($mn^2$)) 的算法，无法在实际环境中使用。因而就需要有其它的方式来对共现矩阵进行降维，这就轮到本课的主题 Word2Vec 出马了。</p><h1 id="Word2Vec"><a href="#Word2Vec" class="headerlink" title="Word2Vec"></a>Word2Vec</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>首先我们需要先定义一下预测单词上下文的模型及损失函数：</p><p>$p(context | w_t) = …$</p><p>$J = 1 - p(w_{-t} | w_t)$</p><p>这里的 $w_{-t}$ 表示除了 t 之外的上下文。</p><h2 id="Word2Vec-的主要思想"><a href="#Word2Vec-的主要思想" class="headerlink" title="Word2Vec 的主要思想"></a>Word2Vec 的主要思想</h2><p>Word2Vec 有两种计算模型，两种模型的思路是截然相反的：</p><ol><li>Skip-grams (SG) : 通过中心词来预测其上下文信息</li><li>Continuous Bag of Words (CBOW) : 通过上下文信息来预测中心词</li></ol><p>先上一张课件中 SG 模型的预测图方便大家理解，这里我们就是通过 banking 这个中心词来对其上下文信息进行预测，学习的目的就是要最大化上下文中各词的条件概率。</p><p><img src="../picture/lec2/cs224n-2017-lecture2.jpg" alt="cs224n-2017-lecture2"></p><p>这里的上下文的条件概率 $p(w_{-t}|w_t)$ 是由 softmax 得到的：<img src="../picture/lec2/006Fmjmcly1fgcnjx5gssj30tu09u47t.jpg" alt="006Fmjmcly1fgcnjx5gssj30tu09u47t"></p><p>然后，目标函数定义为所有位置的预测结果的乘积：<img src="../picture/lec2/006Fmjmcly1fgcn8dsnw5j318q08m41y.jpg" alt="006Fmjmcly1fgcn8dsnw5j318q08m41y"></p><p>为了方便计算，加个负对数得到最终的损失函数，这样问题就转化为最小化损失函数了：<img src="../picture/lec2/006Fmjmcly1fgcn9ndo8dj316s092jwj.jpg" alt="006Fmjmcly1fgcn9ndo8dj316s092jwj"></p><p>接下来就是上几张大家不知道见过多少遍的经典模型图了，以下分别为 CBOW 模型和 SG 模型：<img src="../picture/lec2/6cbb8645gw1f5to6e5d9lj216c0qkwhk.jpg" alt="6cbb8645gw1f5to6e5d9lj216c0qkwhk"></p><h2 id="CBOW-模型流程"><a href="#CBOW-模型流程" class="headerlink" title="CBOW 模型流程"></a>CBOW 模型流程</h2><p>这里参考知乎上<a href="https://www.zhihu.com/question/44832436/answer/266068967" target="_blank" rel="noopener">crystlajj的回答</a>，并偷懒盗用了不少图：</p><blockquote><ol><li>输入层：上下文单词的 onehot. {假设单词向量空间dim为V，上下文单词个数为C}</li><li>输出层的 label ：中心词的 onehot。</li><li>权重矩阵 W 和 W’：维度分别为 {V*N} 和 {N*V}，并将权重矩阵初始化。<strong>要注意最后得到的输入端的 W 即为单词的词向量表示，词向量的维度为N（每一列表示一个词的词向量）。</strong></li><li>所有上下文单词的 onehot 分别乘以共享的输入权重矩阵 W。</li><li>将每个单词的 onthot 与 W 相乘所得的 {1*N} 维向量相加求平均作为隐层向量。并将得到乘以输出权重矩阵W’，得到一个 {1*V} 维的向量。</li><li>将得到的 {1*V} 维向量经过 softmax 函数处理得到 V-dim 概率分布，概率最大的index所指示的单词为预测出的中心词（target word）。</li><li>与true label的onehot做比较，损失函数越小越好。</li></ol></blockquote><p><img src="../picture/lec2/v2-0f439e1bb44c71c8e694cc65cb509263_hd.jpg" alt="v2-0f439e1bb44c71c8e694cc65cb509263_hd"></p><p>再偷几张图举个例子，让大家跟着走一遍CBOW模型的流程：</p><p><img src="../picture/lec2/v2-3e75211b3b675f17a232f29fae0982bc_hd.jpg" alt="v2-3e75211b3b675f17a232f29fae0982bc_hd"></p><p><img src="../picture/lec2/v2-abd3c7d6bc76c01266e8ddd32acfe31a_hd.jpg" alt="v2-abd3c7d6bc76c01266e8ddd32acfe31a_hd"></p><p><img src="../picture/lec2/v2-66655880a87789eaba5dd6f5c5033e94_hd.jpg" alt="v2-66655880a87789eaba5dd6f5c5033e94_hd"></p><p><img src="../picture/lec2/v2-5325f4a5d1fbacefd93ccb138b706a69_hd.jpg" alt="v2-5325f4a5d1fbacefd93ccb138b706a69_hd"></p><p><img src="../picture/lec2/v2-1713450fa2a0f37c8cbcce4ffef04baa_hd.jpg" alt="v2-1713450fa2a0f37c8cbcce4ffef04baa_hd"></p><p>以上就是CBOW 模型的流程，这里再附上一张课件中给出的 SG 模型的流程，可以对比一下。</p><p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec2/sg.jpg" alt="sg"></p><p>以上就是 Word2Vec 的两种模型的算法流程。其实这种 distributed representation 的思想其实很早就有了，而真正火起来是在 13 年 Mikolov 大神的两篇文章之后。</p><p>因为这个方法实际上存在着一些问题。比如训练词向量模型时我们输入端和输出端用到的依旧是 onehot 编码，维度灾难问题仍然存在。如果语料足够大的话，onehot 编码的长度就很大，每轮学习需要更新大量的参数，将会导致训练速度慢到难以接受的地步，如果语料不够充足的话，则很难学到高质量的词向量表达。</p><h2 id="Word2Vec-优化"><a href="#Word2Vec-优化" class="headerlink" title="Word2Vec 优化"></a>Word2Vec 优化</h2><p>因而 Mikolov 大神就提出了两种高效的训练方法：</p><ol><li>Hierarchical softmax</li><li>Negative sampling</li></ol><p>这部分是课程里头没有涉及的内容，并且公式太多太繁杂，在这里只做一个大概的介绍（实在是懒得写了 doge），具体的推导和源码解析可以参考 <a href="https://blog.csdn.net/mytestmy/article/details/26969149" target="_blank" rel="noopener">falao_beiliu</a> 和 <a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener">Hankcs</a> 的文章。</p><h3 id="Hierarchical-softmax"><a href="#Hierarchical-softmax" class="headerlink" title="Hierarchical softmax"></a>Hierarchical softmax</h3><p>以 CBOW 为例，HS 的方法就是在输出层使用一颗 huffman 树来提升训练效率，模型图如下所示：</p><p><img src="../picture/lec2/6cbb8645gw1f5wmy4jdnwj214w12a42v.jpg" alt="6cbb8645gw1f5wmy4jdnwj214w12a42v"></p><p>Huffman 树在这里就不科普了，HS 方法中的 huffman 树的每个叶子结点表示一个单词，可以被 01 唯一地编码。每个非叶子结点相当于一个神经元。</p><p>由于 huffman 树的特点可以使得编码长度最短，这里我们将单词以词频来建立huffman 树，就可以使得常用词的路径较短，非常用词的路径较长。HS 方法就可以将原本查找目标词的多分类问题转化为多个二分类问题，在每一个非叶子结点进行 softmax 运算，根据结果选择向左下走或者向右下走，进而直到走到叶子结点，就可以得知预测的目标词是什么。通过这种方法，我们每次更新的只是走过的路径上的参数，而非全部的参数，可以使得效率大幅度提高。</p><p>SG 模型的 CBOW 方法同理，结构示意图如下所示：</p><p><img src="../picture/lec2/6cbb8645gw1f5wqzg68u0j214a120wij.jpg" alt="6cbb8645gw1f5wqzg68u0j214a120wij"></p><h3 id="Negative-Sampling"><a href="#Negative-Sampling" class="headerlink" title="Negative Sampling"></a>Negative Sampling</h3><p>回想一下之前的算法，我们输出的 label 都是一个词的 one-hot 编码，维度为整个词库的大小，这里的目标词的 index 即为分类任务的正例，其他的词都为负例，也就是说在一个单词数为 N 的词库中，我们的分类任务的正例为 1，负例为 N - 1。正常 N 值会远远大于 1，但是每次更新中，所有的负例的参数权重也会跟着一块更新，在 Mikolov 看来这其实是一个很没有效率的事情，我们大可以把负例减少来提高效率并且对于最后的结果不会产生大的影响。</p><p>因此就提出了 NS 方法，顾名思义，NS 即随机挑选出一些负例。采样的算法思想都应该保证频次越高的样本越容易被采集到，因此，NS 算法基本的思路是对于长度为1的线段，根据词语的词频将其公平地分配给每个词语：</p><p>$len(w) = \frac{cnt(w)^N}{\sum_{u\epsilon D}cnt(u)^N}$</p><p>所以就可以根据词频来分配线段中每个词所占有的长度了。这里 Word2Vec 为了提高效率，用了点小 trick，即将原本线段标上 M 个刻度，这样就不需要浮点数的操作，而是直接使用 0-M 间的整数，经过查表就可以得知该取哪个单词了。</p><p>注意这个 len(w) 的计算有包含一个幂计算 (N)，这实际上是一种平滑的策略，可以缩小高频词的值，增大低频词的值。</p><hr><p>以上大概就是本节课的内容和扩展，实际上课程里头还包含了一些数学知识的复习和 sgd 算法的推导。</p><h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol><li><a href="https://www.youtube.com/watch?v=ERibwqs9p38&amp;t=0s&amp;list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6&amp;index=3" target="_blank" rel="noopener">cs224n lecture2</a></li><li><a href="http://web.stanford.edu/class/cs224n/lectures/lecture2.pdf" target="_blank" rel="noopener">cs224n lecture2 slides</a></li><li><a href="http://www.hankcs.com/nlp/word-vector-representations-word2vec.html" target="_blank" rel="noopener">cs224n笔记2 词的向量表示</a></li><li><a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener">word2vec原理推导与代码分析</a></li><li><a href="https://blog.csdn.net/mytestmy/article/details/26969149" target="_blank" rel="noopener">深度学习word2vec笔记之算法篇</a></li></ol>]]></content>
-      
-      
-        <tags>
-            
-            <tag> NLP </tag>
-            
-            <tag> cs224n </tag>
-            
-            <tag> Word Embedding </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</title>
-      <link href="/2018/05/03/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-1-Introduction-to-NLP-and-Deep-Learning/"/>
-      <url>/2018/05/03/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-1-Introduction-to-NLP-and-Deep-Learning/</url>
-      <content type="html"><![CDATA[<p>test</p>]]></content>
-      
+<search>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 6 Dependency Parsing]]></title>
+    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-6-Dependency-Parsing%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 5 Backpropagation and Project Advice]]></title>
+    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-5-Backpropagation-and-Project-Advice%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network]]></title>
+    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-4-Word-Window-Classification-and-Neural-Network%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 3 Advanced Word Vector Representations]]></title>
+    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-3-Advanced-Word-Vector-Representations%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 2 Word Vector Representations word2vec]]></title>
+    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec%2F</url>
+    <content type="text"><![CDATA[之前的第一课里头提及了为什么 NLP 任务比较难，Deep Learning 在 NLP 领域中取得的成果也不如 CV 和 Speech 来得令人惊讶。 对于这个现象，有一种说法是： 语言（词、句子、篇章等）属于人类认知过程中产生的高层认知抽象实体，而语音和图像属于较为底层的原始输入信号，所以后两者更适合做deep learning来学习特征。 这里就涉及了深度学习中输入的问题，也是所有 NLP 任务中都无法绕过的问题，即在计算机里如何表示一个词？ 答案显而易见，就是本节课的主题词向量 (Word Vector)。为了方便理解，我补充了一些课程中没有讲到的内容。 如何表示词的意思姑且先看看 Webster 词典中对于 meaning 的定义： the idea that is represented by a word, phrase, etc. the idea that a person wants to express by using words, signs, etc. the idea that is expressed in a word of writing, art, etc. 而在语言学中，对于 meaning最常见的解释为： signifier ⟺ signified (idea or thing) = denotation 在计算机中我们该如何得到可用的词意以上的定义由具体到抽象，在 NLP 领域中，主要是针对第一条 word representation进行研究。 最初 NLP 领域使用的是分类系统来对词的意思进行表示，比如 WordNet。我们可以通过查询单词的上位词以及同义词集来得知这个词的意思。￼ 比如上图，我们查询 panda 的上位词，可以得到 procyonid (浣熊科)、carnivore (肉食动物) 等词。查询 good 的同义词，可以得到 full、 honorable、 beneficial、ripe 等词。 这就是一种离散的表示 (Discrete Representation)，然而这种表示方式存在很多的问题： 词语有着独特的语境。以上面的同义词为例，在查询 good 的时候我们发现， ripe 和 honorable 都为其同义词，但是我们在描述一件事物为 good 的时候，如果使用其同义词 ripe 或者 honorable 来代替的话，很多时候都会显得很别扭。 语言的变化日新月异，每天都有大量的新词涌现出来，而使用这种表示方式的话，很难及时更新旧词的含义和对新词进行定义。维护一个类似 WordNet 这样的数据库是需要花费大量的人力的，代价非常高昂。并且，使用人力去维护词库的话，必不可免地会存在人的主观性的影响。 通过这种方式，我们能够得到的只是词的上下位词的信息，以及其同义词集信息，这种信息都只是一个二分类的结果，导致我们很难对于两个词之间的相似度给出一个准确的度量方式。 在绝大多数的基于规则和基于统计的 NLP 工作中，都将单词视为一种原子符号来进行处理。 比较常见的做法就是用 one-hot 向量来表示一个词，这是一种 localist representation。 从 symbolic representations 到 distributed representationsOne-hot 看着是一种简单粗暴又可行的表示方法，然而在实际使用中，像 one-hot 这种离散的 symbolic representations 是存在一些问题的： One-hot 向量是正交的，这种表示方法是无法得到不同单词间的相似度的。 One-hot 向量存在着数据稀疏的问题。 因其表示的方式的问题，随着所用词表的扩增，One-hot 向量还会出现维度灾难。(Dimensionality: 20K (speech) – 50K (PTB) – 500K (big vocab) – 13M (Google 1T) 因而，我们需要去探讨一种新的词向量的编码方式。 You shall know a word by the company it keeps. – J. R. Firth 1957: 11 这里就提出了一种思路，即我们可以通过一个单词的上下文信息中得到这个单词的意思。 这是现代统计自然语言处理最成功的思想之一，事实上这也是 Word2Vec 算法的根基。 在讲述 Word2Vec 算法之前，我们先讲一下较为原始的方法。首先我们需要通过大量的语料文本来构建一个共现矩阵 (Co-occurrence Matrix)。矩阵的构建方式有两种：document-based 和 windows based。 前者一般用于主题模型，由于统计的是全文的信息，所以这种矩阵很难描述单词的语法信息。后者需要指定一个统计的窗口大小，只在窗口的范围内统计单词的共现次数，这种方法可以保留一定的语法信息。 举个例子，假设语料由三句话组成： I like deep learning. I like NLP. I enjoy flying. 那么如果我们把其窗口的大小设为1，并使用对称窗口的方法，则其共现矩阵如下： counts I like enjoy deep learning NLP flying . I 0 2 1 0 0 0 0 0 like 2 0 0 1 0 1 0 0 enjoy 1 0 0 0 0 0 1 0 deep 0 1 0 0 1 0 0 0 learning 0 0 0 1 0 0 0 1 NLP 0 1 0 0 0 0 0 1 flying 0 0 1 0 0 0 0 1 . 0 0 0 0 1 1 1 0 这样的话不同的词向量之间就不再是正交的了，可以一定程度上用来计算单词间的相似度。然而，这种方法还是没法摆脱数据稀疏和维度灾难的问题。 于是语言学家们就很常识性地想到了将共现矩阵进行降维，进而得到单词的稠密表示 (dense representation)。一个很常见的方法就是使用奇异值分解 (SVD)，然而 SVD 是一个计算复杂度高昂 (O($mn^2$)) 的算法，无法在实际环境中使用。因而就需要有其它的方式来对共现矩阵进行降维，这就轮到本课的主题 Word2Vec 出马了。 Word2Vec定义首先我们需要先定义一下预测单词上下文的模型及损失函数： $p(context | w_t) = …$ $J = 1 - p(w_{-t} | w_t)$ 这里的 $w_{-t}$ 表示除了 t 之外的上下文。 Word2Vec 的主要思想Word2Vec 有两种计算模型，两种模型的思路是截然相反的： Skip-grams (SG) : 通过中心词来预测其上下文信息 Continuous Bag of Words (CBOW) : 通过上下文信息来预测中心词 先上一张课件中 SG 模型的预测图方便大家理解，这里我们就是通过 banking 这个中心词来对其上下文信息进行预测，学习的目的就是要最大化上下文中各词的条件概率。 这里的上下文的条件概率 $p(w_{-t}|w_t)$ 是由 softmax 得到的： 然后，目标函数定义为所有位置的预测结果的乘积： 为了方便计算，加个负对数得到最终的损失函数，这样问题就转化为最小化损失函数了： 接下来就是上几张大家不知道见过多少遍的经典模型图了，以下分别为 CBOW 模型和 SG 模型： CBOW 模型流程这里参考知乎上crystlajj的回答，并偷懒盗用了不少图： 输入层：上下文单词的 onehot. {假设单词向量空间dim为V，上下文单词个数为C} 输出层的 label ：中心词的 onehot。 权重矩阵 W 和 W’：维度分别为 {V*N} 和 {N*V}，并将权重矩阵初始化。要注意最后得到的输入端的 W 即为单词的词向量表示，词向量的维度为N（每一列表示一个词的词向量）。 所有上下文单词的 onehot 分别乘以共享的输入权重矩阵 W。 将每个单词的 onthot 与 W 相乘所得的 {1*N} 维向量相加求平均作为隐层向量。并将得到乘以输出权重矩阵W’，得到一个 {1*V} 维的向量。 将得到的 {1*V} 维向量经过 softmax 函数处理得到 V-dim 概率分布，概率最大的index所指示的单词为预测出的中心词（target word）。 与true label的onehot做比较，损失函数越小越好。 再偷几张图举个例子，让大家跟着走一遍CBOW模型的流程： 以上就是CBOW 模型的流程，这里再附上一张课件中给出的 SG 模型的流程，可以对比一下。 以上就是 Word2Vec 的两种模型的算法流程。其实这种 distributed representation 的思想其实很早就有了，而真正火起来是在 13 年 Mikolov 大神的两篇文章之后。 因为这个方法实际上存在着一些问题。比如训练词向量模型时我们输入端和输出端用到的依旧是 onehot 编码，维度灾难问题仍然存在。如果语料足够大的话，onehot 编码的长度就很大，每轮学习需要更新大量的参数，将会导致训练速度慢到难以接受的地步，如果语料不够充足的话，则很难学到高质量的词向量表达。 Word2Vec 优化因而 Mikolov 大神就提出了两种高效的训练方法： Hierarchical softmax Negative sampling 这部分是课程里头没有涉及的内容，并且公式太多太繁杂，在这里只做一个大概的介绍（实在是懒得写了 doge），具体的推导和源码解析可以参考 falao_beiliu 和 Hankcs 的文章。 Hierarchical softmax以 CBOW 为例，HS 的方法就是在输出层使用一颗 huffman 树来提升训练效率，模型图如下所示： Huffman 树在这里就不科普了，HS 方法中的 huffman 树的每个叶子结点表示一个单词，可以被 01 唯一地编码。每个非叶子结点相当于一个神经元。 由于 huffman 树的特点可以使得编码长度最短，这里我们将单词以词频来建立huffman 树，就可以使得常用词的路径较短，非常用词的路径较长。HS 方法就可以将原本查找目标词的多分类问题转化为多个二分类问题，在每一个非叶子结点进行 softmax 运算，根据结果选择向左下走或者向右下走，进而直到走到叶子结点，就可以得知预测的目标词是什么。通过这种方法，我们每次更新的只是走过的路径上的参数，而非全部的参数，可以使得效率大幅度提高。 SG 模型的 CBOW 方法同理，结构示意图如下所示： Negative Sampling回想一下之前的算法，我们输出的 label 都是一个词的 one-hot 编码，维度为整个词库的大小，这里的目标词的 index 即为分类任务的正例，其他的词都为负例，也就是说在一个单词数为 N 的词库中，我们的分类任务的正例为 1，负例为 N - 1。正常 N 值会远远大于 1，但是每次更新中，所有的负例的参数权重也会跟着一块更新，在 Mikolov 看来这其实是一个很没有效率的事情，我们大可以把负例减少来提高效率并且对于最后的结果不会产生大的影响。 因此就提出了 NS 方法，顾名思义，NS 即随机挑选出一些负例。采样的算法思想都应该保证频次越高的样本越容易被采集到，因此，NS 算法基本的思路是对于长度为1的线段，根据词语的词频将其公平地分配给每个词语： $len(w) = \frac{cnt(w)^N}{\sum_{u\epsilon D}cnt(u)^N}$ 所以就可以根据词频来分配线段中每个词所占有的长度了。这里 Word2Vec 为了提高效率，用了点小 trick，即将原本线段标上 M 个刻度，这样就不需要浮点数的操作，而是直接使用 0-M 间的整数，经过查表就可以得知该取哪个单词了。 注意这个 len(w) 的计算有包含一个幂计算 (N)，这实际上是一种平滑的策略，可以缩小高频词的值，增大低频词的值。 以上大概就是本节课的内容和扩展，实际上课程里头还包含了一些数学知识的复习和 sgd 算法的推导。 引用 cs224n lecture2 cs224n lecture2 slides cs224n笔记2 词的向量表示 word2vec原理推导与代码分析 深度学习word2vec笔记之算法篇]]></content>
+      <tags>
+        <tag>NLP</tag>
+        <tag>cs224n</tag>
+        <tag>Word Embedding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning]]></title>
+    <url>%2F2018%2F05%2F03%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-1-Introduction-to-NLP-and-Deep-Learning%2F</url>
+    <content type="text"><![CDATA[test]]></content>
       <categories>
-          
-          <category> Course </category>
-          
+        <category>Course</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> CS224n </tag>
-            
-            <tag> NLP </tag>
-            
-            <tag> Deep Learning </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>Intro</title>
-      <link href="/2018/02/01/Intro/"/>
-      <url>/2018/02/01/Intro/</url>
-      <content type="html"><![CDATA[<center><font size="6"><strong>-写作动机-</strong></font></center><hr><p>一直有写博客的想法，却一直都只是想想而已。</p><a id="more"></a><p>总觉得维护博客是一件很花费时间的事情，也担心自己水平不够，没什么好写的。</p><p>今天总算跨出了这一步，花了点时间配置了一下个人博客，也想好了该去写一些什么东西，剩下的就是希望自己能够一直坚持写下去。</p><blockquote><p>阐述一下自己写这个博客的动机吧：</p><ol><li>克服惰性</li><li>巩固学习</li><li>帮助自己和他人</li><li>提高写作、表达水平</li><li>记录经历</li></ol></blockquote><p>希望几年后回首时，能够感谢自己现在迈出的这一步。</p>]]></content>
-      
+      <tags>
+        <tag>CS224n</tag>
+        <tag>NLP</tag>
+        <tag>Deep Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Intro]]></title>
+    <url>%2F2018%2F02%2F01%2FIntro%2F</url>
+    <content type="text"><![CDATA[-写作动机- 一直有写博客的想法，却一直都只是想想而已。 总觉得维护博客是一件很花费时间的事情，也担心自己水平不够，没什么好写的。 今天总算跨出了这一步，花了点时间配置了一下个人博客，也想好了该去写一些什么东西，剩下的就是希望自己能够一直坚持写下去。 阐述一下自己写这个博客的动机吧： 克服惰性 巩固学习 帮助自己和他人 提高写作、表达水平 记录经历 希望几年后回首时，能够感谢自己现在迈出的这一步。]]></content>
       <categories>
-          
-          <category> By-Talk </category>
-          
+        <category>By-Talk</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> By-Talk </tag>
-            
-        </tags>
-      
-    </entry>
-    
-  
-  
+      <tags>
+        <tag>By-Talk</tag>
+      </tags>
+  </entry>
 </search>
