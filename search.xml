@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[A review on word embedding]]></title>
+    <url>%2F2018%2F07%2F09%2FA-review-on-word-embedding%2F</url>
+    <content type="text"><![CDATA[这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。 因为明天得做一个组会的 presentation，就想着把我所了解的 embedding 方法给做一个整体性的介绍，希望能够对后续继续入生物序列词嵌入坑的师弟师妹们有所帮助。]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
+      <tags>
+        <tag>Review</tag>
+        <tag>Deep Learning</tag>
+        <tag>NLP</tag>
+        <tag>Word Embedding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[CS224n学习笔记 Lecture 6 Dependency Parsing]]></title>
     <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-6-Dependency-Parsing%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[整理中，待上传…]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification]]></title>
+    <url>%2F2018%2F05%2F09%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20Research%20Highlight3%20Bag%20of%20Tricks%20for%20Efficient%20Text%20Classification%2F</url>
+    <content type="text"><![CDATA[本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。 本文提出了大名鼎鼎的 fastText 工具，训练速度很快，而且效果可以跟深度神经网络相当。 本文的作者是 Mikolov，即也是 Word2Vec 的作者，这篇文章在模型架构上跟 Word2Vec 很相似，因为之前已经有详细写过 Word2Vec ，在此就简单说一下他们的区别。 模型架构本篇文章的方法部分大概可以分为三块 (虽然按标题看只有两段)：fastText 模型架构、Hierarchical softmax、N-gram features。 fastText 模型架构 fastText 的模型架构部分跟 CBOW 很相似，这里直接说区别： 区别 CBOW fastText 输入 中心词的上下文 多个单词及 n-gram 特征 编码方式 One-hot Embedding 输出 中心词 文档类别 fastText 的核心思想：将整篇文档的词及 n-gram 向量叠加平均得到文档向量，然后用 hierarchical softmax 做分类。 Hierarchical softmax其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。 N-gram features这块其实是一种很常见的方法，我们知道预训练所得的词向量是固定的，这在于文本分类的任务中，将会丢失一些句子 \ 文档环境中的上下文信息。于是思路就很自然地想到了用 N-gram 的方法来捕获一些上下文信息。 这里需要提及的是本文中使用的 n-gram 是词级别的，举个例子： 关于句子 “Bag of Tricks for Efficient Text Classification”，假设 n 取 3，则整个句子就变为 (“Bag of”, “Bag of Tricks”, “of Tricks for”, “Tricks for Efficient”, …)。 结果 直接上图，效果不错。fastText 宣扬了一下奥卡姆剃刀的思想，“杀鸡焉用牛刀”。不过得注意一下，fastText 的输入是 embedding 后的词向量，本身就包含了单词的相似度、语义、语法信息，这是其除了 N-gram 外提升精度的另一个原因。 本文其实并没有太多好讲的地方，不过跟其同阶段提出的 Enriching Word Vectors with Subword Information 很值得学习，这篇文章我在 进行了介绍。 参考文献 Bag of Tricks for Efficient Text Classification CS224n研究热点3 高效文本分类的锦囊妙计 专栏 | fastText原理及实践]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Word Embedding</tag>
+        <tag>cs224n</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[CS224n学习笔记 Lecture 5 Backpropagation and Project Advice]]></title>
-    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-5-Backpropagation-and-Project-Advice%2F</url>
-    <content type="text"></content>
+    <url>%2F2018%2F05%2F09%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-5-Backpropagation-and-Project-Advice%2F</url>
+    <content type="text"><![CDATA[整理中，待上传…]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network]]></title>
-    <url>%2F2018%2F06%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-4-Word-Window-Classification-and-Neural-Network%2F</url>
-    <content type="text"></content>
+    <url>%2F2018%2F05%2F08%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-4-Word-Window-Classification-and-Neural-Network%2F</url>
+    <content type="text"><![CDATA[整理中，待上传…]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[CS224n学习笔记 Lecture 3 Advanced Word Vector Representations]]></title>
@@ -23,9 +59,22 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
+        <tag>cs224n</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding]]></title>
+    <url>%2F2018%2F05%2F06%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%20Research%20Highlight1%20A%20simple%20but%20tough-to-beat%20baseline%20for%20sentence%20embedding%2F</url>
+    <content type="text"><![CDATA[cs224n 这门课很有意思的一个地方在于教授会让 TA 在中场休息时候花个 5 分钟左右的时间来讲一下当前的研究亮点。我觉得这点很可取，这么做有助于学生开拓思路、紧跟当下热点，可惜这种做法在国内的大学中是很少能够看见。 这个小讲座讲的是发表在 ICLR17 的一篇文章，A SIMPLE BUT TOUGH-TO-BEAT BASELINE FOR SEN- TENCE EMBEDDINGS。 动机本文是用无监督方法做句子级别的 embedding，用的是一个十分简单但却又很有效的传统方法，这在神经网络泛滥的年代算是一股清流了。 作者做 word2sen 的动机是想要得到句子的词向量，这样就可以进行句子间的相似度计算了。除此之外，还能在这些句向量的基础上构建分类器来做情感分析的研究。 已有方法稍微介绍一下目前已有的方法。 基于无监督的线性变换的方法。例如简单的对词向量求平均，或者对词向量进行加权平均 (例如以 TF-IDF 为权值)。 基于有监督的神经网络的方法。例如各种满天乱飞的 CNN, RNN (Recurrent), RNN (Recursive) 模型得到的句向量。 本文方法作者将该算法称为 WR，W 表示 Weighted，根据预设的超参数和词频给每个词向量赋予权重。R 表示 Removal，使用PCA移除句向量中的无关部分。 算法流程分为两步： W 步：对于句子中的每个词向量乘以一个独特的权值，即 $\frac{a}{a+p(w)}$，其中 $a$ 为一个常数 (论文中建议 $a$ 的范围： [$1e−4,1e−3$] )， $p(w)$ 为该词的频率。 R 步：计算语料库所有句向量构成的矩阵的第一个主成分 $u$，让每个句向量减去它在 $u$ 上的投影 (类似 PCA)。其中，一个向量 $v$ 在另一个向量 $u$ 上的投影定义为：$Proj_uv = \frac{uu^Tv}{||u||^2}$。 概率论解释 其原理是，给定上下文向量，一个词的出现概率由两项决定：作为平滑项的词频，以及上下文。其中第二项的意思是，有一个平滑变动的上下文随机地发射单词。 这篇文章我没有看过原文，这里其实并不是完全理解，等之后再来填坑。 结果 取得了一个不错的结果，但是比 LSTM 效果好这种说法不太妥当，这得取决于实际的任务。 不过无论如何，这种方法运行耗时短，结果又不错，可以当做一个很好的 baseline。 参考文献 A SIMPLE BUT TOUGH-TO-BEAT BASELINE FOR SEN- TENCE EMBEDDINGS CS224n研究热点1 一个简单但很难超越的Sentence Embedding基线方法]]></content>
+      <categories>
+        <category>Course</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Word Embedding</tag>
+        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
@@ -36,22 +85,21 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>cs224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
+        <tag>cs224n</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning]]></title>
     <url>%2F2018%2F05%2F03%2FCS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-1-Introduction-to-NLP-and-Deep-Learning%2F</url>
-    <content type="text"><![CDATA[test]]></content>
+    <content type="text"><![CDATA[整理中，待上传…]]></content>
       <categories>
         <category>Course</category>
       </categories>
       <tags>
         <tag>NLP</tag>
         <tag>CS224n</tag>
-        <tag>Deep Learning</tag>
       </tags>
   </entry>
   <entry>

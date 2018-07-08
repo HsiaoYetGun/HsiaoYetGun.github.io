@@ -3,20 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>404 | 如果没有人看着我</title>
+  <title>CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273title: 404 Not Found：该页无法显示comments: falsepermalink: /404fancyb">
-<meta name="keywords" content="人工智障，NLP，Bioinformatics">
-<meta property="og:type" content="website">
-<meta property="og:title" content="404">
-<meta property="og:url" content="http://hsiaoyetgun.github.io/404/index.html">
+  <meta name="description" content="本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。">
+<meta name="keywords" content="NLP,Word Embedding,cs224n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">
+<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273title: 404 Not Found：该页无法显示comments: falsepermalink: /404fancyb">
+<meta property="og:description" content="本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-04T07:25:50.117Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg">
+<meta property="og:updated_time" content="2018-07-08T16:16:23.199Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="404">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273title: 404 Not Found：该页无法显示comments: falsepermalink: /404fancyb">
+<meta name="twitter:title" content="CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">
+<meta name="twitter:description" content="本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -42,7 +46,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -226,11 +230,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/404/index.html" class="article-date">
-      <time datetime="2018-06-03T17:21:10.000Z" itemprop="datePublished">2018-06-04</time>
+      <a href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/" class="article-date">
+      <time datetime="2018-05-09T14:56:07.000Z" itemprop="datePublished">2018-05-09</time>
 </a>
     </div>
   
@@ -243,7 +247,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      404
+      CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification
     </h1>
   
 
@@ -251,8 +255,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Course/">Course</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word-Embedding/">Word Embedding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cs224n/">cs224n</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -260,42 +272,53 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
+        <p>本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。</p>
+<a id="more"></a>
+<p>本文提出了大名鼎鼎的 <a href="https://github.com/facebookresearch/fastText" target="_blank" rel="noopener">fastText</a> 工具，训练速度很快，而且效果可以跟深度神经网络相当。</p>
+<p>本文的作者是 Mikolov，即也是 Word2Vec 的作者，这篇文章在模型架构上跟 Word2Vec 很相似，因为之前已经有详细写过 <a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/">Word2Vec</a> ，在此就简单说一下他们的区别。</p>
+<h1 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h1><p>本篇文章的方法部分大概可以分为三块 (虽然按标题看只有两段)：fastText 模型架构、Hierarchical softmax、N-gram features。</p>
+<h2 id="fastText-模型架构"><a href="#fastText-模型架构" class="headerlink" title="fastText 模型架构"></a>fastText 模型架构</h2><p><img src="/picture/lec5 rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg" alt="006Fmjmcly1fggfg4an8uj30os0d4dgk"></p>
+<p>fastText 的模型架构部分跟 CBOW 很相似，这里直接说区别：</p>
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>CBOW</th>
+<th>fastText</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入</td>
+<td>中心词的上下文</td>
+<td>多个单词及 n-gram 特征</td>
+</tr>
+<tr>
+<td>编码方式</td>
+<td>One-hot</td>
+<td>Embedding</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>中心词</td>
+<td>文档类别</td>
+</tr>
+</tbody>
+</table>
+<p>fastText 的核心思想：将整篇文档的词及 n-gram 向量叠加平均得到文档向量，然后用 hierarchical softmax 做分类。</p>
+<h2 id="Hierarchical-softmax"><a href="#Hierarchical-softmax" class="headerlink" title="Hierarchical softmax"></a>Hierarchical softmax</h2><p>其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。<img src="/picture/lec5 rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg" alt="006Fmjmcly1fggfinvdyxj30ox0eljtw"></p>
+<h2 id="N-gram-features"><a href="#N-gram-features" class="headerlink" title="N-gram features"></a>N-gram features</h2><p>这块其实是一种很常见的方法，我们知道预训练所得的词向量是固定的，这在于文本分类的任务中，将会丢失一些句子 \ 文档环境中的上下文信息。于是思路就很自然地想到了用 N-gram 的方法来捕获一些上下文信息。</p>
+<p>这里需要提及的是本文中使用的 n-gram 是词级别的，举个例子：</p>
+<p>关于句子 “Bag of Tricks for Efficient Text Classification”，假设 n 取 3，则整个句子就变为 (“Bag of”, “Bag of Tricks”, “of Tricks for”, “Tricks for Efficient”, …)。</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="/picture/lec5 rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg" alt="006Fmjmcly1fggfltgxwcj30pl0dewgh"></p>
+<p>直接上图，效果不错。fastText 宣扬了一下奥卡姆剃刀的思想，“杀鸡焉用牛刀”。不过得注意一下，fastText 的输入是 embedding 后的词向量，本身就包含了单词的相似度、语义、语法信息，这是其除了 N-gram 外提升精度的另一个原因。</p>
+<p>本文其实并没有太多好讲的地方，不过跟其同阶段提出的 <a href="https://arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a> 很值得学习，这篇文章我在 <a href=""></a> 进行了介绍。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://arxiv.org/pdf/1607.01759v2.pdf" target="_blank" rel="noopener">Bag of Tricks for Efficient Text Classification</a></li>
+<li><a href="http://www.hankcs.com/nlp/cs224n-bag-of-tricks-for-efficient-text-classification.html" target="_blank" rel="noopener">CS224n研究热点3 高效文本分类的锦囊妙计</a></li>
+<li><a href="http://m.neeqm.cn/almosthuman2014/2018-01-26/196146.html" target="_blank" rel="noopener">专栏 | fastText原理及实践</a></li>
+</ol>
 
-
-          
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">title: 404 Not Found：该页无法显示</span><br><span class="line">comments: false</span><br><span class="line">permalink: /404</span><br><span class="line">fancybox: false</span><br><span class="line">noDate: &quot;true&quot;</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">	.article-title &#123;</span><br><span class="line">		font-size: 2.1em;</span><br><span class="line">	&#125;</span><br><span class="line">	strong a &#123;</span><br><span class="line">		color: #747474;</span><br><span class="line">	&#125;</span><br><span class="line">	.share &#123;</span><br><span class="line">		display: none;</span><br><span class="line">	&#125;</span><br><span class="line">	.player &#123;</span><br><span class="line">		margin-left: -10px;</span><br><span class="line">	&#125;</span><br><span class="line">	.sign &#123;</span><br><span class="line">		text-align: right;</span><br><span class="line">		font-style: italic;</span><br><span class="line">	&#125;</span><br><span class="line">  	#page-visit &#123;</span><br><span class="line">		display: none;</span><br><span class="line">	&#125;</span><br><span class="line">	.center &#123;</span><br><span class="line">		text-align: center;</span><br><span class="line">		height: 2.5em;</span><br><span class="line">		font-weight: bold;</span><br><span class="line">	&#125;</span><br><span class="line">	.search2 &#123;</span><br><span class="line">		height: 2.2em;</span><br><span class="line">		font-size: 1em;</span><br><span class="line">		width: 50%;</span><br><span class="line">		margin: auto 24%;</span><br><span class="line">		color: #727272;</span><br><span class="line">		opacity: .6;</span><br><span class="line">		border: 2px solid lightgray;</span><br><span class="line">	&#125;</span><br><span class="line">	.search2:hover &#123;</span><br><span class="line">		opacity: 1;</span><br><span class="line">		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)</span><br><span class="line">		&#125;;</span><br><span class="line">	.article-entry hr &#123;</span><br><span class="line">		margin: 0;</span><br><span class="line">	&#125;</span><br><span class="line">	.pic &#123;</span><br><span class="line">		text-align: center;</span><br><span class="line">		margin: 0;</span><br><span class="line">	&#125;</span><br><span class="line">	.pic br &#123;</span><br><span class="line">  		display: none;</span><br><span class="line">  	&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br><span class="line">***</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;pic&quot;&gt;</span><br><span class="line">&lt;img src=&quot;/resources/Mihawk-Wind.gif&quot; title=&quot;Mihawk-Wind&quot;&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class=&quot;center&quot;&gt;很抱歉，您所访问的地址并不存在: &lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class=&quot;center&quot;&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt; · &lt;a href=&quot;/archives&quot;&gt;Archives&lt;/a&gt; · &lt;a href=&quot;/about&quot;&gt;About Me&lt;/a&gt;&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p class=&quot;center&quot;&gt;可在边栏搜索框中对本站进行检索，以获取相关信息。&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;div style=&quot;text-align: center&quot;&gt;</span><br><span class="line">以下是博主喜欢的一些歌曲，可以听听，稍作休息~</span><br><span class="line">&lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=320 height=330 src=&quot;http://music.163.com/outchain/player?type=0&amp;id=112513213&amp;auto=0&amp;height=430&quot;&gt;&lt;/iframe&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
       
       
         <div class="page-reward">
@@ -349,10 +372,76 @@
   </div>
   
     
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></p>
+        <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
+        <p><span>Date:</span>2018 : 05 : 09 - 22 : 56</p>
+        <p><span>Update:</span>2018 : 07 : 09 - 00 : 16</p>
+        <p>
+            <span>Hyperlink:</span><a class="post-url" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/" title="CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/</a>
+            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="China (CC BY-NC-SA 3.0 CN)" target = "_blank">"Signature-non-commercial-sharing in the same way 3.0"</a> Please keep the original link and author.
+        </p>
+    </div>
 
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          CS224n学习笔记 Lecture 6 Dependency Parsing
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Archives</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#模型架构"><span class="toc-number">1.</span> <span class="toc-text">模型架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fastText-模型架构"><span class="toc-number">1.1.</span> <span class="toc-text">fastText 模型架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hierarchical-softmax"><span class="toc-number">1.2.</span> <span class="toc-text">Hierarchical softmax</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#N-gram-features"><span class="toc-number">1.3.</span> <span class="toc-text">N-gram features</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#结果"><span class="toc-number">2.</span> <span class="toc-text">结果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">3.</span> <span class="toc-text">参考文献</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "Hidden";
+    var valueShow = "Show";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
 
 
 
@@ -375,7 +464,7 @@
 <script src="/js/gitment.browser.js"></script>
 <script>
     var gitment = new Gitment({
-      id: '404',
+      id: 'CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification',
       owner: 'HsiaoYetGun',
       repo: 'HsiaoYetGun.github.io',
       oauth: {
@@ -388,6 +477,39 @@
     
 
 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/" title="Prev: CS224n学习笔记 Lecture 6 Dependency Parsing">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/" title="Next: CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-word-embedding/">A review on word embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_self");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 

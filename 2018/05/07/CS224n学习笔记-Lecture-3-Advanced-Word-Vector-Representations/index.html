@@ -6,7 +6,7 @@
   <title>CS224n学习笔记 Lecture 3 Advanced Word Vector Representations | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
-<meta name="keywords" content="cs224n,NLP,Word Embedding">
+<meta name="keywords" content="NLP,Word Embedding,cs224n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/index.html">
@@ -15,12 +15,13 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fgdwqgw3cbj311w0mmdia.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/cs224n-2017-lecture3.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/2018/05/07/picture/lec3/1025542-20171207171214050-818227397.png">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/1025542-20171207171214050-818227397.png">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/1531055466854.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/glove%20similarity.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg">
-<meta property="og:updated_time" content="2018-07-08T13:55:31.718Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/glove%20similarity.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3yxoldrj31de0f0q77.jpg">
+<meta property="og:updated_time" content="2018-07-08T14:07:32.592Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
 <meta name="twitter:description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
@@ -154,7 +155,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Word-Embedding/" style="font-size: 15px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 15px;">cs224n</a>
+                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/Word-Embedding/" style="font-size: 16.67px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 13.33px;">cs224n</a>
                     </div>
                 </section>
                 
@@ -279,20 +280,24 @@
         <p>这节课一开始先回顾了一下上节课的内容，<a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/">Word2Vec</a>。</p>
 <a id="more"></a>
 <h1 id="Word2Vec-总结"><a href="#Word2Vec-总结" class="headerlink" title="Word2Vec 总结"></a>Word2Vec 总结</h1><p>接着对 Word2Vec 算法作了一个总结：</p>
+<blockquote>
 <ol>
 <li>Word2Vec 遍历了整个语料库中的每一个词。</li>
 <li>Word2Vec 算法的主要思想为通过一个单词的上下文信息中得到这个单词的意思，即通过中心词来预测其上下文信息 (SG) 和通过上下文信息来预测中心词 (CBOW)。</li>
 <li>Word2Vec 捕获的是共现词中是否同时出现的信息。</li>
 </ol>
+</blockquote>
 <p>这里由第 3 点引出了一种新的思路，Word2Vec 算法只是捕捉了两个词是否同时出现的信息，那我们是不是可以直接去捕捉单词间共现次数的信息呢？很显然答案是肯定的，这也就是本节课的内容，GloVe。</p>
 <h1 id="基于共现矩阵的词嵌入模型"><a href="#基于共现矩阵的词嵌入模型" class="headerlink" title="基于共现矩阵的词嵌入模型"></a>基于共现矩阵的词嵌入模型</h1><p>在讲述 GloVe 算法之前，我们先讲一下较为原始的方法。首先我们需要通过大量的语料文本来构建一个共现矩阵 (Co-occurrence Matrix)。矩阵的构建方式有两种：document-based 和 windows based。</p>
 <p>前者一般用于主题模型 (LSA)，由于统计的是全文的信息，所以这种矩阵很难描述单词的语法信息。后者类似于 Word2Vec，需要指定一个统计的窗口大小，只在窗口的范围内统计单词的共现次数，这种方法可以同时捕捉到语法信息 (POS) 和语义信息。</p>
 <p>举个例子，假设语料由三句话组成：</p>
+<blockquote>
 <ol>
 <li>I like deep learning.</li>
 <li>I like NLP.</li>
 <li>I enjoy flying.</li>
 </ol>
+</blockquote>
 <p>那么如果我们把其窗口的大小设为1，并使用对称窗口的方法，则其共现矩阵如下：</p>
 <table>
 <thead>
@@ -400,31 +405,37 @@
 </tbody>
 </table>
 <p>如果直接简单的以共现向量当做单词的词向量的话，虽然不同的词向量之间就不再像 One-hot 一样是正交的了，可以一定程度上用来计算单词间的相似度，但是还是存在许多问题：</p>
+<blockquote>
 <ol>
 <li>随着词表的增加，词向量的维度也得跟着增加。</li>
 <li>维度灾难问题。语料足够大的时候词表也会很长，导致向量长度过大，训练的代价高昂。</li>
 <li>数据稀疏。与 One-hot 类似，共现矩阵中不为 0 的维度数量很少，会使得后续的分类模型鲁棒性下降。</li>
 </ol>
+</blockquote>
 <h1 id="共现矩阵的降维处理"><a href="#共现矩阵的降维处理" class="headerlink" title="共现矩阵的降维处理"></a>共现矩阵的降维处理</h1><p>为了解决以上问题，语言学家们自然而然地想到了将共现矩阵进行降维，进而得到单词的稠密表示 (dense representation)。</p>
 <p>那么如何对共现矩阵进行降维呢？一个很常见的方法就是使用奇异值分解 (SVD)。SVD 的基本思想是，通过将原共现矩阵 X 分解为一个正交矩阵 U，一个对角矩阵 S，和另一个正交矩阵 V 乘积的形式，并提取 U 的 k 个主成分（按 S 里对角元的大小排序）构造低维词向量。具体原理推导可以参考 <a href="http://weibo.com/leftnoteasy" target="_blank" rel="noopener">leftnoteasy的博文</a>。<img src="/picture/lec3/006Fmjmcly1fgdwqgw3cbj311w0mmdia.jpg" alt="006Fmjmcly1fgdwqgw3cbj311w0mmdia"></p>
 <p>除此之外，对于共现矩阵 X 的处理也有很多值得一提的 Hacks：</p>
+<blockquote>
 <ol>
 <li>部分的单词 (the, he, has) 出现的次数过多，使得它们对于语法信息的影响过大。改进的方法就是限制高频词的最大频次 (min(X, t), with t~100)，或者干脆直接停用高频词。</li>
 <li>带权重地统计窗口。距离中心词跃进的词对于词义的贡献就越大。</li>
 <li>使用 Pearson 相关系数来替代掉词频，并把负值置 0。</li>
 </ol>
+</blockquote>
 <p>以上的方法虽然简单粗暴，但是还是取得了很不错的结果。</p>
 <p>然而 SVD 算法有几个根本性的问题没法解决：</p>
+<blockquote>
 <ol>
 <li>SVD 是一个计算复杂度高昂 (O($mn^2$)) 的算法，无法在实际环境中使用。</li>
 <li>SVD 方法不方便处理新词或者新的文档，如果加入一些新的语料后，就需要重新再进行 SVD。</li>
 <li>SVD 的画风跟其他的 DL 模型截然不同。</li>
 </ol>
+</blockquote>
 <h1 id="基于共现次数统计的方法-VS-直接进行预测的方法"><a href="#基于共现次数统计的方法-VS-直接进行预测的方法" class="headerlink" title="基于共现次数统计的方法 VS 直接进行预测的方法"></a>基于共现次数统计的方法 VS 直接进行预测的方法</h1><p>讲完了 SVD 这类基于共现次数统计的方法和之前的 Word2Vec 这类直接进行预测的方法，课程中列出了以下这一张两种方法的对比图，两种方法的优势和劣势总结得十分到位。<img src="/picture/lec3/cs224n-2017-lecture3.jpg" alt="cs224n-2017-lecture3"></p>
 <p>那么有没有一种方法能够同时结合以上这两种方法的优势呢？这就轮到本课的主题 GloVe 出马了。</p>
 <h1 id="GloVe-Global-Vectors"><a href="#GloVe-Global-Vectors" class="headerlink" title="GloVe (Global Vectors)"></a>GloVe (Global Vectors)</h1><p>为了结合以上两种方法的优势，GloVe 模型既使用了语料库的全局统计特征 (全局共现次数统计)，也使用了局部的上下文特征 (窗口)。因而 GloVe 模型引入了共现概率矩阵 (Co-occurrence Probabilities Matrix)。</p>
 <p>直接上论文中的例子：</p>
-<p><img src="../picture/lec3/1025542-20171207171214050-818227397.png" alt="1025542-20171207171214050-818227397"></p>
+<p><img src="/picture/lec3/1025542-20171207171214050-818227397.png" alt="1025542-20171207171214050-818227397"></p>
 <p>该矩阵的第一个元素为 ice 出现时 solid 出现的概率，第二个元素为 ice 出现时 gas 出现的概率，以此类推。由共现概率矩阵的值可以看出，概率比率 ($F(w_i, w_j, \hat w_k) = \frac{p_{i,k}}{p_{j,k}}$) 的取值是有一定规律的。</p>
 <p>规律总结如下：</p>
 <table>
@@ -466,26 +477,28 @@
 <p><img src="/picture/lec3/1531055466854.jpg" alt="1531055466854"></p>
 <p>最终作者经过实验得出当 $x_\max = 100, \alpha = 0.75$ 是一个比较好的选择。</p>
 <p>以上就是 GloVe 算法的完整推导流程，这里可以看到，最终我们得到的是 $w_i, w_k$ 两个权重矩阵，它们都捕捉到了单词的共现信息，在实际使用中，实验证明直接将二者简单的相加，得到的权重矩阵就是效果最好的词向量表示，即 $w_{final} = w_i + w_k$。</p>
-<h1 id="GloVe-优点"><a href="#GloVe-优点" class="headerlink" title="GloVe 优点"></a>GloVe 优点</h1><ol>
+<h1 id="GloVe-优点"><a href="#GloVe-优点" class="headerlink" title="GloVe 优点"></a>GloVe 优点</h1><blockquote>
+<ol>
 <li>训练速度快。</li>
 <li>可以扩展到大规模的语料。</li>
 <li>也适用于小规模语料和小向量。</li>
 </ol>
-<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/glove similarity.jpg" alt="glove similarity"></p>
+</blockquote>
+<p><img src="/picture/lec3/glove similarity.jpg" alt="glove similarity"></p>
 <h1 id="如何评估词向量"><a href="#如何评估词向量" class="headerlink" title="如何评估词向量"></a>如何评估词向量</h1><p>评估词向量质量高低的方法分为两种： Intrinsic (内部) 和 extrinsic (外部)。</p>
 <h2 id="Intrinsic"><a href="#Intrinsic" class="headerlink" title="Intrinsic"></a>Intrinsic</h2><p>Intrinsic 评估的方式为专门设计单独的试验，由人工标注词语或句子相似度，与模型结果对比。</p>
 <p>这种方法看似比较合理，并且计算速度也很快，然而却不一定对实际应用有帮助。有时候你花很多时间来调整词向量，使得内部评估方式的得分看起来很高，结果在实际应用上一跑预测结果却下降了。(尴尬又不失礼貌的微笑.jpg)</p>
 <p>对于词向量模型来说，一个常用的 Intrinsic 评估是向量类比 (word vector analogies)，它评估了一组词向量在语义和句法上表现出来的线性关系。</p>
-<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg" alt="006Fmjmcly1fge3ddvzkvj31ay07eabj"></p>
+<p><img src="/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg" alt="006Fmjmcly1fge3ddvzkvj31ay07eabj"></p>
 <p>以上例而言，我们给定了一组词 $(a, b, c, d)$ 我们要验证的是 $d$ 与向量 $(x_b - x_a + x_c)$ 的余弦距离的值要最接近于 $d$ 这个词本身。</p>
 <h2 id="Extrinsic"><a href="#Extrinsic" class="headerlink" title="Extrinsic"></a>Extrinsic</h2><p>Intrinsic 评估的方式为通过对外部实际应用的效果提升来体现。</p>
 <p>耗时较长，不能排除是否是新的词向量与旧系统的某种契合度产生，需要至少两个subsystems同时证明。这类评测中，往往会用pre-train的向量在外部任务的语料上retrain。</p>
-<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg" alt="006Fmjmcly1fge3jyad41j31fg0nyk4t"></p>
+<p><img src="/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg" alt="006Fmjmcly1fge3jyad41j31fg0nyk4t"></p>
 <h1 id="词向量训练经验"><a href="#词向量训练经验" class="headerlink" title="词向量训练经验"></a>词向量训练经验</h1><p>直接上结论：</p>
 <ol>
 <li>GloVe 的效果在一些任务上可能会比 Word2Vec 更好，但有些时候二者并没什么区别，由于 Word2Vec 出现得更早，原理也更简单易懂，因而目前为止使用得还是很广泛的。</li>
 <li><strong>语料质量 &gt; 语料数量</strong>。记得有某个 kaggle 的关于 Quora 句子相似度的比赛，我们组使用了个不错的模型，结果被其他组用普通的 LSTM 模型吊打得花枝乱颤，归其原因除了预处理没有做好外，我们使用的是泛用的语料训练得到的词向量，而那组人用的是专门的 Quora 语料。</li>
-<li>向量维度、窗口大小、窗口是否对称对词向量质量也有影响，具体如图。然而这是人类语言中的效果图，<strong>在不同的领域中参数还是需要根据实际情况来调整的</strong>。比如我之前做的 RNA 序列问题，最终最好的结果所取的窗口大小大于图中所示，向量维度反而是小于的。</li>
+<li>向量维度、窗口大小、窗口是否对称对词向量质量也有影响，具体如图。然而这是人类语言中的效果图，<strong>在不同的领域中参数还是需要根据实际情况来调整的</strong>。比如我之前做的 RNA 序列问题，最终最好的结果所取的窗口大小大于图中所示，向量维度反而是小于的。<img src="/picture/lec3/006Fmjmcly1fge3yxoldrj31de0f0q77.jpg" alt="006Fmjmcly1fge3yxoldrj31de0f0q77"></li>
 <li>GloVe 相比 Word2Vec 更加稳定。</li>
 <li>维基百科的语料好于新闻的语料。</li>
 <li><strong>在训练集大小较小的时候，在模型的训练过程对词向量进行 retrain 的话，会导致整个向量空间原有的几何结构被破坏，从而使得泛化能力变差，所以当训练集不够充分的时候不要 retrain 词向量。当训练集足够大的时候，retrain 词向量往往可以使预测精度得到提升。</strong></li>
@@ -559,7 +572,7 @@
         <p><span>Title:</span><a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 07 - 19 : 23</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 21 : 55</p>
+        <p><span>Update:</span>2018 : 07 : 08 - 22 : 07</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -575,7 +588,7 @@
 
 <nav id="article-nav">
   
-    <a href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
@@ -585,8 +598,8 @@
     </a>
   
   
-    <a href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</div>
+    <a href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -663,18 +676,18 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="Prev: CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
+            <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="Prev: CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" title="Next: CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
+            <a href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/" title="Next: CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-word-embedding/">A review on word embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
