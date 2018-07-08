@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CS224n学习笔记 Lecture 3 Advanced Word Vector Representations | 如果没有人看着我</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
+<meta name="keywords" content="cs224n,NLP,Word Embedding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
+<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/index.html">
+<meta property="og:site_name" content="如果没有人看着我">
+<meta property="og:description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fgdwqgw3cbj311w0mmdia.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/cs224n-2017-lecture3.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/2018/05/07/picture/lec3/1025542-20171207171214050-818227397.png">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/1531055466854.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/glove%20similarity.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/Users/hsiao/GitHub%20Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg">
+<meta property="og:updated_time" content="2018-07-08T13:55:31.718Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
+<meta name="twitter:description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fgdwqgw3cbj311w0mmdia.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Hsiao</a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Home</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">Home</a></li>
+                        
+                            <li><a href="/archives">Archives</a></li>
+                        
+                            <li><a href="/aboutme">About Me</a></li>
+                        
+                            <li><a href="/tags">Tags</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_self" href="mailto:hsiaoyetgun@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_self" href="https://github.com/hsiaoyetgun" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_self" href="https://www.zhihu.com/people/yetgun-hsiao/" title="zhihu">zhihu</a>
+                            
+                                <a class="fl linkedin" target="_self" href="#" title="linkedin">linkedin</a>
+                            
+                                <a class="fl pinterest" target="_self" href="http://music.163.com/#/user/home?id=61393493" title="pinterest">pinterest</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Word-Embedding/" style="font-size: 15px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 15px;">cs224n</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_self" class="main-nav-link switch-friends-link" href="https://jiaxuncai.github.io">菜得二逼</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">人工智障，深度瞎学，NLP， Bioinformatics</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+
+    <div style="bottom:120px left:auto; width:20px">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=28315773&auto=1&height=32"></iframe>
+    </div>             
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Hsiao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Hsiao</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">Home</a></li>
+                
+                    <li><a href="/archives">Archives</a></li>
+                
+                    <li><a href="/aboutme">About Me</a></li>
+                
+                    <li><a href="/tags">Tags</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_self" href="mailto:hsiaoyetgun@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_self" href="https://github.com/hsiaoyetgun" title="github">github</a>
+                    
+                        <a class="zhihu" target="_self" href="https://www.zhihu.com/people/yetgun-hsiao/" title="zhihu">zhihu</a>
+                    
+                        <a class="linkedin" target="_self" href="#" title="linkedin">linkedin</a>
+                    
+                        <a class="pinterest" target="_self" href="http://music.163.com/#/user/home?id=61393493" title="pinterest">pinterest</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" class="article-date">
+      <time datetime="2018-05-07T11:23:06.000Z" itemprop="datePublished">2018-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CS224n学习笔记 Lecture 3 Advanced Word Vector Representations
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Course/">Course</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word-Embedding/">Word Embedding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cs224n/">cs224n</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>这节课一开始先回顾了一下上节课的内容，<a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/">Word2Vec</a>。</p>
+<a id="more"></a>
+<h1 id="Word2Vec-总结"><a href="#Word2Vec-总结" class="headerlink" title="Word2Vec 总结"></a>Word2Vec 总结</h1><p>接着对 Word2Vec 算法作了一个总结：</p>
+<ol>
+<li>Word2Vec 遍历了整个语料库中的每一个词。</li>
+<li>Word2Vec 算法的主要思想为通过一个单词的上下文信息中得到这个单词的意思，即通过中心词来预测其上下文信息 (SG) 和通过上下文信息来预测中心词 (CBOW)。</li>
+<li>Word2Vec 捕获的是共现词中是否同时出现的信息。</li>
+</ol>
+<p>这里由第 3 点引出了一种新的思路，Word2Vec 算法只是捕捉了两个词是否同时出现的信息，那我们是不是可以直接去捕捉单词间共现次数的信息呢？很显然答案是肯定的，这也就是本节课的内容，GloVe。</p>
+<h1 id="基于共现矩阵的词嵌入模型"><a href="#基于共现矩阵的词嵌入模型" class="headerlink" title="基于共现矩阵的词嵌入模型"></a>基于共现矩阵的词嵌入模型</h1><p>在讲述 GloVe 算法之前，我们先讲一下较为原始的方法。首先我们需要通过大量的语料文本来构建一个共现矩阵 (Co-occurrence Matrix)。矩阵的构建方式有两种：document-based 和 windows based。</p>
+<p>前者一般用于主题模型 (LSA)，由于统计的是全文的信息，所以这种矩阵很难描述单词的语法信息。后者类似于 Word2Vec，需要指定一个统计的窗口大小，只在窗口的范围内统计单词的共现次数，这种方法可以同时捕捉到语法信息 (POS) 和语义信息。</p>
+<p>举个例子，假设语料由三句话组成：</p>
+<ol>
+<li>I like deep learning.</li>
+<li>I like NLP.</li>
+<li>I enjoy flying.</li>
+</ol>
+<p>那么如果我们把其窗口的大小设为1，并使用对称窗口的方法，则其共现矩阵如下：</p>
+<table>
+<thead>
+<tr>
+<th>counts</th>
+<th>I</th>
+<th>like</th>
+<th>enjoy</th>
+<th>deep</th>
+<th>learning</th>
+<th>NLP</th>
+<th>flying</th>
+<th>.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>like</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>enjoy</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>deep</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>learning</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>NLP</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>flying</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>.</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>如果直接简单的以共现向量当做单词的词向量的话，虽然不同的词向量之间就不再像 One-hot 一样是正交的了，可以一定程度上用来计算单词间的相似度，但是还是存在许多问题：</p>
+<ol>
+<li>随着词表的增加，词向量的维度也得跟着增加。</li>
+<li>维度灾难问题。语料足够大的时候词表也会很长，导致向量长度过大，训练的代价高昂。</li>
+<li>数据稀疏。与 One-hot 类似，共现矩阵中不为 0 的维度数量很少，会使得后续的分类模型鲁棒性下降。</li>
+</ol>
+<h1 id="共现矩阵的降维处理"><a href="#共现矩阵的降维处理" class="headerlink" title="共现矩阵的降维处理"></a>共现矩阵的降维处理</h1><p>为了解决以上问题，语言学家们自然而然地想到了将共现矩阵进行降维，进而得到单词的稠密表示 (dense representation)。</p>
+<p>那么如何对共现矩阵进行降维呢？一个很常见的方法就是使用奇异值分解 (SVD)。SVD 的基本思想是，通过将原共现矩阵 X 分解为一个正交矩阵 U，一个对角矩阵 S，和另一个正交矩阵 V 乘积的形式，并提取 U 的 k 个主成分（按 S 里对角元的大小排序）构造低维词向量。具体原理推导可以参考 <a href="http://weibo.com/leftnoteasy" target="_blank" rel="noopener">leftnoteasy的博文</a>。<img src="/picture/lec3/006Fmjmcly1fgdwqgw3cbj311w0mmdia.jpg" alt="006Fmjmcly1fgdwqgw3cbj311w0mmdia"></p>
+<p>除此之外，对于共现矩阵 X 的处理也有很多值得一提的 Hacks：</p>
+<ol>
+<li>部分的单词 (the, he, has) 出现的次数过多，使得它们对于语法信息的影响过大。改进的方法就是限制高频词的最大频次 (min(X, t), with t~100)，或者干脆直接停用高频词。</li>
+<li>带权重地统计窗口。距离中心词跃进的词对于词义的贡献就越大。</li>
+<li>使用 Pearson 相关系数来替代掉词频，并把负值置 0。</li>
+</ol>
+<p>以上的方法虽然简单粗暴，但是还是取得了很不错的结果。</p>
+<p>然而 SVD 算法有几个根本性的问题没法解决：</p>
+<ol>
+<li>SVD 是一个计算复杂度高昂 (O($mn^2$)) 的算法，无法在实际环境中使用。</li>
+<li>SVD 方法不方便处理新词或者新的文档，如果加入一些新的语料后，就需要重新再进行 SVD。</li>
+<li>SVD 的画风跟其他的 DL 模型截然不同。</li>
+</ol>
+<h1 id="基于共现次数统计的方法-VS-直接进行预测的方法"><a href="#基于共现次数统计的方法-VS-直接进行预测的方法" class="headerlink" title="基于共现次数统计的方法 VS 直接进行预测的方法"></a>基于共现次数统计的方法 VS 直接进行预测的方法</h1><p>讲完了 SVD 这类基于共现次数统计的方法和之前的 Word2Vec 这类直接进行预测的方法，课程中列出了以下这一张两种方法的对比图，两种方法的优势和劣势总结得十分到位。<img src="/picture/lec3/cs224n-2017-lecture3.jpg" alt="cs224n-2017-lecture3"></p>
+<p>那么有没有一种方法能够同时结合以上这两种方法的优势呢？这就轮到本课的主题 GloVe 出马了。</p>
+<h1 id="GloVe-Global-Vectors"><a href="#GloVe-Global-Vectors" class="headerlink" title="GloVe (Global Vectors)"></a>GloVe (Global Vectors)</h1><p>为了结合以上两种方法的优势，GloVe 模型既使用了语料库的全局统计特征 (全局共现次数统计)，也使用了局部的上下文特征 (窗口)。因而 GloVe 模型引入了共现概率矩阵 (Co-occurrence Probabilities Matrix)。</p>
+<p>直接上论文中的例子：</p>
+<p><img src="../picture/lec3/1025542-20171207171214050-818227397.png" alt="1025542-20171207171214050-818227397"></p>
+<p>该矩阵的第一个元素为 ice 出现时 solid 出现的概率，第二个元素为 ice 出现时 gas 出现的概率，以此类推。由共现概率矩阵的值可以看出，概率比率 ($F(w_i, w_j, \hat w_k) = \frac{p_{i,k}}{p_{j,k}}$) 的取值是有一定规律的。</p>
+<p>规律总结如下：</p>
+<table>
+<thead>
+<tr>
+<th>$F(w_i, w_j, \hat w_k)$</th>
+<th>$w_j, w_k$ 相关</th>
+<th>$w_j, w_k$ 不相关</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$w_i, w_k$ 相关</td>
+<td>趋近 1</td>
+<td>很大</td>
+</tr>
+<tr>
+<td>$w_i, w_k$ 不相关</td>
+<td>很小</td>
+<td>趋近 1</td>
+</tr>
+</tbody>
+</table>
+<p>也就是说，与原本的概率值相比，概率比例能够更好地表示出两个单词间的相关关系。这是一个很简单但是很有用的规律，<strong>如果我们用词向量 $w_i, w_j, w_k$ 通过某种函数计算 $F(w_i, w_j, \hat w_k)$，能够同样得到这样的规律的话，就意味着我们词向量与共现矩阵具有很好的一致性，也就说明我们的词向量中蕴含了共现矩阵中所蕴含的信息。</strong></p>
+<p>于是接下来就到了原作者神奇的脑洞时间了。</p>
+<p>先上公式：$F(w_i, w_j, \hat w_k) = \frac{p_{i,k}}{p_{j,k}}$</p>
+<p>这里等号的左端为全局统计求得的值，右端的 $w_i, w_j, w_k$ 就是我们要求得的词向量，而函数 F 是未知的，作者确定 F 的过程真是让人瞠目结舌。过程如下所示：</p>
+<ol>
+<li>$\frac{p_{i,k}}{p_{j,k}}$ 这个值考察了 $w_i, w_j, w_k$ 三个词两两之间的相关关系，但是这样很难进行 F 的求解，所以更好的方法是先去考察 $w_i, w_j$ 两个词之间的关系，线性空间中的相似性关系自然想到的是两个向量的差 $(w_i - w_j)$，所以我们可以把 F 的形式转化为 $F(w_i - w_j, w_k) = \frac{p_{i,k}}{p_{j,k}}$。</li>
+<li>$\frac{p_{ik}}{p_{jk}}$ 是一个标量，而 F 是直接作用在 $w_i - w_j$ 和 $w_k$ 这两个向量上的，为了把向量转化为标量，自然地就想到了用内积的方法，所以我们可以把 F 的形式进一步转化为 $F((w_i - w_j)^T w_k) = F(w_i^Tw_k - w_j^Tw_k) = \frac{p_{i,k}}{p_{j,k}}$。</li>
+<li>此时 F 的公式的形式为 $F(w_i^Tw_k - w_j^Tw_k) = \frac{p_{i,k}}{p_{j,k}}$。等号左边为差的形式，右边则是商的形式，要把差和商关联起来，作者又想到了用取指数的形式，即 $\exp(w_i^Tw_k - w_j^Tw_k) = \frac{\exp(w_i^Tw_k)}{\exp(w_j^Tw_k)} = \frac{p_{i,k}}{p_{j,k}}$。</li>
+<li>现在形式就很明朗了，我们只需让 $\exp(w_i^Tw_k) = p_{i,k}, \exp(w_j^Tw_k) = p_{j,k}$ 等式就能够成立。</li>
+<li>那么如何让 $\exp(w_i^Tw_k) = p_{i,k} = \frac{x_{i,k}}{x_i}$ 成立呢？只需让 $w_i^Twk = \log\frac{x_{i,k}}{x_i} = \log x_{i,k} - \log x_i$。</li>
+<li>又因为作为向量，i 和 k 的顺序交换后 $w_i^Tw_k$ 和 $w_k^Tw_i$ 应该是相等的，即它们应该是对称的。但上式的右边显然不符合这个条件，所以为了解决这个问题，作者又引入了两个偏置项 $b_i, b_k$，这样模型就变成了 $\log x_{i,k} = w_i^Tw_k + b_i + b_k$，其中 $b_i$ 包含了 $\log x_i$。此外还加入了 $b_k$ 来保证模型的对称性。</li>
+<li>因此，我们就可以得到 GloVe 的目标函数了：$J = \sum_{i,k}(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
+<li>再考虑到出现频率越高的词对权重的影响应该越大这个原则，我们需要在目标函数里加一个频率权重项 $f(x_{i, k})$，所以最终的目标函数为：$J = \sum_{ik}f(x_{i,k})(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
+</ol>
+<p>对于这个频率权重项 $f(x_{i, k})$ 我们需要确保其为非减的，并且类似于之前对 (the, he, has) 这类常见词的处理方式，当词频过高的时候，频率的权重项不应该过大，因而需要将 $f$ 控制在一个合适的范围，所以频率权重函数 $f$ 的公式如下：</p>
+<p><img src="/picture/lec3/1531055466854.jpg" alt="1531055466854"></p>
+<p>最终作者经过实验得出当 $x_\max = 100, \alpha = 0.75$ 是一个比较好的选择。</p>
+<p>以上就是 GloVe 算法的完整推导流程，这里可以看到，最终我们得到的是 $w_i, w_k$ 两个权重矩阵，它们都捕捉到了单词的共现信息，在实际使用中，实验证明直接将二者简单的相加，得到的权重矩阵就是效果最好的词向量表示，即 $w_{final} = w_i + w_k$。</p>
+<h1 id="GloVe-优点"><a href="#GloVe-优点" class="headerlink" title="GloVe 优点"></a>GloVe 优点</h1><ol>
+<li>训练速度快。</li>
+<li>可以扩展到大规模的语料。</li>
+<li>也适用于小规模语料和小向量。</li>
+</ol>
+<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/glove similarity.jpg" alt="glove similarity"></p>
+<h1 id="如何评估词向量"><a href="#如何评估词向量" class="headerlink" title="如何评估词向量"></a>如何评估词向量</h1><p>评估词向量质量高低的方法分为两种： Intrinsic (内部) 和 extrinsic (外部)。</p>
+<h2 id="Intrinsic"><a href="#Intrinsic" class="headerlink" title="Intrinsic"></a>Intrinsic</h2><p>Intrinsic 评估的方式为专门设计单独的试验，由人工标注词语或句子相似度，与模型结果对比。</p>
+<p>这种方法看似比较合理，并且计算速度也很快，然而却不一定对实际应用有帮助。有时候你花很多时间来调整词向量，使得内部评估方式的得分看起来很高，结果在实际应用上一跑预测结果却下降了。(尴尬又不失礼貌的微笑.jpg)</p>
+<p>对于词向量模型来说，一个常用的 Intrinsic 评估是向量类比 (word vector analogies)，它评估了一组词向量在语义和句法上表现出来的线性关系。</p>
+<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg" alt="006Fmjmcly1fge3ddvzkvj31ay07eabj"></p>
+<p>以上例而言，我们给定了一组词 $(a, b, c, d)$ 我们要验证的是 $d$ 与向量 $(x_b - x_a + x_c)$ 的余弦距离的值要最接近于 $d$ 这个词本身。</p>
+<h2 id="Extrinsic"><a href="#Extrinsic" class="headerlink" title="Extrinsic"></a>Extrinsic</h2><p>Intrinsic 评估的方式为通过对外部实际应用的效果提升来体现。</p>
+<p>耗时较长，不能排除是否是新的词向量与旧系统的某种契合度产生，需要至少两个subsystems同时证明。这类评测中，往往会用pre-train的向量在外部任务的语料上retrain。</p>
+<p><img src="/Users/hsiao/GitHub Repositories/myBlog/source/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg" alt="006Fmjmcly1fge3jyad41j31fg0nyk4t"></p>
+<h1 id="词向量训练经验"><a href="#词向量训练经验" class="headerlink" title="词向量训练经验"></a>词向量训练经验</h1><p>直接上结论：</p>
+<ol>
+<li>GloVe 的效果在一些任务上可能会比 Word2Vec 更好，但有些时候二者并没什么区别，由于 Word2Vec 出现得更早，原理也更简单易懂，因而目前为止使用得还是很广泛的。</li>
+<li><strong>语料质量 &gt; 语料数量</strong>。记得有某个 kaggle 的关于 Quora 句子相似度的比赛，我们组使用了个不错的模型，结果被其他组用普通的 LSTM 模型吊打得花枝乱颤，归其原因除了预处理没有做好外，我们使用的是泛用的语料训练得到的词向量，而那组人用的是专门的 Quora 语料。</li>
+<li>向量维度、窗口大小、窗口是否对称对词向量质量也有影响，具体如图。然而这是人类语言中的效果图，<strong>在不同的领域中参数还是需要根据实际情况来调整的</strong>。比如我之前做的 RNA 序列问题，最终最好的结果所取的窗口大小大于图中所示，向量维度反而是小于的。</li>
+<li>GloVe 相比 Word2Vec 更加稳定。</li>
+<li>维基百科的语料好于新闻的语料。</li>
+<li><strong>在训练集大小较小的时候，在模型的训练过程对词向量进行 retrain 的话，会导致整个向量空间原有的几何结构被破坏，从而使得泛化能力变差，所以当训练集不够充分的时候不要 retrain 词向量。当训练集足够大的时候，retrain 词向量往往可以使预测精度得到提升。</strong></li>
+<li><strong>从<a href="https://jiaxuncai.github.io/" target="_blank" rel="noopener">菜爸爸</a>那里得知的一个 trick，可以同时使用两个 pretrain 的词向量，一组固定，一组随着模型的训练进行 retrain，可以使得精度提高。</strong></li>
+</ol>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://www.youtube.com/watch?v=ERibwqs9p38&amp;t=0s&amp;list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6&amp;index=3" target="_blank" rel="noopener">cs224n lecture3</a></li>
+<li><a href="http://web.stanford.edu/class/cs224n/lectures/lecture3.pdf" target="_blank" rel="noopener">cs224n lecture3 slide</a></li>
+<li><a href="https://nlp.stanford.edu/pubs/glove.pdf" target="_blank" rel="noopener">GloVe: Global Vectors for Word Representation </a></li>
+<li><a href="http://www.cnblogs.com/LeftNotEasy/archive/2011/01/19/svd-and-applications.html" target="_blank" rel="noopener">强大的矩阵奇异值分解(SVD)及其应用</a></li>
+<li><a href="https://blog.csdn.net/coderTC/article/details/73864097" target="_blank" rel="noopener">理解 GloVe 模型 (Global vectors for word representation)</a></li>
+<li><a href="https://www.cnblogs.com/Weirping/p/7999979.html" target="_blank" rel="noopener">GloVe模型</a></li>
+<li><a href="https://www.cnblogs.com/iloveai/p/cs224d-lecture3-note.html" target="_blank" rel="noopener">(Stanford CS224d) Deep Learning and NLP课程笔记（三）：GloVe与模型的评估</a></li>
+<li><a href="http://www.hankcs.com/nlp/cs224n-advanced-word-vector-representations.html" target="_blank" rel="noopener">CS224n笔记3 高级词向量表示</a></li>
+</ol>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>Buy Me a Coffee</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="Scan QR Code" />
+            </div>
+              <div class="pay_explain">Thanks</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="Alipay" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="Wechat" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>Open <span id="shang_pay_txt">Alipay</span> and Scan QR Code.</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"Alipay":"Wechat");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></p>
+        <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
+        <p><span>Date:</span>2018 : 05 : 07 - 19 : 23</p>
+        <p><span>Update:</span>2018 : 07 : 08 - 21 : 55</p>
+        <p>
+            <span>Hyperlink:</span><a class="post-url" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/</a>
+            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="China (CC BY-NC-SA 3.0 CN)" target = "_blank">"Signature-non-commercial-sharing in the same way 3.0"</a> Please keep the original link and author.
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Archives</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Word2Vec-总结"><span class="toc-number">1.</span> <span class="toc-text">Word2Vec 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基于共现矩阵的词嵌入模型"><span class="toc-number">2.</span> <span class="toc-text">基于共现矩阵的词嵌入模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#共现矩阵的降维处理"><span class="toc-number">3.</span> <span class="toc-text">共现矩阵的降维处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基于共现次数统计的方法-VS-直接进行预测的方法"><span class="toc-number">4.</span> <span class="toc-text">基于共现次数统计的方法 VS 直接进行预测的方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GloVe-Global-Vectors"><span class="toc-number">5.</span> <span class="toc-text">GloVe (Global Vectors)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GloVe-优点"><span class="toc-number">6.</span> <span class="toc-text">GloVe 优点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何评估词向量"><span class="toc-number">7.</span> <span class="toc-text">如何评估词向量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Intrinsic"><span class="toc-number">7.1.</span> <span class="toc-text">Intrinsic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extrinsic"><span class="toc-number">7.2.</span> <span class="toc-text">Extrinsic</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#词向量训练经验"><span class="toc-number">8.</span> <span class="toc-text">词向量训练经验</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">9.</span> <span class="toc-text">参考文献</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "Hidden";
+    var valueShow = "Show";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="Share to Weibo"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="Share to Wechat"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="Share to QQ"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="Share to Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="Share to Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="Share to linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="Share hyperlink"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: 'CS224n学习笔记 Lecture 3 Advanced Word Vector Representations',
+      owner: 'HsiaoYetGun',
+      repo: 'HsiaoYetGun.github.io',
+      oauth: {
+        client_id: '7a4d3f0229c8061aa33f',
+        client_secret: '6f12ffc30ae1391899a25203c79b322d92fcef07',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="Prev: CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" title="Next: CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_self");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2018 Hsiao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by spfk
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >Site Visit: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">Page Visit: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

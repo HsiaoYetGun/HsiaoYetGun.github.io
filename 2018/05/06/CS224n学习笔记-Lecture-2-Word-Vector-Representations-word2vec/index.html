@@ -6,7 +6,7 @@
   <title>CS224n学习笔记 Lecture 2 Word Vector Representations word2vec | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="之前的第一课里头提及了为什么 NLP 任务比较难，Deep Learning 在 NLP 领域中取得的成果也不如 CV 和 Speech 来得令人惊讶。">
-<meta name="keywords" content="NLP,cs224n,Word Embedding">
+<meta name="keywords" content="cs224n,NLP,Word Embedding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/index.html">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2/sg.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2/6cbb8645gw1f5wmy4jdnwj214w12a42v.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2/6cbb8645gw1f5wqzg68u0j214a120wij.jpg">
-<meta property="og:updated_time" content="2018-07-08T09:42:25.204Z">
+<meta property="og:updated_time" content="2018-07-08T11:27:35.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">
 <meta name="twitter:description" content="之前的第一课里头提及了为什么 NLP 任务比较难，Deep Learning 在 NLP 领域中取得的成果也不如 CV 和 Speech 来得令人惊讶。">
@@ -164,7 +164,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Word-Embedding/" style="font-size: 10px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 10px;">cs224n</a>
+                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Word-Embedding/" style="font-size: 15px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 15px;">cs224n</a>
                     </div>
                 </section>
                 
@@ -326,127 +326,12 @@
 </ol>
 <p>因而，我们需要去探讨一种新的词向量的编码方式。</p>
 <blockquote>
-<p>You shall know a word by the company it keeps.        – J. R. Firth 1957: 11 </p>
+<p>You shall know a word by the company it keeps.</p>
+<p>– J. R. Firth 1957: 11 </p>
 </blockquote>
 <p>这里就提出了一种思路，即我们可以<strong>通过一个单词的上下文信息中得到这个单词的意思。</strong></p>
 <p><img src="/picture/lec2/1531032696955.jpg" alt="1531032696955"></p>
 <p>这是现代统计自然语言处理最成功的思想之一，事实上这也是 Word2Vec 算法的根基。</p>
-<p>在讲述 Word2Vec 算法之前，我们先讲一下较为原始的方法。首先我们需要通过大量的语料文本来构建一个共现矩阵 (Co-occurrence Matrix)。矩阵的构建方式有两种：document-based 和 windows based。</p>
-<p>前者一般用于主题模型，由于统计的是全文的信息，所以这种矩阵很难描述单词的语法信息。后者需要指定一个统计的窗口大小，只在窗口的范围内统计单词的共现次数，这种方法可以保留一定的语法信息。</p>
-<p>举个例子，假设语料由三句话组成：</p>
-<ol>
-<li>I like deep learning.</li>
-<li>I like NLP.</li>
-<li>I enjoy flying.</li>
-</ol>
-<p>那么如果我们把其窗口的大小设为1，并使用对称窗口的方法，则其共现矩阵如下：</p>
-<table>
-<thead>
-<tr>
-<th>counts</th>
-<th>I</th>
-<th>like</th>
-<th>enjoy</th>
-<th>deep</th>
-<th>learning</th>
-<th>NLP</th>
-<th>flying</th>
-<th>.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>I</td>
-<td>0</td>
-<td>2</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>like</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>enjoy</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>deep</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>learning</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>NLP</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>flying</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>.</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>这样的话不同的词向量之间就不再是正交的了，可以一定程度上用来计算单词间的相似度。然而，这种方法还是没法摆脱数据稀疏和维度灾难的问题。</p>
-<p>于是语言学家们就很常识性地想到了将共现矩阵进行降维，进而得到单词的稠密表示 (dense representation)。一个很常见的方法就是使用奇异值分解 (SVD)，然而 SVD 是一个计算复杂度高昂 (O($mn^2$)) 的算法，无法在实际环境中使用。因而就需要有其它的方式来对共现矩阵进行降维，这就轮到本课的主题 Word2Vec 出马了。</p>
 <h1 id="Word2Vec"><a href="#Word2Vec" class="headerlink" title="Word2Vec"></a>Word2Vec</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>首先我们需要先定义一下预测单词上下文的模型及损失函数：</p>
 <p>$p(context | w_t) = …$</p>
 <p>$J = 1 - p(w_{-t} | w_t)$</p>
@@ -462,7 +347,7 @@
 <p>然后，目标函数定义为所有位置的预测结果的乘积：<img src="/picture/lec2/006Fmjmcly1fgcn8dsnw5j318q08m41y.jpg" alt="006Fmjmcly1fgcn8dsnw5j318q08m41y"></p>
 <p>为了方便计算，加个负对数得到最终的损失函数，这样问题就转化为最小化损失函数了：<img src="/picture/lec2/006Fmjmcly1fgcn9ndo8dj316s092jwj.jpg" alt="006Fmjmcly1fgcn9ndo8dj316s092jwj"></p>
 <p>接下来就是上几张大家不知道见过多少遍的经典模型图了，以下分别为 CBOW 模型和 SG 模型：<img src="/picture/lec2/6cbb8645gw1f5to6e5d9lj216c0qkwhk.jpg" alt="6cbb8645gw1f5to6e5d9lj216c0qkwhk"></p>
-<h2 id="CBOW-模型流程"><a href="#CBOW-模型流程" class="headerlink" title="CBOW 模型流程"></a>CBOW 模型流程</h2><p>这里参考知乎上<a href="https://www.zhihu.com/question/44832436/answer/266068967" target="_blank" rel="noopener">crystlajj的回答</a>，并偷懒盗用了不少图：</p>
+<h2 id="模型流程"><a href="#模型流程" class="headerlink" title="模型流程"></a>模型流程</h2><p>这里参考知乎上<a href="https://www.zhihu.com/question/44832436/answer/266068967" target="_blank" rel="noopener">crystlajj的回答</a>，并偷懒盗用了不少图，以 CBOW 模型的流程为例：</p>
 <blockquote>
 <ol>
 <li>输入层：上下文单词的 onehot. {假设单词向量空间dim为V，上下文单词个数为C}</li>
@@ -501,10 +386,10 @@
 <p>因此就提出了 NS 方法，顾名思义，NS 即随机挑选出一些负例。采样的算法思想都应该保证频次越高的样本越容易被采集到，因此，NS 算法基本的思路是对于长度为1的线段，根据词语的词频将其公平地分配给每个词语：</p>
 <p>$len(w) = \frac{cnt(w)^N}{\sum_{u\epsilon D}cnt(u)^N}$</p>
 <p>所以就可以根据词频来分配线段中每个词所占有的长度了。这里 Word2Vec 为了提高效率，用了点小 trick，即将原本线段标上 M 个刻度，这样就不需要浮点数的操作，而是直接使用 0-M 间的整数，经过查表就可以得知该取哪个单词了。</p>
-<p>注意这个 len(w) 的计算有包含一个幂计算 (N)，这实际上是一种平滑的策略，可以缩小高频词的值，增大低频词的值。</p>
+<p>注意这个 len(w) 的计算有包含一个幂计算 (N)，这实际上是一种平滑的策略，可以增大低频词的值，使之更容易被采样到。</p>
 <hr>
-<p>以上大概就是本节课的内容和扩展，实际上课程里头还包含了一些数学知识的复习和 sgd 算法的推导。</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<p>以上大概就是本节课的内容和扩展，实际上课程里头还包含了一些数学知识的复习和 sgd 算法的推导，觉得过于老生常谈，就不拿出来说了，之后如果有相似的内容也会一样跳过。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
 <li><a href="https://www.youtube.com/watch?v=ERibwqs9p38&amp;t=0s&amp;list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6&amp;index=3" target="_blank" rel="noopener">cs224n lecture2</a></li>
 <li><a href="http://web.stanford.edu/class/cs224n/lectures/lecture2.pdf" target="_blank" rel="noopener">cs224n lecture2 slides</a></li>
 <li><a href="http://www.hankcs.com/nlp/word-vector-representations-word2vec.html" target="_blank" rel="noopener">cs224n笔记2 词的向量表示</a></li>
@@ -569,7 +454,7 @@
         <p><span>Title:</span><a href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 06 - 02 : 12</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 17 : 42</p>
+        <p><span>Update:</span>2018 : 07 : 08 - 19 : 27</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/" title="CS224n学习笔记 Lecture 2 Word Vector Representations word2vec">http://hsiaoyetgun.github.io/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -585,7 +470,7 @@
 
 <nav id="article-nav">
   
-    <a href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
@@ -607,7 +492,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何表示词的意思"><span class="toc-number">1.</span> <span class="toc-text">如何表示词的意思</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在计算机中我们该如何得到可用的词意"><span class="toc-number">2.</span> <span class="toc-text">在计算机中我们该如何得到可用的词意</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#从-symbolic-representations-到-distributed-representations"><span class="toc-number">3.</span> <span class="toc-text">从 symbolic representations 到 distributed representations</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Word2Vec"><span class="toc-number">4.</span> <span class="toc-text">Word2Vec</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">4.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Word2Vec-的主要思想"><span class="toc-number">4.2.</span> <span class="toc-text">Word2Vec 的主要思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CBOW-模型流程"><span class="toc-number">4.3.</span> <span class="toc-text">CBOW 模型流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Word2Vec-优化"><span class="toc-number">4.4.</span> <span class="toc-text">Word2Vec 优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hierarchical-softmax"><span class="toc-number">4.4.1.</span> <span class="toc-text">Hierarchical softmax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Negative-Sampling"><span class="toc-number">4.4.2.</span> <span class="toc-text">Negative Sampling</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">5.</span> <span class="toc-text">引用</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何表示词的意思"><span class="toc-number">1.</span> <span class="toc-text">如何表示词的意思</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在计算机中我们该如何得到可用的词意"><span class="toc-number">2.</span> <span class="toc-text">在计算机中我们该如何得到可用的词意</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#从-symbolic-representations-到-distributed-representations"><span class="toc-number">3.</span> <span class="toc-text">从 symbolic representations 到 distributed representations</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Word2Vec"><span class="toc-number">4.</span> <span class="toc-text">Word2Vec</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">4.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Word2Vec-的主要思想"><span class="toc-number">4.2.</span> <span class="toc-text">Word2Vec 的主要思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型流程"><span class="toc-number">4.3.</span> <span class="toc-text">模型流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Word2Vec-优化"><span class="toc-number">4.4.</span> <span class="toc-text">Word2Vec 优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hierarchical-softmax"><span class="toc-number">4.4.1.</span> <span class="toc-text">Hierarchical softmax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Negative-Sampling"><span class="toc-number">4.4.2.</span> <span class="toc-text">Negative Sampling</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 
@@ -673,7 +558,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="Prev: CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
+            <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="Prev: CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -684,7 +569,7 @@
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
