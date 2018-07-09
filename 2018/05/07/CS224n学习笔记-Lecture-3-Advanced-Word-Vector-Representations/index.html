@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3yxoldrj31de0f0q77.jpg">
-<meta property="og:updated_time" content="2018-07-08T14:07:32.592Z">
+<meta property="og:updated_time" content="2018-07-08T18:59:29.704Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
 <meta name="twitter:description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
@@ -468,8 +468,8 @@
 <li>$\frac{p_{ik}}{p_{jk}}$ 是一个标量，而 F 是直接作用在 $w_i - w_j$ 和 $w_k$ 这两个向量上的，为了把向量转化为标量，自然地就想到了用内积的方法，所以我们可以把 F 的形式进一步转化为 $F((w_i - w_j)^T w_k) = F(w_i^Tw_k - w_j^Tw_k) = \frac{p_{i,k}}{p_{j,k}}$。</li>
 <li>此时 F 的公式的形式为 $F(w_i^Tw_k - w_j^Tw_k) = \frac{p_{i,k}}{p_{j,k}}$。等号左边为差的形式，右边则是商的形式，要把差和商关联起来，作者又想到了用取指数的形式，即 $\exp(w_i^Tw_k - w_j^Tw_k) = \frac{\exp(w_i^Tw_k)}{\exp(w_j^Tw_k)} = \frac{p_{i,k}}{p_{j,k}}$。</li>
 <li>现在形式就很明朗了，我们只需让 $\exp(w_i^Tw_k) = p_{i,k}, \exp(w_j^Tw_k) = p_{j,k}$ 等式就能够成立。</li>
-<li>那么如何让 $\exp(w_i^Tw_k) = p_{i,k} = \frac{x_{i,k}}{x_i}$ 成立呢？只需让 $w_i^Twk = \log\frac{x_{i,k}}{x_i} = \log x_{i,k} - \log x_i$。</li>
-<li>又因为作为向量，i 和 k 的顺序交换后 $w_i^Tw_k$ 和 $w_k^Tw_i$ 应该是相等的，即它们应该是对称的。但上式的右边显然不符合这个条件，所以为了解决这个问题，作者又引入了两个偏置项 $b_i, b_k$，这样模型就变成了 $\log x_{i,k} = w_i^Tw_k + b_i + b_k$，其中 $b_i$ 包含了 $\log x_i$。此外还加入了 $b_k$ 来保证模型的对称性。</li>
+<li>那么如何让 $\exp(w_i^Tw_k) = p_{i,k} = \frac{x_{i,k}}{x_i}$ 成立呢？只需让 $w_i^Tw_k = \log\frac{x_{i,k}}{x_i} = \log x_{i,k} - \log x_i$。</li>
+<li>又因为作为向量，i 和 k 的顺序交换后 $w_i^Tw_k​$ 和 $w_k^Tw_i​$ 应该是相等的，即它们应该是对称的。但上式的右边显然不符合这个条件，所以为了解决这个问题，作者又引入了两个偏置项 $b_i, b_k​$，这样模型就变成了 $\log x_{i,k} = w_i^Tw_k + b_i + b_k​$，其中 $b_i​$ 包含了 $\log x_i​$。此外还加入了 $b_k​$ 来保证模型的对称性。</li>
 <li>因此，我们就可以得到 GloVe 的目标函数了：$J = \sum_{i,k}(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
 <li>再考虑到出现频率越高的词对权重的影响应该越大这个原则，我们需要在目标函数里加一个频率权重项 $f(x_{i, k})$，所以最终的目标函数为：$J = \sum_{ik}f(x_{i,k})(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
 </ol>
@@ -572,7 +572,7 @@
         <p><span>Title:</span><a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 07 - 19 : 23</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 22 : 07</p>
+        <p><span>Update:</span>2018 : 07 : 09 - 02 : 59</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -660,7 +660,7 @@
 <script src="/js/gitment.browser.js"></script>
 <script>
     var gitment = new Gitment({
-      id: 'CS224n学习笔记 Lecture 3 Advanced Word Vector Representations',
+      id: 'Mon May 07 2018 19:23:06 GMT+0800',
       owner: 'HsiaoYetGun',
       repo: 'HsiaoYetGun.github.io',
       oauth: {
@@ -687,7 +687,7 @@
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-word-embedding/">A review on word embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
