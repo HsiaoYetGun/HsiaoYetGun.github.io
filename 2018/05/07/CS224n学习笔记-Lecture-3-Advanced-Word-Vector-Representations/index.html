@@ -6,7 +6,7 @@
   <title>CS224n学习笔记 Lecture 3 Advanced Word Vector Representations | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
-<meta name="keywords" content="cs224n,NLP,Word Embedding">
+<meta name="keywords" content="CS224n,NLP,Word Embedding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/index.html">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3ddvzkvj31ay07eabj.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3jyad41j31fg0nyk4t.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec3/006Fmjmcly1fge3yxoldrj31de0f0q77.jpg">
-<meta property="og:updated_time" content="2018-07-08T18:59:29.704Z">
+<meta property="og:updated_time" content="2018-07-09T08:30:13.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
 <meta name="twitter:description" content="这节课一开始先回顾了一下上节课的内容，Word2Vec。">
@@ -155,7 +155,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 10px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/Word-Embedding/" style="font-size: 16.67px;">Word Embedding</a> <a href="/tags/cs224n/" style="font-size: 13.33px;">cs224n</a>
+                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 15px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/Word-Embedding/" style="font-size: 15px;">Word Embedding</a>
                     </div>
                 </section>
                 
@@ -267,7 +267,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word-Embedding/">Word Embedding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cs224n/">cs224n</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS224n/">CS224n</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Word-Embedding/">Word Embedding</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -469,7 +469,7 @@
 <li>此时 F 的公式的形式为 $F(w_i^Tw_k - w_j^Tw_k) = \frac{p_{i,k}}{p_{j,k}}$。等号左边为差的形式，右边则是商的形式，要把差和商关联起来，作者又想到了用取指数的形式，即 $\exp(w_i^Tw_k - w_j^Tw_k) = \frac{\exp(w_i^Tw_k)}{\exp(w_j^Tw_k)} = \frac{p_{i,k}}{p_{j,k}}$。</li>
 <li>现在形式就很明朗了，我们只需让 $\exp(w_i^Tw_k) = p_{i,k}, \exp(w_j^Tw_k) = p_{j,k}$ 等式就能够成立。</li>
 <li>那么如何让 $\exp(w_i^Tw_k) = p_{i,k} = \frac{x_{i,k}}{x_i}$ 成立呢？只需让 $w_i^Tw_k = \log\frac{x_{i,k}}{x_i} = \log x_{i,k} - \log x_i$。</li>
-<li>又因为作为向量，i 和 k 的顺序交换后 $w_i^Tw_k​$ 和 $w_k^Tw_i​$ 应该是相等的，即它们应该是对称的。但上式的右边显然不符合这个条件，所以为了解决这个问题，作者又引入了两个偏置项 $b_i, b_k​$，这样模型就变成了 $\log x_{i,k} = w_i^Tw_k + b_i + b_k​$，其中 $b_i​$ 包含了 $\log x_i​$。此外还加入了 $b_k​$ 来保证模型的对称性。</li>
+<li>又因为作为向量，i 和 k 的顺序交换后 $w_i^Tw_k$ 和 $w_k^Tw_i$ 应该是相等的，即它们应该是对称的。但上式的右边显然不符合这个条件，所以为了解决这个问题，作者又引入了两个偏置项 $b_i, b_k$，这样模型就变成了 $\log x_{i,k} = w_i^Tw_k + b_i + b_k$，其中 $b_i$ 包含了 $\log x_i$。此外还加入了 $b_k$ 来保证模型的对称性。</li>
 <li>因此，我们就可以得到 GloVe 的目标函数了：$J = \sum_{i,k}(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
 <li>再考虑到出现频率越高的词对权重的影响应该越大这个原则，我们需要在目标函数里加一个频率权重项 $f(x_{i, k})$，所以最终的目标函数为：$J = \sum_{ik}f(x_{i,k})(w_i^Tw_k + b_i + b_k - \log x_{i,k})^2$。</li>
 </ol>
@@ -572,7 +572,7 @@
         <p><span>Title:</span><a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 07 - 19 : 23</p>
-        <p><span>Update:</span>2018 : 07 : 09 - 02 : 59</p>
+        <p><span>Update:</span>2018 : 07 : 09 - 16 : 30</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
