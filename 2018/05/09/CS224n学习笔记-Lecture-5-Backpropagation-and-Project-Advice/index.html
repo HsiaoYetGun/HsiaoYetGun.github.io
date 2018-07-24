@@ -5,18 +5,45 @@
   
   <title>CS224n学习笔记 Lecture 5 Backpropagation and Project Advice | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理中，待上传…">
+  <meta name="description" content="印象中几乎所有 ML / DL 课程都会介绍一遍 BP 算法，本门课也绕不过 BP 这座山。这节课主要介绍的是 BP 算法和对课程项目的一些建议，因为前者已经是老生常谈的了，所以只能写写后者了。">
 <meta name="keywords" content="人工智障，NLP，Bioinformatics">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
-<meta property="og:description" content="整理中，待上传…">
+<meta property="og:description" content="印象中几乎所有 ML / DL 课程都会介绍一遍 BP 算法，本门课也绕不过 BP 这座山。这节课主要介绍的是 BP 算法和对课程项目的一些建议，因为前者已经是老生常谈的了，所以只能写写后者了。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-08T14:10:08.736Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445094856.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445159668.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445218797.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445350647.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445416697.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445473185.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445535256.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532446379028.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/2.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/3.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/4.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/5.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/6.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/7.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge2zd5tcj30id0cr75r.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge408mygj30m40cw40p.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge4ywkerj30l70cmq4j.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge5ww9dzj30ox0eijub.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge8sex75j30o40e5tbw.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fgge9mdibhj30og0ee783.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/006Fmjmcly1fggeff92m3j30o409a3zs.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/41.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/42.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/43.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/44.jpg">
+<meta property="og:updated_time" content="2018-07-24T17:18:40.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">
-<meta name="twitter:description" content="整理中，待上传…">
+<meta name="twitter:description" content="印象中几乎所有 ML / DL 课程都会介绍一遍 BP 算法，本门课也绕不过 BP 这座山。这节课主要介绍的是 BP 算法和对课程项目的一些建议，因为前者已经是老生常谈的了，所以只能写写后者了。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5/1532445094856.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -264,8 +291,96 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>整理中，待上传…</p>
+        <p>印象中几乎所有 ML / DL 课程都会介绍一遍 BP 算法，本门课也绕不过 BP 这座山。这节课主要介绍的是 BP 算法和对课程项目的一些建议，因为前者已经是老生常谈的了，所以只能写写后者了。</p>
 <a id="more"></a>
+<p>本门课程是从 4 个不同的角度来讲解 BP 算法的：</p>
+<h1 id="通用公式"><a href="#通用公式" class="headerlink" title="通用公式"></a>通用公式</h1><p>关于 BP 算法的通用公式推导，我还是继续安利一下<a href="/file/BP.pdf">这篇文章</a>。</p>
+<h1 id="电路图"><a href="#电路图" class="headerlink" title="电路图"></a>电路图</h1><p>课程中举了这么一个例子，我们可以将函数 $f(x,y,z) = (x+y)z$ 视为下图的加法器和乘法器电路：</p>
+<p><img src="/picture/cs224n/lec5/1532445094856.jpg" alt="1532445094856"></p>
+<p>为了方便计算，我们把中间过程给表示出来，令 $q = x+y , f = qz$，所以则有 $\frac{\partial q}{\partial x} = 1，\frac{\partial q}{\partial y}=1，\frac{\partial f}{\partial q} = z，\frac{\partial f}{\partial z} = q$。从而问题变为求 $\frac{\partial f}{\partial x}，\frac{\partial f}{\partial y}，\frac{\partial f}{\partial z}$，如下图所示：</p>
+<p><img src="/picture/cs224n/lec5/1532445159668.jpg" alt="1532445159668"></p>
+<p>接着我们从输出到输入一步步地分别反向求导计算，过程如下面图片所示：</p>
+<p><img src="/picture/cs224n/lec5/1532445218797.jpg" alt="1532445218797"></p>
+<p><img src="/picture/cs224n/lec5/1532445350647.jpg" alt="1532445350647"></p>
+<p><img src="/picture/cs224n/lec5/1532445416697.jpg" alt="1532445416697"></p>
+<p><img src="/picture/cs224n/lec5/1532445473185.jpg" alt="1532445473185"></p>
+<p><img src="/picture/cs224n/lec5/1532445535256.jpg" alt="1532445535256"></p>
+<p>这一过程就是我们所说的反向传播的过程了。在反向传播的过程中，我们保留了一个个中间变量，即局部的梯度，这样我们继续反向求导的时候只需用链式法则直接乘以本级的导数即可，节省了大量的重复计算。</p>
+<p><img src="/picture/cs224n/lec5/1532446379028.jpg" alt="1532446379028"></p>
+<p>再放一个复杂点的例子，请自行跟着图片过一遍流程：</p>
+<p><img src="/picture/cs224n/lec5/1.jpg" alt="1"></p>
+<p><img src="/picture/cs224n/lec5/2.jpg" alt="1"></p>
+<p><img src="/picture/cs224n/lec5/3.jpg" alt="1"></p>
+<p><img src="/picture/cs224n/lec5/4.jpg" alt="1"></p>
+<p><img src="/picture/cs224n/lec5/5.jpg" alt="1"></p>
+<p><img src="/picture/cs224n/lec5/6.jpg" alt="1"></p>
+<p>我们注意到电路图的右边其实是一个 sigmoid 门，由于 sigmoid 函数的导数形式很优雅：$\frac{d \sigma(x)}{dx}=\frac{\exp^{-x}}{(1+e^{-x})^2}=(\frac{1+e^{-x}-1}{1+e^{-x}})(\frac{1}{1+e^{-x}})=(1-\sigma(x))\sigma(x)$，因而可以简便地直接将后面几步合并起来带入计算。</p>
+<p><img src="/picture/cs224n/lec5/7.jpg" alt="1"></p>
+<h1 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h1><p>流程图的解释方式也是很有意思的，我们可以将网络视为一个有向无环图来理解。</p>
+<p>1条路径：</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fgge2zd5tcj30id0cr75r.jpg" alt="006Fmjmcly1fgge2zd5tcj30id0cr75r"></p>
+<p>2条路径：</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fgge408mygj30m40cw40p.jpg" alt="006Fmjmcly1fgge408mygj30m40cw40p"></p>
+<p>多条路径：<img src="/picture/cs224n/lec5/006Fmjmcly1fgge4ywkerj30l70cmq4j.jpg" alt="006Fmjmcly1fgge4ywkerj30l70cmq4j"></p>
+<p>复杂的流程图：</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fgge5ww9dzj30ox0eijub.jpg" alt="006Fmjmcly1fgge5ww9dzj30ox0eijub"></p>
+<p>哪怕你带有激活函数，也是以一样的方式来进行反向地传递梯度，我们所需要做的就是先找出某个结点的各个父结点，然后再用链式法则并且求和：</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fgge8sex75j30o40e5tbw.jpg" alt="006Fmjmcly1fgge8sex75j30o40e5tbw"></p>
+<p>由这些图可以看出，其实对复杂网络进行反向传播计算还是挺麻烦的，所幸现在有一些软件包可以替我们完成这些计算。</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fgge9mdibhj30og0ee783.jpg" alt="006Fmjmcly1fgge9mdibhj30og0ee783"></p>
+<h1 id="误差信号"><a href="#误差信号" class="headerlink" title="误差信号"></a>误差信号</h1><p>误差信号的传播这块举的是一个两层的神经网络为例：</p>
+<p><img src="/picture/cs224n/lec5/006Fmjmcly1fggeff92m3j30o409a3zs.jpg" alt="006Fmjmcly1fggeff92m3j30o409a3zs"></p>
+<p>假设我们想要得到最初输入的导数，并且 $f=\sigma$ 则误差传播的流程如下所示，首先我们求的是最后一层对 $z^{(3)}$ 的误差 $\delta^{(3)}$：</p>
+<p><img src="/picture/cs224n/lec5/41.jpg" alt="006Fmjmcly1fggekfl67bj30l10at74s"></p>
+<p>结合以下两图可以得知，对于线性层，我们直接做矩阵乘法即可，而对于非线性层，则是做逐元素相乘。我们可以知道 $W^{(2)}$ 的导数为 $\delta^{(3)}a^{(2)T}$。</p>
+<p><img src="/picture/cs224n/lec5/42.jpg" alt="006Fmjmcly1fggenlhz6jj30l509uq3k"></p>
+<p><img src="/picture/cs224n/lec5/43.jpg" alt="006Fmjmcly1fgger4utr0j30lp0bd0tm"></p>
+<p>最终我们将误差信号从输出层传回了输入层，对于 $W^{(1)}$ 的导数为 $\delta^{(2)}a^{(1)T}$。</p>
+<p><img src="/picture/cs224n/lec5/44.jpg" alt="006Fmjmcly1fggetfyqytj30mt0ay3z5"></p>
+<p>在经历 4 轮的轰炸之后，最终 Socher 小哥庆祝了一下大家还存活着。跟着课程过一遍 4 种角度的 BP 算法解读后，应该大家都能够对这个算法有所了解。</p>
+<p>这里真的很想吐槽一下，某 A 厂的面试官，对面抛出了一个“你能解释一下 BP 神经网络和深度神经网络的区别吗？”的高难问题，我真的是一副被你打败了的表情，虽然在电话那头的你并不能看见。(手动微笑)</p>
+<p>#课程项目的建议</p>
+<p>这是对于这门课的 project 的建议，不过我认为还是蛮有道理的，姑且把几条建议给放出来：</p>
+<ol>
+<li>明确你的任务</li>
+<li>明确你的数据集<ol>
+<li>可以直接使用标准数据集</li>
+<li>自己去搜集数据，但要注意别在抓取数据上花费太多时间，这样就本末倒置了</li>
+</ol>
+</li>
+<li>明确你的评估指标</li>
+<li>划分数据集</li>
+<li>建立起一个 baseline<ol>
+<li>先去实现一个最简单的模型，比如 LR。空中楼阁是不靠谱的，我们还是要脚踏实地一步一步地走</li>
+<li>在训练集和开发集上计算评估指标</li>
+<li>分析错误，这个是很重要的一点，先去了解 baseline 的不足之处，后续才能更好地改进模型</li>
+<li>如果效果已经很好的话，那证明这个问题太简单了，没有挑战性，就可以省下一堆时间转做其他课题了</li>
+</ol>
+</li>
+<li>复现一下已有的网络模型<ol>
+<li>同样在训练集合开发集上计算评估指标</li>
+<li>分析输出和错误</li>
+<li>讲已有的模型作为本课程需要实现的最低标准</li>
+<li>[<strong>个人补充：将已有的模型扩展到新的领域上也是一种贡献，其实没必要整天就想着整个新模型出来，搞个大新闻</strong>]</li>
+</ol>
+</li>
+<li>确保一直围绕在数据左右<ol>
+<li>可视化数据集</li>
+<li>搜集总结、统计</li>
+<li>观察错误</li>
+<li>分析不同参数下对性能的影响</li>
+<li>[<strong>个人补充：其实这里最重要的一点就是要确保自己的模型是由数据驱动的，一定要形成”数据驱动”的观念</strong>]</li>
+</ol>
+</li>
+<li>尝试修改模型，这时候可以考虑不同模型的优缺点，自行整合它们来达到目的</li>
+</ol>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://www.youtube.com/watch?v=ERibwqs9p38&amp;t=0s&amp;list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6&amp;index=5" target="_blank" rel="noopener">cs224n lecture5</a></li>
+<li><a href="http://web.stanford.edu/class/cs224n/lectures/lecture5.pdf" target="_blank" rel="noopener">cs224n lecture5 slide</a></li>
+<li><a href="/file/BP.pdf">BP算法原理和详细推导流程</a></li>
+<li><a href="http://www.hankcs.com/nlp/cs224n-backpropagation-and-project-advice.html" target="_blank" rel="noopener">CS224n笔记5 反向传播与项目指导</a></li>
+</ol>
+
       
       
         <div class="page-reward">
@@ -323,7 +438,7 @@
         <p><span>Title:</span><a href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 09 - 18 : 34</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 22 : 10</p>
+        <p><span>Update:</span>2018 : 07 : 25 - 01 : 18</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/" title="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -361,7 +476,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#通用公式"><span class="toc-number">1.</span> <span class="toc-text">通用公式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#电路图"><span class="toc-number">2.</span> <span class="toc-text">电路图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#流程图"><span class="toc-number">3.</span> <span class="toc-text">流程图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#误差信号"><span class="toc-number">4.</span> <span class="toc-text">误差信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 

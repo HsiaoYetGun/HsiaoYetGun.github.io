@@ -6,7 +6,7 @@
   <title>A review on embedding | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
-<meta name="keywords" content="Review,Deep Learning,NLP,Word Embedding">
+<meta name="keywords" content="NLP,Word Embedding,Review,Deep Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A review on embedding">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/index.html">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/a9781307fe0c25097e3674bc72d6d372_hd.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531071540664.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1532355203743.jpg">
-<meta property="og:updated_time" content="2018-07-23T14:59:45.455Z">
+<meta property="og:updated_time" content="2018-07-24T11:47:50.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A review on embedding">
 <meta name="twitter:description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
@@ -309,7 +309,7 @@
 <p>进而最大化其似然函数可得目标函数为：<img src="/picture/embedding/1531068727395.jpg" alt="1531068727395"></p>
 <h3 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h3><p>ELMo 是双向语言模型 biLM 的多层表示的组合，对于某一个词语 $t_k$，一个 L 层的双向语言模型 biLM 能够由 2L+1 个向量表示。</p>
 <p><img src="/picture/embedding/1531068763958.jpg" alt="1531068763958"></p>
-<p>ELMo 将多层的 biLM 的输出 R 整合成一个向量，$ELMo_k = E(R_k;\theta_e)$。不同层的隐藏状态保留了不同层次的单词信息，一种比较简单的方法是直接拿最顶层的隐藏状态作为词向量，而最好的方法则是将 biLM 层所有层的输出加上一个正则化的 softmax 得到的权重向量。</p>
+<p>ELMo 将多层的 biLM 的输出 $R$ 整合成一个向量，$ELMo_k = E(R_k; \theta_e)$。不同层的隐藏状态保留了不同层次的单词信息，一种比较简单的方法是直接拿最顶层的隐藏状态作为词向量，而最好的方法则是将 biLM 层所有层的输出加上一个正则化的 softmax 得到的权重向量。</p>
 <p><img src="/picture/embedding/1531068782855.jpg" alt="1531068782855"></p>
 <p>其中 $\gamma$ 是缩放因子，作用类似于 LN。</p>
 <p>论文里头没有给出模型图，因为时间关系，我就随便上网扒了一张 ELMo 的模型图，不过我发现这图是有错误的，姑且放上来凑个数。论文中对模型的描述为</p>
@@ -448,7 +448,7 @@
         <p><span>Title:</span><a href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 07 : 09 - 00 : 17</p>
-        <p><span>Update:</span>2018 : 07 : 23 - 22 : 59</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 19 : 47</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/07/09/A-review-on-embedding/" title="A review on embedding">http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
