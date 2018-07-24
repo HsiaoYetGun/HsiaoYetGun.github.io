@@ -13,18 +13,18 @@
 <meta property="og:site_name" content="如果没有人看着我">
 <meta property="og:description" content="cs224n 这门课很有意思的一个地方在于教授会让 TA 在中场休息时候花个 5 分钟左右的时间来讲一下当前的研究亮点。我觉得这点很可取，这么做有助于学生开拓思路、紧跟当下热点，可惜这种做法在国内的大学中是很少能够看见。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpbqtnyjj315w0ty780.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpc94vhpj31ck0ecq54.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpcljpmaj319e0i047r.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpd1w9pwj31840y0ths.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpdhvoozj312o0vm0yf.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcph0xexsj31d00so4im.jpg">
-<meta property="og:updated_time" content="2018-07-09T08:30:22.321Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpbqtnyjj315w0ty780.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpc94vhpj31ck0ecq54.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpcljpmaj319e0i047r.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpd1w9pwj31840y0ths.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpdhvoozj312o0vm0yf.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcph0xexsj31d00so4im.jpg">
+<meta property="og:updated_time" content="2018-07-23T18:13:43.083Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding">
 <meta name="twitter:description" content="cs224n 这门课很有意思的一个地方在于教授会让 TA 在中场休息时候花个 5 分钟左右的时间来讲一下当前的研究亮点。我觉得这点很可取，这么做有助于学生开拓思路、紧跟当下热点，可惜这种做法在国内的大学中是很少能够看见。">
-<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/lec2%20rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec2%20rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -281,27 +281,27 @@
 <p>这个小讲座讲的是发表在 ICLR17 的一篇文章，<a href="https://openreview.net/pdf?id=SyK00v5xx" target="_blank" rel="noopener">A SIMPLE BUT TOUGH-TO-BEAT BASELINE FOR SEN- TENCE EMBEDDINGS</a>。</p>
 <h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><p>本文是用无监督方法做句子级别的 embedding，用的是一个十分简单但却又很有效的传统方法，这在神经网络泛滥的年代算是一股清流了。</p>
 <p>作者做 word2sen 的动机是想要得到句子的词向量，这样就可以进行句子间的相似度计算了。除此之外，还能在这些句向量的基础上构建分类器来做情感分析的研究。</p>
-<p><img src="/picture/lec2 rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg" alt="006Fmjmcly1fgcpbde95dj31cg0s6gpw"></p>
-<p><img src="/picture/lec2 rh/006Fmjmcly1fgcpbqtnyjj315w0ty780.jpg" alt="006Fmjmcly1fgcpbqtnyjj315w0ty780"></p>
+<p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpbde95dj31cg0s6gpw.jpg" alt="006Fmjmcly1fgcpbde95dj31cg0s6gpw"></p>
+<p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpbqtnyjj315w0ty780.jpg" alt="006Fmjmcly1fgcpbqtnyjj315w0ty780"></p>
 <h1 id="已有方法"><a href="#已有方法" class="headerlink" title="已有方法"></a>已有方法</h1><p>稍微介绍一下目前已有的方法。</p>
 <ol>
 <li><p>基于无监督的线性变换的方法。例如简单的对词向量求平均，或者对词向量进行加权平均 (例如以 TF-IDF 为权值)。</p>
-<p><img src="/picture/lec2 rh/006Fmjmcly1fgcpc94vhpj31ck0ecq54.jpg" alt="006Fmjmcly1fgcpc94vhpj31ck0ecq54"></p>
+<p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpc94vhpj31ck0ecq54.jpg" alt="006Fmjmcly1fgcpc94vhpj31ck0ecq54"></p>
 </li>
-<li><p>基于有监督的神经网络的方法。例如各种满天乱飞的 CNN, RNN (Recurrent), RNN (Recursive) 模型得到的句向量。<img src="/picture/lec2 rh/006Fmjmcly1fgcpcljpmaj319e0i047r.jpg" alt="006Fmjmcly1fgcpcljpmaj319e0i047r"></p>
+<li><p>基于有监督的神经网络的方法。例如各种满天乱飞的 CNN, RNN (Recurrent), RNN (Recursive) 模型得到的句向量。<img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpcljpmaj319e0i047r.jpg" alt="006Fmjmcly1fgcpcljpmaj319e0i047r"></p>
 </li>
 </ol>
 <h1 id="本文方法"><a href="#本文方法" class="headerlink" title="本文方法"></a>本文方法</h1><p>作者将该算法称为 WR，W 表示 Weighted，根据预设的超参数和词频给每个词向量赋予权重。R 表示 Removal，使用PCA移除句向量中的无关部分。 </p>
-<p><img src="/picture/lec2 rh/006Fmjmcly1fgcpd1w9pwj31840y0ths.jpg" alt="006Fmjmcly1fgcpd1w9pwj31840y0ths"></p>
+<p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpd1w9pwj31840y0ths.jpg" alt="006Fmjmcly1fgcpd1w9pwj31840y0ths"></p>
 <p>算法流程分为两步：</p>
 <ol>
 <li>W 步：对于句子中的每个词向量乘以一个独特的权值，即 $\frac{a}{a+p(w)}$，其中 $a$ 为一个常数 (论文中建议 $a$ 的范围： [$1e−4,1e−3$] )， $p(w)$ 为该词的频率。</li>
 <li>R 步：计算语料库所有句向量构成的矩阵的第一个主成分 $u$，让每个句向量减去它在 $u$ 上的投影 (类似 PCA)。其中，一个向量 $v$ 在另一个向量 $u$ 上的投影定义为：$Proj_uv = \frac{uu^Tv}{||u||^2}$。</li>
 </ol>
-<h1 id="概率论解释"><a href="#概率论解释" class="headerlink" title="概率论解释"></a>概率论解释</h1><p><img src="/picture/lec2 rh/006Fmjmcly1fgcpdhvoozj312o0vm0yf.jpg" alt="006Fmjmcly1fgcpdhvoozj312o0vm0yf"></p>
+<h1 id="概率论解释"><a href="#概率论解释" class="headerlink" title="概率论解释"></a>概率论解释</h1><p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcpdhvoozj312o0vm0yf.jpg" alt="006Fmjmcly1fgcpdhvoozj312o0vm0yf"></p>
 <p>其原理是，给定上下文向量，一个词的出现概率由两项决定：作为平滑项的词频，以及上下文。其中第二项的意思是，有一个平滑变动的上下文随机地发射单词。</p>
 <p>这篇文章我没有看过原文，这里其实并不是完全理解，等之后再来填坑。</p>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="/picture/lec2 rh/006Fmjmcly1fgcph0xexsj31d00so4im.jpg" alt="006Fmjmcly1fgcph0xexsj31d00so4im"></p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="/picture/cs224n/lec2 rh/006Fmjmcly1fgcph0xexsj31d00so4im.jpg" alt="006Fmjmcly1fgcph0xexsj31d00so4im"></p>
 <p>取得了一个不错的结果，但是比 LSTM 效果好这种说法不太妥当，这得取决于实际的任务。</p>
 <p>不过无论如何，这种方法运行耗时短，结果又不错，可以当做一个很好的 baseline。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
@@ -366,7 +366,7 @@
         <p><span>Title:</span><a href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 06 - 11 : 59</p>
-        <p><span>Update:</span>2018 : 07 : 09 - 16 : 30</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 02 : 13</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/" title="CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding">http://hsiaoyetgun.github.io/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>

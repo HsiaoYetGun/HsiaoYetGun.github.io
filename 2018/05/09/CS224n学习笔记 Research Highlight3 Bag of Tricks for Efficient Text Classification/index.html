@@ -13,14 +13,14 @@
 <meta property="og:site_name" content="如果没有人看着我">
 <meta property="og:description" content="本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg">
-<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg">
-<meta property="og:updated_time" content="2018-07-09T08:30:30.217Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5%20rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5%20rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg">
+<meta property="og:updated_time" content="2018-07-23T18:13:57.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">
 <meta name="twitter:description" content="本文是 FAIR 在 ACL17 上面的一篇文章。目的是为了解决 NLP 中常见的文本分类问题，并且能够产生词向量作为副产物。">
-<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec5%20rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -277,7 +277,7 @@
 <p>本文提出了大名鼎鼎的 <a href="https://github.com/facebookresearch/fastText" target="_blank" rel="noopener">fastText</a> 工具，训练速度很快，而且效果可以跟深度神经网络相当。</p>
 <p>本文的作者是 Mikolov，即也是 Word2Vec 的作者，这篇文章在模型架构上跟 Word2Vec 很相似，因为之前已经有详细写过 <a href="https://hsiaoyetgun.github.io/2018/05/06/CS224n%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Lecture-2-Word-Vector-Representations-word2vec/">Word2Vec</a> ，在此就简单说一下他们的区别。</p>
 <h1 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h1><p>本篇文章的方法部分大概可以分为三块 (虽然按标题看只有两段)：fastText 模型架构、Hierarchical softmax、N-gram features。</p>
-<h2 id="fastText-模型架构"><a href="#fastText-模型架构" class="headerlink" title="fastText 模型架构"></a>fastText 模型架构</h2><p><img src="/picture/lec5 rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg" alt="006Fmjmcly1fggfg4an8uj30os0d4dgk"></p>
+<h2 id="fastText-模型架构"><a href="#fastText-模型架构" class="headerlink" title="fastText 模型架构"></a>fastText 模型架构</h2><p><img src="/picture/cs224n/lec5 rh/006Fmjmcly1fggfg4an8uj30os0d4dgk.jpg" alt="006Fmjmcly1fggfg4an8uj30os0d4dgk"></p>
 <p>fastText 的模型架构部分跟 CBOW 很相似，这里直接说区别：</p>
 <table>
 <thead>
@@ -306,11 +306,11 @@
 </tbody>
 </table>
 <p>fastText 的核心思想：将整篇文档的词及 n-gram 向量叠加平均得到文档向量，然后用 hierarchical softmax 做分类。</p>
-<h2 id="Hierarchical-softmax"><a href="#Hierarchical-softmax" class="headerlink" title="Hierarchical softmax"></a>Hierarchical softmax</h2><p>其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。<img src="/picture/lec5 rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg" alt="006Fmjmcly1fggfinvdyxj30ox0eljtw"></p>
+<h2 id="Hierarchical-softmax"><a href="#Hierarchical-softmax" class="headerlink" title="Hierarchical softmax"></a>Hierarchical softmax</h2><p>其实这块没什么好说的，只是把 CBOW 进行的输出端中心词分类换成了对于文档的分类，依照文档的类别建 huffman 树。<img src="/picture/cs224n/lec5 rh/006Fmjmcly1fggfinvdyxj30ox0eljtw.jpg" alt="006Fmjmcly1fggfinvdyxj30ox0eljtw"></p>
 <h2 id="N-gram-features"><a href="#N-gram-features" class="headerlink" title="N-gram features"></a>N-gram features</h2><p>这块其实是一种很常见的方法，我们知道预训练所得的词向量是固定的，这在于文本分类的任务中，将会丢失一些句子 \ 文档环境中的上下文信息。于是思路就很自然地想到了用 N-gram 的方法来捕获一些上下文信息。</p>
 <p>这里需要提及的是本文中使用的 n-gram 是词级别的，举个例子：</p>
 <p>关于句子 “Bag of Tricks for Efficient Text Classification”，假设 n 取 3，则整个句子就变为 (“Bag of”, “Bag of Tricks”, “of Tricks for”, “Tricks for Efficient”, …)。</p>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="/picture/lec5 rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg" alt="006Fmjmcly1fggfltgxwcj30pl0dewgh"></p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p><img src="/picture/cs224n/lec5 rh/006Fmjmcly1fggfltgxwcj30pl0dewgh.jpg" alt="006Fmjmcly1fggfltgxwcj30pl0dewgh"></p>
 <p>直接上图，效果不错。fastText 宣扬了一下奥卡姆剃刀的思想，“杀鸡焉用牛刀”。不过得注意一下，fastText 的输入是 embedding 后的词向量，本身就包含了单词的相似度、语义、语法信息，这是其除了 N-gram 外提升精度的另一个原因。</p>
 <p>本文其实并没有太多好讲的地方，不过跟其同阶段提出的 <a href="https://arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a> 很值得学习，这篇文章我在 <a href="https://hsiaoyetgun.github.io/2018/07/09/A-review-on-word-embedding/">A review on word embedding</a> 进行了介绍。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
@@ -376,7 +376,7 @@
         <p><span>Title:</span><a href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 09 - 22 : 56</p>
-        <p><span>Update:</span>2018 : 07 : 09 - 16 : 30</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 02 : 13</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/" title="CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>

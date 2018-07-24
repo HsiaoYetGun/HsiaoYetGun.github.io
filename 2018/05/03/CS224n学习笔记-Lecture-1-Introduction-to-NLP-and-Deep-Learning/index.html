@@ -5,18 +5,23 @@
   
   <title>CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理中，待上传…">
+  <meta name="description" content="开的一个新坑，想记录一下自己学习 CS224n 的经历，希望可以坚持到最后。">
 <meta name="keywords" content="CS224n,NLP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
-<meta property="og:description" content="整理中，待上传…">
+<meta property="og:description" content="开的一个新坑，想记录一下自己学习 CS224n 的经历，希望可以坚持到最后。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-08T14:08:48.285Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec1/006Fmjmcly1fgbheqpdgcj31as0qs0zn.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec1/006Fmjmcly1fgbjc1j7kuj30xu0v2gp4.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec1/006Fmjmcly1fgbjxsmsspj30l00qmqai.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec1/006Fmjmcly1fgbk0i7rszj30nm0rykjl.jpg">
+<meta property="og:updated_time" content="2018-07-24T02:54:12.456Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning">
-<meta name="twitter:description" content="整理中，待上传…">
+<meta name="twitter:description" content="开的一个新坑，想记录一下自己学习 CS224n 的经历，希望可以坚持到最后。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec1/006Fmjmcly1fgbheqpdgcj31as0qs0zn.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -268,8 +273,86 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>整理中，待上传…</p>
+        <p>开的一个新坑，想记录一下自己学习 CS224n 的经历，希望可以坚持到最后。</p>
 <a id="more"></a>
+<p>CS224n 是 NLP 领域很出名的一门课程，由 NLP 领域宗师级的人物 Christopher Manning 和 Richard Socher 共同授课。这门课程讲授的是 DL 下的 NLP 知识及应用，并在课间也介绍了目前各个 NLP 领域的前沿亮点研究，这种将理论基础与当下研究亮点相结合的模式我认为很适合让国内高校借鉴。跟大部分的课程一样，第一节课的内容还是比较轻松的，主要讲讲 NLP 的概念和研究范畴，以及当前的进展。</p>
+<h1 id="什么是-NLP？"><a href="#什么是-NLP？" class="headerlink" title="什么是 NLP？"></a>什么是 NLP？</h1><p>课程首先给出了对于 NLP 的定义，即 NLP 是一门包含计算机科学、人工智能以及语言学的交叉学科。</p>
+<p>NLP 的目标则是想让计算机去处理或者说是“理解”自然语言以完成有意义的任务。但是必须明确的是，以目前的研究进展来看，想要完全理解并表示出语言的意思是一个十分困难的目标，完美的语言理解就可以同强 AI 画上等号了。</p>
+<p>以某交赵某老师的说法就是 ”NLP 是 AI 领域里的高级任务，如果有什么新的方法，先拿去其他领域那边做个试验，假如行得通的话，再来试试这边高级的任务效果如何。“</p>
+<p>其实也很好理解，自然语言本身就是人类文明的一种抽象表达，是基于人类认知而产生的高层认知抽象实体，相较于 CV 和 Speech 那种底层的原始输入信号而言，更加难以处理。</p>
+<h2 id="NLP-的层次"><a href="#NLP-的层次" class="headerlink" title="NLP 的层次"></a>NLP 的层次</h2><p><img src="/picture/cs224n/lec1/006Fmjmcly1fgbheqpdgcj31as0qs0zn.jpg" alt="006Fmjmcly1fgbheqpdgcj31as0qs0zn"></p>
+<p>上述这张很好地介绍了 NLP 领域的几个大方向，最顶层即为 NLP 的两个输入来源， speech 和 text，因而需要专门的语音分析或者 OCR 等工具。</p>
+<p>接着就是对输入进行形态学的分析。这里有必要列一下形态学的概念：</p>
+<blockquote>
+<p>形态学（morphology）：形态学（又称“词汇形态学”或“词法”）是语言学的一个分支，研究词的内部结构，包括屈折变化和构词法两个部分。由于词具有语音特征、句法特征和语义特征，形态学处于音位学、句法学和语义学的结合部位，所以形态学是每个语言学家都要关注的一门学科［Matthews,2000］。</p>
+</blockquote>
+<p>紧接着就是本门课的重头戏，句法分析和语义分析。</p>
+<p>最后则是话语级别层面上的分析了，这里就需要更好地理解全文信息和上下文信息，NLU 也是目前 NLP 领域炙手可热的一个方向。</p>
+<h2 id="NLP-的应用"><a href="#NLP-的应用" class="headerlink" title="NLP 的应用"></a>NLP 的应用</h2><p>从简单到复杂地来看看 NLP 的应用场景：</p>
+<ol>
+<li>拼写检查、关键词搜索、发现同义词</li>
+<li>信息检索、文本分类</li>
+<li>机器翻译</li>
+<li>对话系统</li>
+<li>复杂的问答系统</li>
+</ol>
+<h2 id="NLP-在工业届已经起飞"><a href="#NLP-在工业届已经起飞" class="headerlink" title="NLP 在工业届已经起飞"></a>NLP 在工业届已经起飞</h2><p>NLP 在工业届的应用范围也很广，包括了：</p>
+<ol>
+<li>搜索</li>
+<li>在线广告投放</li>
+<li>自动 / 辅助翻译</li>
+<li>情感分析</li>
+<li>语音识别</li>
+<li>聊天机器人</li>
+</ol>
+<h2 id="人类语言的特殊之处"><a href="#人类语言的特殊之处" class="headerlink" title="人类语言的特殊之处"></a>人类语言的特殊之处</h2><p>人类语言是为了传递说话者 / 写作者的意思而特别构建的一套系统，这不仅只是一种环境信号而是一种刻意的沟通，并且最神奇的是，它使用的是一种简单到小屁孩都可以快速学会的编码方式。</p>
+<p>人类的语言是一种离散的、具有象征性的、明确的信号系统。</p>
+<p>人类语言可以用声音、手势、图像/文字来编码，及以它们作为载体，但是不同载体所包含的意思却是一样的。</p>
+<p>虽然人类语言是明确的符号系统，但符号传输到大脑的过程是通过连续的声学光学信号，大脑编码似乎是连续的激活值上的模式。另外巨大的词表也导致数据稀疏，不利于机器学习。这构成一种动机，是不是应该用连续的信号而不是离散的符号去处理语言 (这就是后续课程会涉及的连续词向量表示了)。</p>
+<h1 id="什么是深度学习？"><a href="#什么是深度学习？" class="headerlink" title="什么是深度学习？"></a>什么是深度学习？</h1><p>深度学习是机器学习的一个子集。</p>
+<p>大多数机器学习方法之所以能够有效是因为其使用了一些精心挑选的输入特征以及人类手工设计出来的特征。下图就表示了机器学习的尴尬之处，生动诠释了什么叫”人工“智能。</p>
+<p><img src="/picture/cs224n/lec1/006Fmjmcly1fgbjc1j7kuj30xu0v2gp4.jpg" alt="006Fmjmcly1fgbjc1j7kuj30xu0v2gp4"></p>
+<p>而深度学习则被归入到表示学习中去，它试图自动地去学习那些合适的特征或表示方式。这就是我们为什么要研究深度学习的原因了。</p>
+<p>虽然深度学习有很多优势，但它却是在 2010 年后才开始优于其他机器学习的技术的，为什么是到了这个时间呢？原因有以下几个：</p>
+<ol>
+<li>大量的数据集的出现</li>
+<li>多核 CPU / GPU 硬件的支持</li>
+<li>新的模型、算法、思想的出现<ol>
+<li>更好更灵活的中间层表示的学习</li>
+<li>有效的 end-to-end 系统</li>
+<li>利用了上下文信息、任务间迁移信息的有效学习算法</li>
+</ol>
+</li>
+</ol>
+<p>这轮深度学习引发的改革基本上是从 Speech 和 CV 先开始的，最后才波及到难度更大的 NLP 领域。</p>
+<p>以下分别是 Speech 和 CV 领域 DL 的突破性论文。</p>
+<p><img src="/picture/cs224n/lec1/006Fmjmcly1fgbjxsmsspj30l00qmqai.jpg" alt="006Fmjmcly1fgbjxsmsspj30l00qmqai"></p>
+<p>[Context-Dependent Pre-trained Deep Neural Networks for Large Vocabulary Speech Recognition Dahl et al.  (2010) ]</p>
+<p><img src="/picture/cs224n/lec1/006Fmjmcly1fgbk0i7rszj30nm0rykjl.jpg" alt="006Fmjmcly1fgbk0i7rszj30nm0rykjl"></p>
+<p>[ImageNet Classification with Deep Convolutional Neural Networks by Krizhevsky, Sutskever, &amp; Hinton, 2012, U. Toronto. ]</p>
+<h1 id="为什么-NLP-很难？"><a href="#为什么-NLP-很难？" class="headerlink" title="为什么 NLP 很难？"></a>为什么 NLP 很难？</h1><ol>
+<li>使用语言学、实际情景、现实世界、视觉信息来对自然语言进行表示和学习本身的难度就很大了。</li>
+<li>人类语言是含有歧义的。</li>
+<li>人类语言的解读依赖于现实世界、常识以及上下文。</li>
+</ol>
+<p>接下来老爷子讲了几个关于歧义的段子，然而对于非土著的我而言很难 get 到笑点。</p>
+<h1 id="Deep-NLP-Deep-Learning-NLP"><a href="#Deep-NLP-Deep-Learning-NLP" class="headerlink" title="Deep NLP = Deep Learning + NLP"></a>Deep NLP = Deep Learning + NLP</h1><p>将 NLP 的思想与表示学习结合起来，并用深度学习的方法解决 NLP 目标。这种方式在近几年提高了 NLP 领域许多方面的效果：</p>
+<ul>
+<li>层次：语音、词汇、语法、语义</li>
+<li>工具：词性标注、命名实体识别、句法 / 语义分析</li>
+<li>应用：机器翻译、情感分析、对话系统、问答系统</li>
+</ul>
+<p>接下来的最后 15 分钟左右时间则是介绍了一下以上 NLP 各个领域深度学习所带来的改变。</p>
+<ul>
+<li>词向量：离散的 one-hot、共现矩阵 -&gt; 连续分布式向量表示</li>
+<li>形态学：词素 (e.g. prefix, stem, suffix, un, interest, ed) -&gt; 将词素也作为向量 (e.g. subword)</li>
+<li>句法分析 / 语义分析：规则 -&gt; 直接上神经网络 (e.g. RNN, CNN, Tree RNN)</li>
+<li>情感分析：人工搜集词典，在词袋模型上做分类 -&gt; 依旧是神经网络</li>
+<li>问答 / 对话系统：手工编写大量规则，然后做 IR -&gt; 直接使用深度学习框架</li>
+<li>机器翻译：从词语、语法、语义等不同层级的信息入手，期望找到一种通用的 Interlingua 来作为各种语言交互的桥梁 -&gt; emmmm…依旧是安利深度学习。</li>
+</ul>
+<p>至此，本门课算是带领大家了解了一下 DLNLP 最近几年在各个方向的发展，还算可以轻松的水过这节课，但接下来的课程就开始劝退模式了。</p>
+
       
       
         <div class="page-reward">
@@ -327,7 +410,7 @@
         <p><span>Title:</span><a href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 03 - 22 : 21</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 22 : 08</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 10 : 54</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/" title="CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning">http://hsiaoyetgun.github.io/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -365,7 +448,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是-NLP？"><span class="toc-number">1.</span> <span class="toc-text">什么是 NLP？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NLP-的层次"><span class="toc-number">1.1.</span> <span class="toc-text">NLP 的层次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NLP-的应用"><span class="toc-number">1.2.</span> <span class="toc-text">NLP 的应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NLP-在工业届已经起飞"><span class="toc-number">1.3.</span> <span class="toc-text">NLP 在工业届已经起飞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#人类语言的特殊之处"><span class="toc-number">1.4.</span> <span class="toc-text">人类语言的特殊之处</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是深度学习？"><span class="toc-number">2.</span> <span class="toc-text">什么是深度学习？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#为什么-NLP-很难？"><span class="toc-number">3.</span> <span class="toc-text">为什么 NLP 很难？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Deep-NLP-Deep-Learning-NLP"><span class="toc-number">4.</span> <span class="toc-text">Deep NLP = Deep Learning + NLP</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 
