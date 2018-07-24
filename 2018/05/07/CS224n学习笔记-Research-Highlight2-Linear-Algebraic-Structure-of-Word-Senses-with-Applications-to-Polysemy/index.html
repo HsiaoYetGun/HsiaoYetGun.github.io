@@ -3,20 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>CS224n学习笔记 Lecture 5 Backpropagation and Project Advice | 如果没有人看着我</title>
+  <title>CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理中，待上传…">
-<meta name="keywords" content="人工智障，NLP，Bioinformatics">
+  <meta name="description" content="这是一篇最终收录在 TACL2018 上面的文章，讲的是词向量中一词多义的问题。">
+<meta name="keywords" content="NLP,CS224n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">
-<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/index.html">
+<meta property="og:title" content="CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy">
+<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
-<meta property="og:description" content="整理中，待上传…">
+<meta property="og:description" content="这是一篇最终收录在 TACL2018 上面的文章，讲的是词向量中一词多义的问题。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-08T14:10:08.736Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/1532423042432.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/1532423108176.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/006Fmjmcly1fge1i3od75j30lw0i2q4b.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/006Fmjmcly1fge1lnccclj317a0f6gom.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/006Fmjmcly1fge1qydkjjj31fc0ia117.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/1532425803386.jpg">
+<meta property="og:updated_time" content="2018-07-24T09:59:58.132Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">
-<meta name="twitter:description" content="整理中，待上传…">
+<meta name="twitter:title" content="CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy">
+<meta name="twitter:description" content="这是一篇最终收录在 TACL2018 上面的文章，讲的是词向量中一词多义的问题。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec3%20rh/1532423042432.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -226,11 +233,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/" class="article-date">
-      <time datetime="2018-05-09T10:34:21.000Z" itemprop="datePublished">2018-05-09</time>
+      <a href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/" class="article-date">
+      <time datetime="2018-05-07T15:02:53.000Z" itemprop="datePublished">2018-05-07</time>
 </a>
     </div>
   
@@ -243,7 +250,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      CS224n学习笔记 Lecture 5 Backpropagation and Project Advice
+      CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy
     </h1>
   
 
@@ -257,6 +264,10 @@
 
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS224n/">CS224n</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -264,8 +275,34 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>整理中，待上传…</p>
+        <p>这是一篇最终收录在 TACL2018 上面的文章，讲的是词向量中一词多义的问题。</p>
 <a id="more"></a>
+<h1 id="如何表示一词多义"><a href="#如何表示一词多义" class="headerlink" title="如何表示一词多义"></a>如何表示一词多义</h1><p>我们知道预训练好的词向量是固定的，对于词表中的每个词它都有一个固定的向量表示，我们如果把这些词向量投影到二维空间里去，就可以发现相关的词的欧几里得距离会较小，即他们会聚集在一块。</p>
+<p><img src="/picture/cs224n/lec3 rh/1532423042432.jpg" alt="1532423042432"></p>
+<p>这种固定的词向量表示虽然能够表征出单词的意思，但是也带来了另一个问题，即当一个词有多个意思的时候，那它在向量层面到底是怎么表示的？</p>
+<p><img src="/picture/cs224n/lec3 rh/1532423108176.jpg" alt="1532423108176"></p>
+<p>课上以这个 “tie” 为例，它可以表示足球比赛中的平局，也能够表示服饰范畴内的领带，还能够表示绳子打结。那么如果在投影 “tie” 这个词的时候，它应该落在上图中的哪个位置呢？<img src="/picture/cs224n/lec3 rh/006Fmjmcly1fge1i3od75j30lw0i2q4b.jpg" alt="006Fmjmcly1fge1i3od75j30lw0i2q4b"></p>
+<p>论文里头给出了答案，它的向量实际上是各个意思的平均值，也就是说词向量可以包含了它各个意思的信息。</p>
+<h1 id="如何复原各个意思"><a href="#如何复原各个意思" class="headerlink" title="如何复原各个意思"></a>如何复原各个意思</h1><p>那么这样又带来了一个问题，既然它已经被求平均了，那么我们可以把它的各个意思都给复原出来吗？</p>
+<p>论文指出单词的意思是由下式来进行稀疏编码的：</p>
+<p><img src="/picture/cs224n/lec3 rh/006Fmjmcly1fge1lnccclj317a0f6gom.jpg" alt="006Fmjmcly1fge1lnccclj317a0f6gom"></p>
+<p>其中的上下文向量 $A_i$ 大概包括 2000 个词，而 $\alpha_i$ 则表示特定上下文向量的系数，一般选择 5 个上下文向量来做相加，最后加上一个无关紧要的噪声项。</p>
+<p>论文里头说这些参数可以由标准 k-SVD 算法求出，所以不同的词义就可以通过这种稀疏编码的方式复原回来了，复原结果如下：</p>
+<p><img src="/picture/cs224n/lec3 rh/006Fmjmcly1fge1qydkjjj31fc0ia117.jpg" alt="006Fmjmcly1fge1qydkjjj31fc0ia117"></p>
+<p>最后拉上一帮各国的研究生来“人工标注”，即问他们下图左方的一类词是否同某个词相关，再来同复原的结果做对比。下图右方的结果表明这种方法大概可以达到非土著的区分水平，说明效果还是挺不错的。</p>
+<p><img src="/picture/cs224n/lec3 rh/1532425803386.jpg" alt="1532425803386"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后 TA 作了个总结：</p>
+<ol>
+<li>词向量是可以捕获一词多义的信息的</li>
+<li>词向量是由该词的不同意思的向量做线性叠加而得到的</li>
+<li>一词多义可以通过稀疏编码的方式复原出来</li>
+<li>这种复原方法可以达到 non-native English speaker 的水平。</li>
+</ol>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://arxiv.org/abs/1601.03764" target="_blank" rel="noopener">Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a></li>
+<li><a href="http://www.hankcs.com/nlp/cs224n-word-senses.html" target="_blank" rel="noopener">CS224n研究热点2 词语义项的线性代数结构与词义消歧</a></li>
+</ol>
+
       
       
         <div class="page-reward">
@@ -320,13 +357,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></p>
+        <p><span>Title:</span><a href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/">CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
-        <p><span>Date:</span>2018 : 05 : 09 - 18 : 34</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 22 : 10</p>
+        <p><span>Date:</span>2018 : 05 : 07 - 23 : 02</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 17 : 59</p>
         <p>
-            <span>Hyperlink:</span><a class="post-url" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/" title="CS224n学习笔记 Lecture 5 Backpropagation and Project Advice">http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/</a>
-            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
+            <span>Hyperlink:</span><a class="post-url" href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/" title="CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy">http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/</a>
+            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -339,18 +376,18 @@
 
 <nav id="article-nav">
   
-    <a href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification
+          CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network
         
       </div>
     </a>
   
   
-    <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</div>
+    <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -361,7 +398,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何表示一词多义"><span class="toc-number">1.</span> <span class="toc-text">如何表示一词多义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何复原各个意思"><span class="toc-number">2.</span> <span class="toc-text">如何复原各个意思</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">4.</span> <span class="toc-text">参考文献</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 
@@ -411,7 +448,7 @@
 <script src="/js/gitment.browser.js"></script>
 <script>
     var gitment = new Gitment({
-      id: 'Wed May 09 2018 18:34:21 GMT+0800',
+      id: 'Mon May 07 2018 23:02:53 GMT+0800',
       owner: 'HsiaoYetGun',
       repo: 'HsiaoYetGun.github.io',
       oauth: {
@@ -427,13 +464,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/" title="Prev: CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification">
+            <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="Prev: CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="Next: CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
+            <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="Next: CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
                 <i class="fa fa-angle-right"></i>
             </a>
         

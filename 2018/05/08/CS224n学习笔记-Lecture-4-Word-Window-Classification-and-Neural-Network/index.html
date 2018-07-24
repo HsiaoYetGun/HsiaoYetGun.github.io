@@ -5,18 +5,28 @@
   
   <title>CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理中，待上传…">
+  <meta name="description" content="这节课 Socher 小哥讲的是根据文本的上下文来进行分类预测的问题。">
 <meta name="keywords" content="人工智障，NLP，Bioinformatics">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/index.html">
 <meta property="og:site_name" content="如果没有人看着我">
-<meta property="og:description" content="整理中，待上传…">
+<meta property="og:description" content="这节课 Socher 小哥讲的是根据文本的上下文来进行分类预测的问题。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-08T14:09:27.489Z">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgerbmxp3bj30dq0dqdgi.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/1532417624459.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf164jxu1j31b00kcwgx.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf1biu3l2j30en0en3z7.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf1db09rhj30db0dadgk.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf1sbk1f8j317u0820u4.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf9smlwe0j30o80cdtag.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgf9u1m2dzj309e09d3zf.jpg">
+<meta property="og:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/1532421041240.jpg">
+<meta property="og:updated_time" content="2018-07-24T08:56:49.290Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">
-<meta name="twitter:description" content="整理中，待上传…">
+<meta name="twitter:description" content="这节课 Socher 小哥讲的是根据文本的上下文来进行分类预测的问题。">
+<meta name="twitter:image" content="http://hsiaoyetgun.github.io/picture/cs224n/lec4/006Fmjmcly1fgerbmxp3bj30dq0dqdgi.jpg">
   
     <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
   
@@ -146,7 +156,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 15px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/Word-Embedding/" style="font-size: 15px;">Word Embedding</a>
+                        <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 16.67px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/Word-Embedding/" style="font-size: 13.33px;">Word Embedding</a>
                     </div>
                 </section>
                 
@@ -264,8 +274,49 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>整理中，待上传…</p>
+        <p>这节课 Socher 小哥讲的是根据文本的上下文来进行分类预测的问题。</p>
 <a id="more"></a>
+<h1 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h1><p>分类问题是很常见的机器学习任务了，在 NLP 领域，比较常见的分类例子有常见的情感、命名实体、决策等机器学习也常做的分类问题，也有通过上下文来预测其他单词的 (e.g. 阅读理解的填词)，还有直接预测句子的 (e.g. 翻译)。</p>
+<h2 id="直观的分类"><a href="#直观的分类" class="headerlink" title="直观的分类"></a>直观的分类</h2><p>传统机器学习中经常使用的是 LR, SVM 之类的方法来找到分类的决策边界。</p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgerbmxp3bj30dq0dqdgi.jpg" alt="006Fmjmcly1fgerbmxp3bj30dq0dqdgi"></p>
+<h2 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h2><p>这又是个大家常见的老朋友了，softmax 函数为 $p(y_j = 1|x) = \frac{\exp(W_jx)}{\sum_{c=1}^C \exp(W_cx)}$。</p>
+<p>训练时候当然是为了让其概率 $p$ 最大了，所以为了方便计算，我们可以对概率取个负的对数作为其目标函数，其实这个损失函数就等同于交叉熵了。</p>
+<p>$\begin{eqnarray} H(\hat y,y)&amp;=&amp; -\sum_{j=1}^{|V|}y_j\log(\hat y_j) \ &amp;=&amp; -\sum_{j=1}^{C}y_j\log(p(y_j=1|x)) \ &amp;=&amp;-\sum_{j=1}^Cy_j\log(\frac{\exp(W_jx)}{\sum_{c=1}^C \exp(W_cx)}) \end{eqnarray}$</p>
+<p>即 $H(p, q) = -\sum_{c=1}^C p(c)\log q(c)$，交叉熵也可以被重新写成 KL 散度的形式：$H(p,q) = H(p) + D_{KL}(p||q)$。因为 $H(p)$ 在这里是为 0 的 (即使不为 0，那它也是一个固定值，对于优化并没有什么帮助)，所以要最小化这个等式就等同于最小化 KL 散度。</p>
+<p>这里要注意的一点是 KL 散度并非是指距离，而是一种非对称的衡量 $p$ 和 $q$ 之间概率分布差异的标准，其具体公式为 $D_{KL}(p||q) = \sum_{c=1}^C p(c)\log\frac{p(c)}{q(c)}$。</p>
+<p>我们回到之前的 $H(p, q)$ ，因为这里的 $p$ 是 one-hot 的，所以实际上剩下的就只有正类的负对数项了，所以在整个数据集 ${x_i,y_i}^N_{i=1}$ 的目标函数为：$J(\theta) = \frac{1}{N}\sum_{i=1}^N-\log(\frac{e^{f_{y_i}}}{\sum_{c=1}^C e^{f_c)}})$。</p>
+<p>再加上正则项即可得最终的目标函数为：$J(\theta) = \frac{1}{N}\sum_{i=1}^N-\log(\frac{e^{f_{y_i}}}{\sum_{c=1}^C e^{f_c)}}) + \lambda\sum_k \theta_k^2$。</p>
+<h1 id="分类任务中词向量的更新"><a href="#分类任务中词向量的更新" class="headerlink" title="分类任务中词向量的更新"></a>分类任务中词向量的更新</h1><p>在传统的机器学习问题里，模型的参数是由那些权值矩阵 $W$ 的列组成的，一般都不会太大，我们只需要更新它的决策边界：</p>
+<p><img src="/picture/cs224n/lec4/1532417624459.jpg" alt="1532417624459"></p>
+<p>而在深度学习里，情况就截然不同了，我们除了更新决策边界之外，还可以更新我们的词向量 $x$：</p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgf164jxu1j31b00kcwgx.jpg" alt="006Fmjmcly1fgf164jxu1j31b00kcwgx"></p>
+<p>要知道参数一多，模型就容易发生过拟合，课程中举了一个例子。在预训练的词向量里，”TV”, “telly” 和 “television” 这三个词是一块的，但由于情感分类的语料中的训练集只包含 “TV” 和 “telly”，导致 re-training 后这两个词跑到其他地方去了，不再跟其同义词 “television” 一起。<img src="/picture/cs224n/lec4/006Fmjmcly1fgf1biu3l2j30en0en3z7.jpg" alt="006Fmjmcly1fgf1biu3l2j30en0en3z7"></p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgf1db09rhj30db0dadgk.jpg" alt="006Fmjmcly1fgf1db09rhj30db0dadgk"></p>
+<p>那么什么时候应该 re-train 词向量，什么时候又该使之固定不动呢？Socher 小哥给出了一点人生经验：<code>如果训练集较小的时候，就不要再训练词向量，因为这样会破坏其原有结构；如果我们有一个很大的训练集的话，那我们在训练模型中也一并再训练词向量将会取得更好的效果。</code></p>
+<h1 id="窗口分类"><a href="#窗口分类" class="headerlink" title="窗口分类"></a>窗口分类</h1><p>在文本分类的任务中，我们其实是很难对于单个单词来进行分类的，因为语义中会有歧义出现，例如： “to sanction” 的意思可以是 “to permit” 或者 “to punish”；”to seed” 的意思可以是 “to place seeds” 或者 “to remove seeds”。</p>
+<p>而在命名实体中也很容易产生歧义，例如：”Paris” 可以指 “Paris, France”，也可以指 “Paris Hilton”，”Hathaway” 可以指 “Berkshire Hathaway”，也可以指 “Anne Hathaway”。</p>
+<p>那么该如何去消除这些歧义呢？一个很自然而然的想法就是用上这个单词的上下文信息。</p>
+<p>有种做法是将窗口内的词向量来求一个均值 / 加权均值，但是这样会丢失其位置信息。</p>
+<p>还有另外一种做法是将其窗口内的词向量给拼接起来，例如我们取窗口长度为 2，则新的向量的维度为 $X_{window} = x \epsilon \mathit{R}^{5d}$。</p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgf1sbk1f8j317u0820u4.jpg" alt="006Fmjmcly1fgf1sbk1f8j317u0820u4"></p>
+<p>那么如何对这种拼接起来向量进行更新呢？答案是跟原本一样，我们可以将该词向量再拆分开来算，只是我们需要更加小心别算错了。这里需要知晓的是，在更新过程中，计算代价比较高的有两部分：矩阵乘法 $f = Wx$ 和 $\exp$。当然，矩阵乘法的速度还是比循环快很多。</p>
+<p>这种拼接的方法是很有好处的，比如之前的 “Paris” 的例子，假如我们在其窗口内发现了 $X_{in}$ 这个词向量，就知道它代表的是一个地名而非人名了，这样歧义就消失了。 </p>
+<p>softmax (= LR) 的分类效果其实是十分有限的，它只是一种线性的分类器：</p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgf9smlwe0j30o80cdtag.jpg" alt="006Fmjmcly1fgf9smlwe0j30o80cdtag"></p>
+<p>而神经网络则可以提供非线性的决策边界：</p>
+<p><img src="/picture/cs224n/lec4/006Fmjmcly1fgf9u1m2dzj309e09d3zf.jpg" alt="006Fmjmcly1fgf9u1m2dzj309e09d3zf"></p>
+<h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><p>这里课上又讲了一些神经网络的基本知识，包括神经元、激活函数、前向传播、反向传播、链式求导之类的老调调，这里就偷懒不写了 。</p>
+<p>关于 BP 算法，这里有篇<a href="/file/BP.pdf">文章</a>我觉得写得不错。</p>
+<h2 id="间隔最大化目标函数"><a href="#间隔最大化目标函数" class="headerlink" title="间隔最大化目标函数"></a>间隔最大化目标函数</h2><p>最后选择性得写一下目标函数，在设计目标函数的过程中，我们用 $S$ 表示正确分类的得分，$S_c$ 表示误分类的得分。其中 $S = U^Tf(Wx+b), S_c = U^Tf(Wx_c + b)$，我们通过负采样来得到负例。<img src="/picture/cs224n/lec4/1532421041240.jpg" alt="1532421041240"></p>
+<p>一种很朴素的想法是直接最大化 $(S - S_c)$，也就是说我们只需要要求 $S$ 的值高于 $S_c$ 就可以了，并不要求两个值的实际大小为多少，我们在计算损失的时候只需简单地计算 $(S_c - S) &gt; 0$ 时候的错误。这种限制下的目标函数为：$J = \max(S_c - S, 0)$。</p>
+<p>这么做的要求实在太低了，我们可以往这里加入一个缓冲区域，令 $J = max(1 - S + S_c, 0)$。</p>
+<p>这种做法可以让我们在训练中更加关注那些难以区分的样本。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://www.youtube.com/watch?v=ERibwqs9p38&amp;t=0s&amp;list=PL3FW7Lu3i5Jsnh1rnUwq_TcylNr7EkRe6&amp;index=4" target="_blank" rel="noopener">cs224n lecture4</a></li>
+<li><a href="http://web.stanford.edu/class/cs224n/lectures/lecture4.pdf" target="_blank" rel="noopener">cs224n lecture4 slide</a></li>
+<li><a href="http://www.hankcs.com/nlp/cs224n-word-window-classification-and-neural-networks.html" target="_blank" rel="noopener">CS224n笔记4 Word Window分类与神经网络</a></li>
+</ol>
+
       
       
         <div class="page-reward">
@@ -323,7 +374,7 @@
         <p><span>Title:</span><a href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 05 : 08 - 20 : 33</p>
-        <p><span>Update:</span>2018 : 07 : 08 - 22 : 09</p>
+        <p><span>Update:</span>2018 : 07 : 24 - 16 : 56</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/" title="CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network">http://hsiaoyetgun.github.io/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
@@ -349,8 +400,8 @@
     </a>
   
   
-    <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</div>
+    <a href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -361,7 +412,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">Archives</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#分类任务"><span class="toc-number">1.</span> <span class="toc-text">分类任务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#直观的分类"><span class="toc-number">1.1.</span> <span class="toc-text">直观的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Softmax"><span class="toc-number">1.2.</span> <span class="toc-text">Softmax</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#分类任务中词向量的更新"><span class="toc-number">2.</span> <span class="toc-text">分类任务中词向量的更新</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#窗口分类"><span class="toc-number">3.</span> <span class="toc-text">窗口分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#神经网络"><span class="toc-number">4.</span> <span class="toc-text">神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#间隔最大化目标函数"><span class="toc-number">4.1.</span> <span class="toc-text">间隔最大化目标函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
 
@@ -433,12 +484,12 @@
         
         <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/" title="Next: CS224n学习笔记 Lecture 3 Advanced Word Vector Representations">
+            <a href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/" title="Next: CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/">CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
