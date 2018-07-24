@@ -17,13 +17,13 @@
       
         <tags>
             
-            <tag> NLP </tag>
-            
-            <tag> Word Embedding </tag>
-            
             <tag> Review </tag>
             
             <tag> Deep Learning </tag>
+            
+            <tag> NLP </tag>
+            
+            <tag> Word Embedding </tag>
             
         </tags>
       
@@ -59,11 +59,11 @@
       
         <tags>
             
-            <tag> CS224n </tag>
-            
             <tag> NLP </tag>
             
             <tag> Word Embedding </tag>
+            
+            <tag> CS224n </tag>
             
         </tags>
       
@@ -82,6 +82,16 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> CS224n </tag>
+            
+            <tag> BP </tag>
+            
+        </tags>
+      
     </entry>
     
     <entry>
@@ -96,6 +106,16 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> CS224n </tag>
+            
+            <tag> Ambiguity </tag>
+            
+        </tags>
       
     </entry>
     
@@ -114,9 +134,11 @@
       
         <tags>
             
+            <tag> NLP </tag>
+            
             <tag> CS224n </tag>
             
-            <tag> NLP </tag>
+            <tag> Polysemy </tag>
             
         </tags>
       
@@ -137,11 +159,11 @@
       
         <tags>
             
-            <tag> CS224n </tag>
-            
             <tag> NLP </tag>
             
             <tag> Word Embedding </tag>
+            
+            <tag> CS224n </tag>
             
         </tags>
       
@@ -162,11 +184,11 @@
       
         <tags>
             
-            <tag> CS224n </tag>
-            
             <tag> NLP </tag>
             
             <tag> Word Embedding </tag>
+            
+            <tag> CS224n </tag>
             
         </tags>
       
@@ -187,11 +209,11 @@
       
         <tags>
             
-            <tag> CS224n </tag>
-            
             <tag> NLP </tag>
             
             <tag> Word Embedding </tag>
+            
+            <tag> CS224n </tag>
             
         </tags>
       
@@ -212,9 +234,9 @@
       
         <tags>
             
-            <tag> CS224n </tag>
-            
             <tag> NLP </tag>
+            
+            <tag> CS224n </tag>
             
         </tags>
       
