@@ -6,7 +6,7 @@
   <title>A review on embedding | 如果没有人看着我</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
-<meta name="keywords" content="NLP,Review,Deep Learning,Word Embedding">
+<meta name="keywords" content="Review,Deep Learning,NLP,Word Embedding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A review on embedding">
 <meta property="og:url" content="http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/index.html">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/a9781307fe0c25097e3674bc72d6d372_hd.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1531071540664.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/embedding/1532355203743.jpg">
-<meta property="og:updated_time" content="2018-07-24T11:47:50.166Z">
+<meta property="og:updated_time" content="2018-08-06T18:00:38.016Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A review on embedding">
 <meta name="twitter:description" content="这是我第一次写回顾总结性质的文章，真正坐下来开写的时候，才意识到想把一件事物按其历史发展总结展望一下的难度还是蛮大的。">
@@ -157,7 +157,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Ambiguity/" style="font-size: 10px;">Ambiguity</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 16.67px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLI/" style="font-size: 10px;">NLI</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Parsing/" style="font-size: 10px;">Parsing</a> <a href="/tags/Polysemy/" style="font-size: 10px;">Polysemy</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/TensorFlow/" style="font-size: 10px;">TensorFlow</a> <a href="/tags/Word-Embedding/" style="font-size: 13.33px;">Word Embedding</a>
+                        <a href="/tags/Ambiguity/" style="font-size: 10px;">Ambiguity</a> <a href="/tags/Attention/" style="font-size: 10px;">Attention</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 16.67px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLI/" style="font-size: 10px;">NLI</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Parsing/" style="font-size: 10px;">Parsing</a> <a href="/tags/Polysemy/" style="font-size: 10px;">Polysemy</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/TensorFlow/" style="font-size: 10px;">TensorFlow</a> <a href="/tags/Word-Embedding/" style="font-size: 13.33px;">Word Embedding</a>
                     </div>
                 </section>
                 
@@ -343,7 +343,7 @@
 <p>至于 PV-DBOW 架构，跟 Word2Vec 里头的 Skip-gram 模型很相近，思想是拿段落 id 来对相应的上下文信息进行拟合，最终同样可以得到段落向量。但个人认为这种方法很不靠谱，纯粹地拿段落的 id 当作输入来拟合上下文的单词，损失掉了包括词序在内的很多信息。PV-DBOW 的模型架构图如下所示：</p>
 <p><img src="/picture/embedding/a9781307fe0c25097e3674bc72d6d372_hd.jpg" alt="a9781307fe0c25097e3674bc72d6d372_hd"></p>
 <p>因时间关系来不及看另外两篇比较出名的文章，这里留一个坑 <a href="https://arxiv.org/abs/1506.06726" target="_blank" rel="noopener">Skip-thought vectors</a>，<a href="https://openreview.net/forum?id=rJvJXZb0W" target="_blank" rel="noopener">Quick-thoughts vectors</a>，日后了解了这两种模型思想后再来填土。</p>
-<h2 id="有监督方法"><a href="#有监督方法" class="headerlink" title="有监督方法"></a>有监督方法</h2><p>以往的有监督方法只是通过简单的 RNN、CNN 架构来实现，效果往往比无监督方式差，但是最近提出的 <a href="https://arxiv.org/abs/1705.02364" target="_blank" rel="noopener">InferSent</a> 则取得了非常好的效果，这篇文章是用来做自然语言推导 (NLI) 的，因为之后打算写一篇 NLI 方向的文章，所以这个模型打算放到那边再细讲。(后续补充：<a href="hsiaoyetgun.github.io/">InferSent 的模型介绍</a> )</p>
+<h2 id="有监督方法"><a href="#有监督方法" class="headerlink" title="有监督方法"></a>有监督方法</h2><p>以往的有监督方法只是通过简单的 RNN、CNN 架构来实现，效果往往比无监督方式差，但是最近提出的 <a href="https://arxiv.org/abs/1705.02364" target="_blank" rel="noopener">InferSent</a> 则取得了非常好的效果，这篇文章是用来做自然语言推导 (NLI) 的，因为之后打算写一篇 NLI 方向的文章，所以这个模型打算放到那边再细讲。(后续补充：<a href="https://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">InferSent 的模型介绍</a> )</p>
 <p>InferSent 的模型结构很简单，如下图所示。其编码器由 BiLSTM + max pooling 构成。</p>
 <p><img src="/picture/embedding/1531071540664.jpg" alt="1531071540664"></p>
 <h1 id="Subword-level-Embedding"><a href="#Subword-level-Embedding" class="headerlink" title="Subword-level Embedding"></a>Subword-level Embedding</h1><p>最早提出 Subword 这个 embedding 思路的应该是 FAIR 的大佬们的 <a href="https://arxiv.org/pdf/1607.04606v1.pdf" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a> 这篇文章。</p>
@@ -448,7 +448,7 @@
         <p><span>Title:</span><a href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 07 : 09 - 00 : 17</p>
-        <p><span>Update:</span>2018 : 07 : 24 - 19 : 47</p>
+        <p><span>Update:</span>2018 : 08 : 07 - 02 : 00</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/07/09/A-review-on-embedding/" title="A review on embedding">http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/07/09/A-review-on-embedding/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
