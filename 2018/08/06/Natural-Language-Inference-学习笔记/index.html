@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Natural Language Inference 学习笔记 | 如果没有人看着我</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="讲讲最近在携程实习的经历，也算是如愿半路出家跳入 NLP 坑里来了。">
+<meta name="keywords" content="NLP,NLI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Natural Language Inference 学习笔记">
+<meta property="og:url" content="http://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-学习笔记/index.html">
+<meta property="og:site_name" content="如果没有人看着我">
+<meta property="og:description" content="讲讲最近在携程实习的经历，也算是如愿半路出家跳入 NLP 坑里来了。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-06T03:17:54.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Natural Language Inference 学习笔记">
+<meta name="twitter:description" content="讲讲最近在携程实习的经历，也算是如愿半路出家跳入 NLP 坑里来了。">
+  
+    <link rel="alternative" href="/atom.xml" title="如果没有人看着我" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Hsiao</a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Home</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">Home</a></li>
+                        
+                            <li><a href="/archives">Archives</a></li>
+                        
+                            <li><a href="/aboutme">About Me</a></li>
+                        
+                            <li><a href="/tags">Tags</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_self" href="mailto:hsiaoyetgun@gmail.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_self" href="https://github.com/hsiaoyetgun" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_self" href="https://www.zhihu.com/people/yetgun-hsiao/" title="zhihu">zhihu</a>
+                            
+                                <a class="fl linkedin" target="_self" href="#" title="linkedin">linkedin</a>
+                            
+                                <a class="fl pinterest" target="_self" href="http://music.163.com/#/user/home?id=61393493" title="pinterest">pinterest</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Ambiguity/" style="font-size: 10px;">Ambiguity</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/By-Talk/" style="font-size: 10px;">By-Talk</a> <a href="/tags/CS224n/" style="font-size: 16.67px;">CS224n</a> <a href="/tags/Deep-Learning/" style="font-size: 10px;">Deep Learning</a> <a href="/tags/NLI/" style="font-size: 10px;">NLI</a> <a href="/tags/NLP/" style="font-size: 20px;">NLP</a> <a href="/tags/Parsing/" style="font-size: 10px;">Parsing</a> <a href="/tags/Polysemy/" style="font-size: 10px;">Polysemy</a> <a href="/tags/Review/" style="font-size: 10px;">Review</a> <a href="/tags/TensorFlow/" style="font-size: 10px;">TensorFlow</a> <a href="/tags/Word-Embedding/" style="font-size: 13.33px;">Word Embedding</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_self" class="main-nav-link switch-friends-link" href="https://jiaxuncai.github.io">菜得二逼</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">人工智障，深度瞎学，NLP， Bioinformatics</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+
+    <div style="bottom:120px left:auto; width:20px">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=28315773&auto=1&height=32"></iframe>
+    </div>             
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Hsiao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Hsiao</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">Home</a></li>
+                
+                    <li><a href="/archives">Archives</a></li>
+                
+                    <li><a href="/aboutme">About Me</a></li>
+                
+                    <li><a href="/tags">Tags</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_self" href="mailto:hsiaoyetgun@gmail.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_self" href="https://github.com/hsiaoyetgun" title="github">github</a>
+                    
+                        <a class="zhihu" target="_self" href="https://www.zhihu.com/people/yetgun-hsiao/" title="zhihu">zhihu</a>
+                    
+                        <a class="linkedin" target="_self" href="#" title="linkedin">linkedin</a>
+                    
+                        <a class="pinterest" target="_self" href="http://music.163.com/#/user/home?id=61393493" title="pinterest">pinterest</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Natural-Language-Inference-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/08/06/Natural-Language-Inference-学习笔记/" class="article-date">
+      <time datetime="2018-08-05T17:37:41.000Z" itemprop="datePublished">2018-08-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Natural Language Inference 学习笔记
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Project/">Project</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLI/">NLI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>讲讲最近在携程实习的经历，也算是如愿半路出家跳入 NLP 坑里来了。</p>
+<a id="more"></a>
+<h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h1><p>来到这边后 leader 丢给我三个选项：游记与产品关联并推荐、矛盾条款分析 以及 KBQA。各方面考虑再三后，我选择了矛盾条款分析，实际上也就是 NLI 任务的简化。</p>
+<p>矛盾条款分析是属于公司一个叫照妖镜项目下的子任务。相关商家可以把自家的产品发布到携程相关的产品页面上来，照妖镜的功能就是实时地去检查商家发布的产品是否合规，是否有效，如果产品有问题的话 (违规、失去时效) 就将其自动下架甚至对商家进行惩罚。</p>
+<p>而矛盾条款分析就是针对商家发布的产品的参与规则进行分析，看其条款是否互相矛盾。举个例子，比如商品参与规则中的其中一条写着“本产品一价全包，后续无需其它费用”，而另一条则写着“本产品不包含 xx 景点门票费用，如欲游览需要自行买票”。那这样这两条条款就是互相矛盾的了，需要模型判断出来并对商家进行惩罚或者下架。</p>
+<h1 id="NLI"><a href="#NLI" class="headerlink" title="NLI"></a>NLI</h1><p>以上所描述的矛盾条款分析任务其实就是 NLI 文本蕴含 (Text Entailment) 任务的简化，它的任务形式为：给定一个前提 (Premise) ，根据这个前提去推断假设 (Hypothesis) 与前提的关系。该任务的关系分为三种，蕴含关系 (Entailment)、矛盾关系 (Contradiction) 以及中立关系 (Neutral)。所以这个问题本质上是一个分类问题，我们需要做的是去发掘前提和假设这两个句子对之间的交互信息。</p>
+<p>NLI 任务比较常用的标准数据集为 <a href="https://nlp.stanford.edu/projects/snli/" target="_blank" rel="noopener">SNLI (The Stanford Natural Language Inference corpus)</a> 和 <a href="https://www.nyu.edu/projects/bowman/multinli/" target="_blank" rel="noopener">MultiNLI (The Multi-Genre Natural Language Inference corpus)</a>。后来 Kaggle 上面又出了一个很出名的比赛，<a href="https://www.kaggle.com/c/quora-question-pairs/" target="_blank" rel="noopener">Quora Question Pairs</a>，它做的只是判断 Quora 上的两个问题句是否表示的是一样的意思。</p>
+<p>个人而言，我很喜欢 <a href="https://nlp.stanford.edu/projects/snli/" target="_blank" rel="noopener">SNLI</a> 这个数据集，并不是因为它最早出现，而是其网站上列出了当前的研究进展、之前在这个任务上的一些经典做法。跟着这张表去刷论文能够让你的学习效率提高很多，反正对于我这种半路出家的人而言，这张表对我的帮助非常大，在接下来写的内容也大部分来自这张表所提及的文章中。</p>
+<table class="newstuff"><br><tr class="header"><br><th>Publication</th><br><th>&nbsp;Model</th><br><th>Parameters</th><br><th>&nbsp;Train (% acc)</th><br><th>&nbsp;Test (% acc)</th><br></tr><br><tr class="section"><br><th colspan="5" style="background-color:transparent; color:#646464;">Feature-based models</th><br></tr><br><tr><br><td><a href="http://nlp.stanford.edu/pubs/snli_paper.pdf" target="_blank" rel="noopener">Bowman et al. ‘15</a></td><br><td>Unlexicalized features</td><br><td></td><br><td style="text-align: right">49.4</td><br><td style="text-align: right">50.4</td><br></tr><br><tr><br><td><a href="http://nlp.stanford.edu/pubs/snli_paper.pdf" target="_blank" rel="noopener">Bowman et al. ‘15</a></td><br><td>+ Unigram and bigram features</td><br><td></td><br><td style="text-align: right">99.7</td><br><td style="text-align: right"><em>78.2</em></td><br></tr><br><tr class="section"><br><th colspan="5" style="background-color:transparent; color:#646464;">Sentence encoding-based models</th><br></tr><br><tr><br><td><a href="http://nlp.stanford.edu/pubs/snli_paper.pdf" target="_blank" rel="noopener">Bowman et al. ‘15</a></td><br><td>100D LSTM encoders</td><br><td style="text-align: right">220k</td><br><td style="text-align: right">84.8</td><br><td style="text-align: right">77.6</td><br></tr><br><tr><br><td><a href="https://www.nyu.edu/projects/bowman/spinn.pdf" target="_blank" rel="noopener">Bowman et al. ‘16</a></td><br><td>300D LSTM encoders</td><br><td style="text-align: right">3.0m</td><br><td style="text-align: right">83.9</td><br><td style="text-align: right">80.6</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1511.06361v3.pdf" target="_blank" rel="noopener">Vendrov et al. ‘15</a></td><br><td>1024D GRU encoders w/ unsupervised ‘skip-thoughts’ pre-training</td><br><td style="text-align: right">15m</td><br><td style="text-align: right">98.8</td><br><td style="text-align: right">81.4</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1512.08422.pdf" target="_blank" rel="noopener">Mou et al. ‘15</a></td><br><td>300D Tree-based CNN encoders</td><br><td style="text-align: right">3.5m</td><br><td style="text-align: right">83.3</td><br><td style="text-align: right">82.1</td><br></tr><br><tr><br><td><a href="https://www.nyu.edu/projects/bowman/spinn.pdf" target="_blank" rel="noopener">Bowman et al. ‘16</a></td><br><td>300D SPINN-PI encoders</td><br><td style="text-align: right">3.7m</td><br><td style="text-align: right">89.2</td><br><td style="text-align: right">83.2</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1605.09090v1.pdf" target="_blank" rel="noopener">Yang Liu et al. ‘16</a></td><br><td>600D (300+300) BiLSTM encoders</td><br><td style="text-align: right">2.0m</td><br><td style="text-align: right">86.4</td><br><td style="text-align: right">83.3</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1607.04492v1.pdf" target="_blank" rel="noopener">Munkhdalai &amp; Yu ‘16b</a></td><br><td>300D NTI-SLSTM-LSTM encoders</td><br><td style="text-align: right">4.0m</td><br><td style="text-align: right">82.5</td><br><td style="text-align: right">83.4</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1605.09090v1.pdf" target="_blank" rel="noopener">Yang Liu et al. ‘16</a></td><br><td>600D (300+300) BiLSTM encoders with intra-attention</td><br><td style="text-align: right">2.8m</td><br><td style="text-align: right">84.5</td><br><td style="text-align: right">84.2</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1705.02364.pdf" target="_blank" rel="noopener">Conneau et al. ‘17</a></td><br><td>4096D BiLSTM with max-pooling</td><br><td style="text-align: right">40m</td><br><td style="text-align: right">85.6</td><br><td style="text-align: right">84.5</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1607.04315.pdf" target="_blank" rel="noopener">Munkhdalai &amp; Yu ‘16a</a></td><br><td>300D NSE encoders</td><br><td style="text-align: right">3.0m</td><br><td style="text-align: right">86.2</td><br><td style="text-align: right">84.6</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1708.01353.pdf" target="_blank" rel="noopener">Qian Chen et al. ‘17</a></td><br><td>600D (300+300) Deep Gated Attn. BiLSTM encoders (<a href="https://github.com/lukecq1231/enc_nli/" target="_blank" rel="noopener">code</a>)</td><br><td style="text-align: right">12m</td><br><td style="text-align: right">90.5</td><br><td style="text-align: right">85.5</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1709.04696.pdf" target="_blank" rel="noopener">Tao Shen et al. ‘17</a></td><br><td>300D Directional self-attention network encoders (<a href="https://github.com/taoshen58/DiSAN" target="_blank" rel="noopener">code</a>)</td><br><td style="text-align: right">2.4m</td><br><td style="text-align: right">91.1</td><br><td style="text-align: right">85.6</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1707.02786.pdf" target="_blank" rel="noopener">Jihun Choi et al. ‘17</a></td><br><td>300D Gumbel TreeLSTM encoders</td><br><td style="text-align: right">2.9m</td><br><td style="text-align: right">91.2</td><br><td style="text-align: right">85.6</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1708.02312.pdf" target="_blank" rel="noopener">Nie and Bansal ‘17</a></td><br><td>300D Residual stacked encoders</td><br><td style="text-align: right">9.7m</td><br><td style="text-align: right">89.8</td><br><td style="text-align: right">85.7</td><br></tr><br><tr><br><td><a href="https://openreview.net/forum?id=rylNzLFEkm" target="_blank" rel="noopener">Anonymous ‘18</a></td><br><td>1200D REGMAPR (Base+Reg)</td><br><td style="text-align: right">–</td><br><td style="text-align: right">–</td><br><td style="text-align: right">85.9</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1801.00102.pdf" target="_blank" rel="noopener">Yi Tay et al. ‘18</a></td><br><td>300D CAFE (no cross-sentence attention)</td><br><td style="text-align: right">3.7m</td><br><td style="text-align: right">87.3 </td><br><td style="text-align: right">85.9</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1707.02786.pdf" target="_blank" rel="noopener">Jihun Choi et al. ‘17</a></td><br><td>600D Gumbel TreeLSTM encoders</td><br><td style="text-align: right">10m</td><br><td style="text-align: right">93.1</td><br><td style="text-align: right">86.0</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1708.02312.pdf" target="_blank" rel="noopener">Nie and Bansal ‘17</a></td><br><td>600D Residual stacked encoders</td><br><td style="text-align: right">29m</td><br><td style="text-align: right">91.0</td><br><td style="text-align: right">86.0</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1801.10296.pdf" target="_blank" rel="noopener">Tao Shen et al. ‘18</a></td><br><td>300D Reinforced Self-Attention Network</td><br><td style="text-align: right">3.1m</td><br><td style="text-align: right">92.6</td><br><td style="text-align: right"><em>86.3</em></td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1712.02047.pdf" target="_blank" rel="noopener">Im and Cho ‘17</a></td><br><td>Distance-based Self-Attention Network</td><br><td style="text-align: right">4.7m</td><br><td style="text-align: right">89.6</td><br><td style="text-align: right"><em>86.3</em></td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1805.11360.pdf" target="_blank" rel="noopener">Seonhoon Kim et al. ‘18</a></td><br><td>Densely-Connected Recurrent and Co-Attentive Network (encoder)</td><br><td style="text-align: right">5.6m</td><br><td style="text-align: right">91.4</td><br><td style="text-align: right"><em>86.5</em></td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1806.09828.pdf" target="_blank" rel="noopener">Qian Chen et al. ‘18</a></td><br><td>600D BiLSTM with generalized pooling</td><br><td style="text-align: right">65m</td><br><td style="text-align: right">94.9</td><br><td style="text-align: right"><em>86.6</em></td><br></tr><br><tr class="section"><br><th colspan="5" style="background-color:transparent; color:#646464;">Other neural network models</th><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1509.06664v1.pdf" target="_blank" rel="noopener">Rocktäschel  et al. ‘15</a></td><br><td>100D LSTMs w/ word-by-word attention</td><br><td style="text-align: right">250k</td><br><td style="text-align: right">85.3</td><br><td style="text-align: right">83.5</td><br></tr><br><tr><br><td><a href="https://pdfs.semanticscholar.org/adc1/84fcb04107f95e35ea1b07ef9aad749da8d7.pdf" target="_blank" rel="noopener">Pengfei Liu et al. ‘16a</a></td><br><td>100D DF-LSTM</td><br><td style="text-align: right">320k</td><br><td style="text-align: right">85.2</td><br><td style="text-align: right">84.6</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1605.09090v1.pdf" target="_blank" rel="noopener">Yang Liu et al. ‘16</a></td><br><td>600D (300+300) BiLSTM encoders with intra-attention and symbolic preproc.</td><br><td style="text-align: right">2.8m</td><br><td style="text-align: right">85.9</td><br><td style="text-align: right">85.0</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1605.05573v2.pdf" target="_blank" rel="noopener">Pengfei Liu et al. ‘16b</a></td><br><td>50D stacked TC-LSTMs</td><br><td style="text-align: right">190k</td><br><td style="text-align: right">86.7</td><br><td style="text-align: right">85.1</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1607.04315.pdf" target="_blank" rel="noopener">Munkhdalai &amp; Yu ‘16a</a></td><br><td>300D MMA-NSE encoders with attention</td><br><td style="text-align: right">3.2m</td><br><td style="text-align: right">86.9</td><br><td style="text-align: right">85.4</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1512.08849v1.pdf" target="_blank" rel="noopener">Wang &amp; Jiang ‘15</a></td><br><td>300D mLSTM word-by-word attention model</td><br><td style="text-align: right">1.9m</td><br><td style="text-align: right">92.0</td><br><td style="text-align: right"><stsrong>86.1</stsrong></td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1601.06733.pdf" target="_blank" rel="noopener">Jianpeng Cheng et al. ‘16</a></td><br><td>300D LSTMN with deep attention fusion</td><br><td style="text-align: right">1.7m</td><br><td style="text-align: right">87.3</td><br><td style="text-align: right">85.7</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1601.06733.pdf" target="_blank" rel="noopener">Jianpeng Cheng et al. ‘16</a></td><br><td>450D LSTMN with deep attention fusion</td><br><td style="text-align: right">3.4m</td><br><td style="text-align: right">88.5</td><br><td style="text-align: right">86.3</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1606.01933v1.pdf" target="_blank" rel="noopener">Parikh et al. ‘16</a></td><br><td>200D decomposable attention model</td><br><td style="text-align: right">380k</td><br><td style="text-align: right">89.5</td><br><td style="text-align: right">86.3</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1606.01933v1.pdf" target="_blank" rel="noopener">Parikh et al. ‘16</a></td><br><td>200D decomposable attention model with intra-sentence attention</td><br><td style="text-align: right">580k</td><br><td style="text-align: right">90.5</td><br><td style="text-align: right">86.8</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1607.04492v1.pdf" target="_blank" rel="noopener">Munkhdalai &amp; Yu ‘16b</a></td><br><td>300D Full tree matching NTI-SLSTM-LSTM w/ global attention</td><br><td style="text-align: right">3.2m</td><br><td style="text-align: right">88.5</td><br><td style="text-align: right">87.3</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1702.03814.pdf" target="_blank" rel="noopener">Zhiguo Wang et al. ‘17</a></td><br><td>BiMPM</td><br><td style="text-align: right">1.6m</td><br><td style="text-align: right">90.9 </td><br><td style="text-align: right">87.5</td><br></tr><br><tr><br><td><a href="https://www.aclweb.org/anthology/C/C16/C16-1270.pdf" target="_blank" rel="noopener">Lei Sha et al. ‘16</a></td><br><td>300D re-read LSTM</td><br><td style="text-align: right">2.0m</td><br><td style="text-align: right">90.7</td><br><td style="text-align: right">87.5</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1709.04348.pdf" target="_blank" rel="noopener">Yichen Gong et al. ‘17</a></td><br><td>448D Densely Interactive Inference Network (DIIN, <a href="https://github.com/YichenGong/Densely-Interactive-Inference-Network" target="_blank" rel="noopener">code</a>)</td><br><td style="text-align: right">4.4m</td><br><td style="text-align: right">91.2</td><br><td style="text-align: right">88.0</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1708.00107.pdf" target="_blank" rel="noopener">McCann et al. ‘17</a></td><br><td>Biattentive Classification Network + CoVe + Char</td><br><td style="text-align: right">22m</td><br><td style="text-align: right">88.5</td><br><td style="text-align: right">88.1</td><br></tr><br><tr><br><td><a href="https://www.ijcai.org/proceedings/2018/0613.pdf" target="_blank" rel="noopener">Chuanqi Tan et al. ‘18</a></td><br><td>150D Multiway Attention Network</td><br><td style="text-align: right">14m</td><br><td style="text-align: right">94.5 </td><br><td style="text-align: right">88.3</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1804.07888.pdf" target="_blank" rel="noopener">Xiaodong Liu et al. ‘18</a></td><br><td>Stochastic Answer Network</td><br><td style="text-align: right">3.5m</td><br><td style="text-align: right">93.3</td><br><td style="text-align: right">88.5</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1802.05577.pdf" target="_blank" rel="noopener">Ghaeini et al. ‘18</a></td><br><td>450D DR-BiLSTM</td><br><td style="text-align: right">7.5m</td><br><td style="text-align: right">94.1 </td><br><td style="text-align: right">88.5</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1801.00102.pdf" target="_blank" rel="noopener">Yi Tay et al. ‘18</a></td><br><td>300D CAFE</td><br><td style="text-align: right">4.7m</td><br><td style="text-align: right">89.8 </td><br><td style="text-align: right">88.5</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1711.04289.pdf" target="_blank" rel="noopener">Qian Chen et al. ‘17</a></td><br><td>KIM</td><br><td style="text-align: right">4.3m</td><br><td style="text-align: right">94.1 </td><br><td style="text-align: right">88.6</td><br></tr><br><tr><br><td><a href="http://arxiv.org/pdf/1609.06038v3.pdf" target="_blank" rel="noopener">Qian Chen et al. ‘16</a></td><br><td>600D ESIM + 300D Syntactic TreeLSTM (<a href="https://github.com/lukecq1231/nli" target="_blank" rel="noopener">code</a>)</td><br><td style="text-align: right">7.7m</td><br><td style="text-align: right">93.5 </td><br><td style="text-align: right">88.6</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1802.05365.pdf" target="_blank" rel="noopener">Peters et al. ‘18</a></td><br><td>ESIM + ELMo</td><br><td style="text-align: right">8.0m</td><br><td style="text-align: right">91.6 </td><br><td style="text-align: right">88.7</td><br></tr><br><tr><br><td><a href="http://aclweb.org/anthology/P18-1091" target="_blank" rel="noopener">Boyuan Pan et al. ‘18</a></td><br><td>300D DMAN</td><br><td style="text-align: right">9.2m</td><br><td style="text-align: right">95.4 </td><br><td style="text-align: right">88.8</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1702.03814.pdf" target="_blank" rel="noopener">Zhiguo Wang et al. ‘17</a></td><br><td>BiMPM <strong>Ensemble</strong></td><br><td style="text-align: right">6.4m</td><br><td style="text-align: right">93.2 </td><br><td style="text-align: right">88.8</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1709.04348.pdf" target="_blank" rel="noopener">Yichen Gong et al. ‘17</a></td><br><td>448D Densely Interactive Inference Network (DIIN, <a href="https://github.com/YichenGong/Densely-Interactive-Inference-Network" target="_blank" rel="noopener">code</a>) <strong>Ensemble</strong></td><br><td style="text-align: right">17m</td><br><td style="text-align: right">92.3 </td><br><td style="text-align: right">88.9</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1805.11360.pdf" target="_blank" rel="noopener">Seonhoon Kim et al. ‘18</a></td><br><td>Densely-Connected Recurrent and Co-Attentive Network</td><br><td style="text-align: right">6.7m</td><br><td style="text-align: right">93.1</td><br><td style="text-align: right">88.9</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1711.04289.pdf" target="_blank" rel="noopener">Qian Chen et al. ‘17</a></td><br><td>KIM <strong>Ensemble</strong></td><br><td style="text-align: right">43m</td><br><td style="text-align: right">93.6 </td><br><td style="text-align: right">89.1</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1802.05577.pdf" target="_blank" rel="noopener">Ghaeini et al. ‘18</a></td><br><td>450D DR-BiLSTM <strong>Ensemble</strong></td><br><td style="text-align: right">45m</td><br><td style="text-align: right">94.8 </td><br><td style="text-align: right">89.3</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1802.05365.pdf" target="_blank" rel="noopener">Peters et al. ‘18</a></td><br><td>ESIM + ELMo <strong>Ensemble</strong></td><br><td style="text-align: right">40m</td><br><td style="text-align: right">92.1 </td><br><td style="text-align: right">89.3</td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1801.00102.pdf" target="_blank" rel="noopener">Yi Tay et al. ‘18</a></td><br><td>300D CAFE <strong>Ensemble</strong></td><br><td style="text-align: right">17.5m</td><br><td style="text-align: right">92.5 </td><br><td style="text-align: right">89.3</td><br></tr><br><tr><br><td><a href="https://www.ijcai.org/proceedings/2018/0613.pdf" target="_blank" rel="noopener">Chuanqi Tan et al. ‘18</a></td><br><td>150D Multiway Attention Network <strong>Ensemble</strong></td><br><td style="text-align: right">58m</td><br><td style="text-align: right">95.5 </td><br><td style="text-align: right">89.4</td><br></tr><br><tr><br><td><a href="http://aclweb.org/anthology/P18-1091" target="_blank" rel="noopener">Boyuan Pan et al. ‘18</a></td><br><td>300D DMAN <strong>Ensemble</strong></td><br><td style="text-align: right">79m</td><br><td style="text-align: right">96.1 </td><br><td style="text-align: right">89.6</td><br></tr><br><tr><br><td><a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener">Radford et al. ‘18</a></td><br><td>Fine-Tuned LM-Pretrained Transformer</td><br><td style="text-align: right">85m</td><br><td style="text-align: right">96.6</td><br><td style="text-align: right"><strong>89.9</strong></td><br></tr><br><tr><br><td><a href="https://arxiv.org/pdf/1805.11360.pdf" target="_blank" rel="noopener">Seonhoon Kim et al. ‘18</a></td><br><td>Densely-Connected Recurrent and Co-Attentive Network <strong>Ensemble</strong></td><br><td style="text-align: right">53.3m</td><br><td style="text-align: right">95.0</td><br><td style="text-align: right"><strong>90.1</strong></td><br></tr><br></table>
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>Buy Me a Coffee</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="Scan QR Code" />
+            </div>
+              <div class="pay_explain">Thanks</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="Alipay" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="Wechat" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>Open <span id="shang_pay_txt">Alipay</span> and Scan QR Code.</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"Alipay":"Wechat");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/08/06/Natural-Language-Inference-学习笔记/">Natural Language Inference 学习笔记</a></p>
+        <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
+        <p><span>Date:</span>2018 : 08 : 06 - 01 : 37</p>
+        <p><span>Update:</span>2018 : 08 : 06 - 11 : 17</p>
+        <p>
+            <span>Hyperlink:</span><a class="post-url" href="/2018/08/06/Natural-Language-Inference-学习笔记/" title="Natural Language Inference 学习笔记">http://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-学习笔记/</a>
+            <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-学习笔记/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="China (CC BY-NC-SA 3.0 CN)" target = "_blank">"Signature-non-commercial-sharing in the same way 3.0"</a> Please keep the original link and author.
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/09/A-review-on-embedding/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">A review on embedding</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Archives</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NLI"><span class="toc-number">2.</span> <span class="toc-text">NLI</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="Hidden"  title="Hidden / Show Archives">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "Hidden";
+    var valueShow = "Show";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="Share to Weibo"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="Share to Wechat"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="Share to QQ"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="Share to Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="Share to Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="Share to linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="Share hyperlink"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: 'Mon Aug 06 2018 01:37:41 GMT+0800',
+      owner: 'HsiaoYetGun',
+      repo: 'HsiaoYetGun.github.io',
+      oauth: {
+        client_id: '7a4d3f0229c8061aa33f',
+        client_secret: '6f12ffc30ae1391899a25203c79b322d92fcef07',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="Home"><i class="fa fa-home"></i></a>
+        
+        <a title="Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2018/07/09/A-review-on-embedding/" title="Next: A review on embedding">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/Natural-Language-Inference-学习笔记/">Natural Language Inference 学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/09/A-review-on-embedding/">A review on embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/11/CS224n学习笔记-Lecture-7-Introduction-to-TensorFlow/">CS224n学习笔记 Lecture 7 Introduction to TensorFlow</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/06/CS224n学习笔记-Lecture-6-Dependency-Parsing/">CS224n学习笔记 Lecture 6 Dependency Parsing</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification/">CS224n学习笔记 Research Highlight3 Bag of Tricks for Efficient Text Classification</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/09/CS224n学习笔记-Lecture-5-Backpropagation-and-Project-Advice/">CS224n学习笔记 Lecture 5 Backpropagation and Project Advice</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/CS224n学习笔记-Lecture-4-Word-Window-Classification-and-Neural-Network/">CS224n学习笔记 Lecture 4 Word Window Classification and Neural Network</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Research-Highlight2-Linear-Algebraic-Structure-of-Word-Senses-with-Applications-to-Polysemy/">CS224n学习笔记 Research Highlight2 Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/CS224n学习笔记-Lecture-3-Advanced-Word-Vector-Representations/">CS224n学习笔记 Lecture 3 Advanced Word Vector Representations</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding/">CS224n学习笔记 Research Highlight1 A simple but tough-to-beat baseline for sentence embedding</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/06/CS224n学习笔记-Lecture-2-Word-Vector-Representations-word2vec/">CS224n学习笔记 Lecture 2 Word Vector Representations word2vec</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/03/CS224n学习笔记-Lecture-1-Introduction-to-NLP-and-Deep-Learning/">CS224n学习笔记 Lecture 1 Introduction to NLP and Deep Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/Intro/">Intro</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_self");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2018 Hsiao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by spfk
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >Site Visit: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">Page Visit: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
