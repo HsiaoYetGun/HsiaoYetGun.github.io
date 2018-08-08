@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/project/nli/1533568665335.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/project/nli/1533571138385.jpg">
 <meta property="og:image" content="http://hsiaoyetgun.github.io/picture/project/nli/1533574573292.jpg">
-<meta property="og:updated_time" content="2018-08-06T17:44:11.778Z">
+<meta property="og:updated_time" content="2018-08-08T17:45:32.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Natural Language Inference 学习笔记">
 <meta name="twitter:description" content="讲讲最近的实习经历，也算是如愿半路出家跳入 NLP 坑里来了。">
@@ -323,7 +323,7 @@
 <p>它的 sentence encoder 用的是 biLSTM，然后对 biLSTM 输出的隐藏状态按 timestep 轴做一个 max-pooling，理由是 biLSTM 这种双向 RNN 结构可以很好地结合上下文信息对单词进行再编码，之后的 max-pooling 则是保留了不同时刻中整个句子最重要的信息。然后就是上一小节所示的 $[u; v; |u - v|; u \cdot v]$ 的拼接形式 (注意这里使用的是绝对值求差，但本质上没什么区别，都是求前提和假设之间的线性相似度) ，最后接一下全连接层和 softmax。然后最终得到的 $u$ 和 $v$ 就可以作为该句子的句向量表示来使用在其他任务上了。模型很简单，但是取得了很好的效果。</p>
 <p>最后附上我个人用 TensorFlow 复现的 <a href="https://github.com/HsiaoYetGun/InferSent" target="_blank" rel="noopener">InferSent 代码</a>。</p>
 <h3 id="Structured-Self-Attention"><a href="#Structured-Self-Attention" class="headerlink" title="Structured Self Attention"></a>Structured Self Attention</h3><p>讲了以上的 sentence embedding 的方法，这里顺道再讲一篇。</p>
-<p><a href="https://arxiv.org/abs/1703.03130" target="_blank" rel="noopener">A Structured Self-Attentive Sentence Embedding</a> 是发表在 ICLR2017 上的一篇文章，其本质上是对输入序列做 self-attention 操作，与普通 self-attention 不同的是，这篇文章的做法是将得到的 attention 权重扩展到了 $r$ 维，这样就得到了一个二维的句向量表示 $(r <em> n)$。其实也就是将原本的 $(1 </em> n)$ 的 attention 权重映射到了 $r$ 个不同的子空间上。</p>
+<p><a href="https://arxiv.org/abs/1703.03130" target="_blank" rel="noopener">A Structured Self-Attentive Sentence Embedding</a> 是发表在 ICLR2017 上的一篇文章，其本质上是对输入序列做 self-attention 操作，与普通 self-attention 不同的是，这篇文章的做法是将得到的 attention 权重扩展到了 $r$ 维，这样就得到了一个二维的句向量表示 $(r \times n)$。其实也就是将原本的 $(1 \times n)$ 的 attention 权重映射到了 $r$ 个不同的子空间上。</p>
 <p>至于为什么要这么做，作者给出了解释：普通的 self-attention 会使得模型关注句子的一个特定的部分，也就是跟目标更加相关的单词或者短语的地方，希望通过突出这个部分来更好地表示这个句子的意思。然而，在很多情况下，尤其是遇到一个长句子的时候，句子中通常会有多个比较重要的部分，这时候你再只关注其中一块的话就有点不够用了，所以需要多个子空间才能够完整地表示整个句子的意思。</p>
 <blockquote>
 <p>This vector representation usually focuses on a speciﬁc component of the sentence, like a special set of related words or phrases. So it is expected to reﬂect an aspect, or component of the semantics in a sentence. However, there can be multiple components in a sentence that together forms the overall semantics of the whole sentence, especially for long sentences. (For example, two clauses linked together by an ”and.”)</p>
@@ -378,7 +378,7 @@
 </ol>
 </li>
 </ol>
-<p>最后文章又补充了一种 Intra-Sentence Attention 的做法。在计算 $\bar a$ 的时候加入了 attention，令 $f_{i,j}=F_{intra}(a_i)^TF_{intra}(a_j)，a’<em>i=\sum</em>{j=1}^{l_a}\frac{exp(f_{ij}+d_{i-j})}{\sum_{k=1}^{l_a}exp(f_{ik}+d_{i-k})}$，其中 $d$ 为两个词之间的距离。这样得到 $a’_i$ 后令 $\bar a=[a_i, a’_i]$ ，$\bar b$ 也做同样的操作，后续的处理过程跟上述一样。</p>
+<p>最后文章又补充了一种 Intra-Sentence Attention 的做法。在计算 $\bar a$ 的时候加入了 attention，令 $f_{i,j}=F_{intra}(a_i)^TF_{intra}(a_j)$， $a’<em>i=\sum</em>{j=1}^{l_a}\frac{exp(f_{ij}+d_{i-j})}{\sum_{k=1}^{l_a}exp(f_{ik}+d_{i-k})}$，其中 $d$ 为两个词之间的距离。这样得到 $a^{‘}_i$ 后令 $\bar a=[a_i, a^{‘}_i]$ ，$\bar b$ 也做同样的操作，后续的处理过程跟上述一样。</p>
 <p>Decomposable Attention 算是走了一种极端，把原问题简化成单词间的对齐问题，连 RNN 单元都没有用上，而是直接拿预训练得到的词向量做操作，这样难免会损失掉一些上下文信息。不过这种精神还是很值得学习的，在大家都在堆模型的时候，它另辟蹊径地走出了这么一条路来，即将原问题分解为单词间的对齐问题，这也为后续的很多研究奠定了基础。</p>
 <p>因为很喜欢这篇文章，我也用 TensorFlow 实现了一下 <a href="https://github.com/HsiaoYetGun/Decomposable-Attention" target="_blank" rel="noopener">Decomposable Attention 的代码</a>。</p>
 <h3 id="ESIM"><a href="#ESIM" class="headerlink" title="ESIM"></a>ESIM</h3><p>ESIM 模型算是 NLI 领域未来几年一个很难绕过的超强 baseline 了，单模型的效果可以达到 88.0% 的 Acc，简直吊打一帮人。</p>
@@ -495,7 +495,7 @@
         <p><span>Title:</span><a href="/2018/08/06/Natural-Language-Inference-学习笔记/">Natural Language Inference 学习笔记</a></p>
         <p><span>Author:</span><a href="/" title="Hsiao's Blog">Hsiao</a></p>
         <p><span>Date:</span>2018 : 08 : 06 - 01 : 37</p>
-        <p><span>Update:</span>2018 : 08 : 07 - 01 : 44</p>
+        <p><span>Update:</span>2018 : 08 : 09 - 01 : 45</p>
         <p>
             <span>Hyperlink:</span><a class="post-url" href="/2018/08/06/Natural-Language-Inference-学习笔记/" title="Natural Language Inference 学习笔记">http://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-学习笔记/</a>
             <span class="copy-path" data-clipboard-text="Source text: http://hsiaoyetgun.github.io/2018/08/06/Natural-Language-Inference-学习笔记/　　Author: Hsiao" title="Copy"><i class="fa fa-clipboard"></i></span>
