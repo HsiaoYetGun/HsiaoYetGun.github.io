@@ -8,9 +8,9 @@
         <category>Project</category>
       </categories>
       <tags>
-        <tag>Review</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
+        <tag>Review</tag>
         <tag>NLI</tag>
         <tag>Attention</tag>
       </tags>
@@ -23,10 +23,10 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>Review</tag>
-        <tag>Deep Learning</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
+        <tag>Review</tag>
+        <tag>Deep Learning</tag>
       </tags>
   </entry>
   <entry>
@@ -37,8 +37,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
         <tag>TensorFlow</tag>
       </tags>
   </entry>
@@ -50,8 +50,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
         <tag>Parsing</tag>
       </tags>
   </entry>
@@ -63,9 +63,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>CS224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>CS224n</tag>
       </tags>
   </entry>
   <entry>
@@ -76,8 +76,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
         <tag>BP</tag>
       </tags>
   </entry>
@@ -89,8 +89,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
         <tag>Ambiguity</tag>
       </tags>
   </entry>
@@ -102,8 +102,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
         <tag>Polysemy</tag>
       </tags>
   </entry>
@@ -115,9 +115,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>CS224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>CS224n</tag>
       </tags>
   </entry>
   <entry>
@@ -128,9 +128,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>CS224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>CS224n</tag>
       </tags>
   </entry>
   <entry>
@@ -141,9 +141,9 @@
         <category>Course</category>
       </categories>
       <tags>
+        <tag>CS224n</tag>
         <tag>NLP</tag>
         <tag>Word Embedding</tag>
-        <tag>CS224n</tag>
       </tags>
   </entry>
   <entry>
@@ -154,8 +154,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
         <tag>CS224n</tag>
+        <tag>NLP</tag>
       </tags>
   </entry>
   <entry>
